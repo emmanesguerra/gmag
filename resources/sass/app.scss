@@ -1,8 +1,77 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import 'fonts';
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.login-title {
+    font-family: Raleway-Medium;
+    font-size: 24px;
+    color: #000;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: left;
+    width: 100%;
+    display: block;
+}
+
+.login100-form-btn {
+    font-family: Raleway-Bold;
+    font-size: 16px;    
+    color: #FFF;
+    line-height: 1.2;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    min-width: 150px;
+    height: 55px;
+    background-color: #2a7dbf;
+    border-radius: 27px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.input100 {
+    color: #000;
+    line-height: 1.2;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    background: transparent;
+    height: 55px;
+    padding: 0 25px 0 25px;
+    border-radius: 2px;
+    border-color: #e6e6e6;
+}
+
+.txt1 {    
+    font-family: Raleway-SemiBold;
+    font-size: 13px;
+    color: #000;
+    line-height: 1.4;
+    text-transform: uppercase;
+    margin: 0;
+    padding-bottom: 4px;
+}
+
+.txt3 {
+    font-family: Raleway-Regular;
+    font-size: 13px;
+    color: #000;
+    line-height: 1;
+    
+    &:hover {
+        text-decoration: none;
+        color: #57b846;
+    }
+}
