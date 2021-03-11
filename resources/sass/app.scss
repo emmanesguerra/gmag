@@ -75,3 +75,45 @@
         color: #57b846;
     }
 }
+
+.signuph3 {
+    font-family: sans-serif;
+}
+
+.signup100 {
+    font-style: italic;
+    color: #c7a92d;
+    font-family: sans-serif; 
+    font-size: 16px;
+}
+
+.txtb {
+    background-color: #FFF;
+    color: #fff;
+    border: 1px solid gray;
+    margin: 8px 0;
+    padding: 12px 18px;
+    border-radius: 8px;
+    
+    label {
+        display: block;
+        text-align: left;
+        color: #666;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-family: sans-serif;
+    }
+    
+    input {
+        width: 100%;
+        border: none;
+            border-bottom-color: currentcolor;
+            border-bottom-style: none;
+            border-bottom-width: medium;
+        border-bottom: 1px solid #333;
+        background: none;
+        outline: none;
+        font-size: 18px;
+        margin-top: 6px;
+    }
+}
