@@ -124,6 +124,7 @@
         width: 100%;
         max-width: 100% !important;
         
+        .side-nav-admin,
         .side-nav {
             float: left;
             width: 200px;
@@ -182,6 +183,10 @@
                     }
                 }
             }
+        }
+        
+        .side-nav-admin {
+            width: 250px;
         }
     }
 }
