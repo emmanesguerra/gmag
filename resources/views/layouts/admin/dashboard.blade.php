@@ -22,7 +22,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body style="background-color: #d5dae5; font-family: 'Source Sans Pro', sans-serif; line-height: 1.15;">
-    <div class="dashboard">
+    <div id="app" class="dashboard">
         <main>
             <div class="container p-0">
                 @include('common.admin.leftsidebar')
@@ -30,6 +30,11 @@
                 @yield('module-content')
             </div>
         </main>
+        <footer class='p-2 text-center col-12' style='background: #208bc0'>
+            <span  style='color: #fff;'>
+                &copy; Copyright 2021 GOLDEN MAG USA INTERNATIONAL. All Rights Reserved. Security &amp;  Privacy Policy. <a href="#" style='color: #fff;'>Terms and Condition of use.</a>
+            </span>
+        </footer>
     </div>
 </body>
 </html>

@@ -190,3 +190,47 @@
         }
     }
 }
+
+.form-container {
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    
+    form {
+        
+        .form-header {
+            border-top: 5px solid #294f1f;
+            background: #4e933b;
+            color: #fff;
+
+            h2 {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                font-size: 22px;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+            padding-top: 10px;
+        }
+
+        .head {
+            font-family: 'Arial Black', Gadget, sans-serif;
+            font-size: 16px;
+        }
+        
+        .field {
+            border-bottom: 1px solid #d3d3d3;
+            
+            &:hover {
+                background: #f2f2f2;
+            }
+            
+            label {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                color: #666;
+            }
+        }
+    }
+}

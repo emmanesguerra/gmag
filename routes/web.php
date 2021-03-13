@@ -23,7 +23,13 @@ Route::get('/login/admin', 'Auth\LoginController@showAdminLoginForm');
 Route::get('/register/admin', 'Auth\RegisterController@showAdminRegisterForm');
 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
-Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
 
-Route::view('/home', 'home')->middleware('auth:web,admin');
-Route::view('/admin', 'admin.home')->middleware('auth:admin');
+Route::middleware('auth:web,admin')->group(function () {
+    Route::view('/home', 'home');
+    
+    Route::middleware('auth:admin')->group(function () {
+        Route::view('/admin', 'admin.home');
+        
+        Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('controlpanel');
+    });
+});

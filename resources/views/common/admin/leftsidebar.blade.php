@@ -67,7 +67,7 @@
                     <span>ADMIN MENU</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> CONTROL PANEL</a></li>
+                    <li><a href="{{ route('controlpanel') }}"><i class="fa fa-ellipsis-h"></i> CONTROL PANEL</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> WAITING LIST</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> PROCESS WAITINGS</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Members Visitor</a></li>
