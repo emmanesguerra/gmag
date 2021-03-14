@@ -35,5 +35,12 @@ Route::middleware('auth:web,admin')->group(function () {
         
         Route::get('/change-admin-password', 'Admin\ChangeAdminPassword@index')->name('admin.changepassword.index');
         Route::post('/change-admin-password', 'Admin\ChangeAdminPassword@store')->name('admin.changepassword.store');
+        
+        Route::get('/products', 'Admin\ProductsController@index')->name('admin.products.index');
+        Route::get('/products/create', 'Admin\ProductsController@create')->name('admin.products.create');
+        Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
+        Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');
+        Route::get('/products/{slug}/edit', 'Admin\ProductsController@edit')->name('admin.products.edit');
+        Route::put('/products/{slug}', 'Admin\ProductsController@update')->name('admin.products.update');
     });
 });

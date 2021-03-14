@@ -55,7 +55,7 @@
                     <span>Products</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Recent Products</a></li>
+                    <li><a href="{{ route('admin.products.index') }}"><i class="fa fa-ellipsis-h"></i> Recent Products</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> PRODUCT CODES</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Product Re-purchase Summary</a></li>
 
