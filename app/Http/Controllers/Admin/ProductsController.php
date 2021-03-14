@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Http\Requests\AddProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductsController extends Controller
 {
@@ -22,7 +25,7 @@ class ProductsController extends Controller
                 ->search($search)->orderBy('id', 'desc')
                 ->paginate($show);
         
-        return view('admin.products', ['products' => $products])->withQuery($search);
+        return view('admin.products.index', ['products' => $products])->withQuery($search);
     }
 
     /**
@@ -32,7 +35,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**
@@ -41,9 +44,30 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddProductRequest $request)
     {
-        //
+        try
+        {            
+            DB::beginTransaction();
+            
+            $product = Product::create($request->only([
+                'type', 
+                'name', 
+                'code', 
+                'price', 
+                'pv', 
+                'upv']));
+            
+            DB::commit();
+            
+            return redirect()->route('admin.products.index')->with('status-success', 'Product ['.$product->name.'] has been added to the system');
+            
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**
@@ -52,9 +76,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $product = Product::where('slug', $slug)->first();
+        
+        return view('admin.products.show', ['product' => $product]);
     }
 
     /**
@@ -63,9 +89,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $product = Product::where('slug', $slug)->first();
+        
+        return view('admin.products.edit', ['product' => $product]);
     }
 
     /**
@@ -75,9 +103,31 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
-        //
+        try
+        {            
+            DB::beginTransaction();
+            
+            $product = Product::find($id);           
+            $product->update($request->only([
+                'type', 
+                'name', 
+                'code', 
+                'price', 
+                'pv', 
+                'upv']));
+            
+            DB::commit();
+            
+            return redirect()->route('admin.products.index')->with('status-success', 'Product id ['.$product->id.'] has been updated');
+            
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**

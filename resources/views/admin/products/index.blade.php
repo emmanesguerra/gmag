@@ -33,9 +33,10 @@
         </form>
     </div>
     <div class="col-sm-6 text-right">
-        <a href='#' class='btn btn-primary my-2'>CREATE NEW PRODUCT</a>
+        <a href='{{ route('admin.products.create') }}' class='btn btn-primary my-2'>CREATE NEW PRODUCT</a>
     </div>
 </div>
+@include('common.serverresponse')
 <div class="row">
     <div class="col-12">
         <table class="table table-hover table-striped text-center">

@@ -9,11 +9,6 @@ class Setting extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     
-    protected $auditExclude = [
-        'created_by',
-        'updated_by'
-    ];
-    
     
     protected $primaryKey = 'keyword';
     public $incrementing = false;
@@ -24,6 +19,10 @@ class Setting extends Model implements Auditable
     /*
      * For audit tags
      */
+    protected $auditExclude = [
+        'created_by',
+        'updated_by'
+    ];
     public function generateTags(): array
     {
         return ['displayToDashboard'];

@@ -41,6 +41,6 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
         Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');
         Route::get('/products/{slug}/edit', 'Admin\ProductsController@edit')->name('admin.products.edit');
-        Route::put('/products/{slug}', 'Admin\ProductsController@update')->name('admin.products.update');
+        Route::put('/products/{id}', 'Admin\ProductsController@update')->name('admin.products.update');
     });
 });

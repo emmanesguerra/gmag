@@ -25,6 +25,10 @@ class Admin extends Authenticatable implements Auditable
     /*
      * For audit tags
      */
+    protected $auditExclude = [
+        'created_by',
+        'updated_by'
+    ];
     public function generateTags(): array
     {
         return ['displayToDashboard'];

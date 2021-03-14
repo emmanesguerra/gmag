@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Setting;
 use App\Observers\SettingsObserver;
 
+use App\Models\Product;
+use App\Observers\ProductObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -30,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         
         Setting::observe(SettingsObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }
