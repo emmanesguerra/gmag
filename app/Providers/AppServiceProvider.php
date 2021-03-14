@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\Setting;
+use App\Observers\SettingsObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        
+        Setting::observe(SettingsObserver::class);
     }
 }

@@ -30,6 +30,7 @@ Route::middleware('auth:web,admin')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::view('/admin', 'admin.home');
         
-        Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('controlpanel');
+        Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
+        Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');
     });
 });
