@@ -26,15 +26,19 @@
         <main>
             <div class="container p-0">
                 @include('common.admin.leftsidebar')
+                
+                @include('common.admin.header')
 
-                @yield('module-content')
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 content-container m-2">
+                            @yield('module-content')
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
-        <footer class='p-2 text-center col-12' style='background: #208bc0'>
-            <span  style='color: #fff;'>
-                &copy; Copyright 2021 GOLDEN MAG USA INTERNATIONAL. All Rights Reserved. Security &amp;  Privacy Policy. <a href="#" style='color: #fff;'>Terms and Condition of use.</a>
-            </span>
-        </footer>
-    </div>
+        @include('common.admin.footer')
+    </div>   
 </body>
 </html>

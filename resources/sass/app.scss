@@ -128,7 +128,6 @@
         .side-nav {
             float: left;
             width: 200px;
-            margin-right: 15px;
             background: #fff;
             
             ul {
@@ -191,7 +190,7 @@
     }
 }
 
-.form-container {
+.content-container {
     background: #fff;
     border: 1px solid #d3d3d3;
     
@@ -232,5 +231,16 @@
                 color: #666;
             }
         }
+    }
+}
+
+.adminhead {
+    background: #208bc0;
+    color: #FFF;
+    font-size: 16px;
+    
+    .pagetitle100 {
+        font-family: 'Arial Black', Gadget, sans-serif;
+        font-size: 28px;
     }
 }

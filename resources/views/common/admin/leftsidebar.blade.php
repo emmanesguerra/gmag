@@ -75,10 +75,6 @@
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
                     <li><a href="#" onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fa fa-ellipsis-h"></i> Logout</a>
-                
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form></li>
 
                 </ul>  
             </li>
