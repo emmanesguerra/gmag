@@ -1,4 +1,4 @@
-<section class="side-nav-admin">
+<section class="side-nav-admin  mb-2">
     <div class="logo m-3 text-center">
         <span>
             <img src='{{ asset('images/goal.png') }}' width='200' height="171">
@@ -72,7 +72,7 @@
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> PROCESS WAITINGS</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Members Visitor</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Change Members Username</a></li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
+                    <li><a href="{{ route('admin.changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
                     <li><a href="#" onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fa fa-ellipsis-h"></i> Logout</a>
 

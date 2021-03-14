@@ -6,22 +6,6 @@
 
 @section('module-content')
   
-@if (session('status-success'))
-<div class="card-body">
-    <div class="alert alert-success text-left">
-        {{ session('status-success') }}
-    </div>
-</div>
-@endif
-
-@if (session('status-failed'))
-<div class="card-body">
-    <div class="alert alert-danger text-left">
-        {{ session('status-failed') }}
-    </div>
-</div>
-@endif
-
 <form method="POST" action="{{ route('admin.controlpanel.store') }}" autocomplete="off" >
     @csrf
     <div class="form-group row pt-0">
@@ -29,6 +13,9 @@
             <img class="float-left m-1" src="{{ asset('images/info.png') }}" width="35" height="35" /><h2 class="float-left p-0 my-2">CONTROL PANEL</h2>
         </div>
     </div>
+    
+    @include('common.serverresponse')
+    
     <div class="form-group row">
         <div class="col-12 head">
             Encashment Settings

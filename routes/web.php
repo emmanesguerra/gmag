@@ -32,5 +32,8 @@ Route::middleware('auth:web,admin')->group(function () {
         
         Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
         Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');
+        
+        Route::get('/change-admin-password', 'Admin\ChangeAdminPassword@index')->name('admin.changepassword.index');
+        Route::post('/change-admin-password', 'Admin\ChangeAdminPassword@store')->name('admin.changepassword.store');
     });
 });

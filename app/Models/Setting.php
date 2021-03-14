@@ -20,6 +20,10 @@ class Setting extends Model implements Auditable
     
     protected $fillable = ['keyword', 'keyvalue'];
     
+    
+    /*
+     * For audit tags
+     */
     public function generateTags(): array
     {
         return ['displayToDashboard'];

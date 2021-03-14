@@ -23,7 +23,7 @@
 </head>
 <body style="background-color: #d5dae5; font-family: 'Source Sans Pro', sans-serif; line-height: 1.15;">
     <div id="app" class="dashboard">
-        <main>
+        <main style="float: left; width: 100%;">
             <div class="container p-0">
                 @include('common.admin.leftsidebar')
                 

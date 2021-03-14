@@ -179,6 +179,11 @@ return [
          * Laravel-Auditing
          */
         OwenIt\Auditing\AuditingServiceProvider::class,
+        
+        /*
+         * Validator extensions
+         */
+        App\Providers\ValidatorServiceProvider::class,
 
     ],
 

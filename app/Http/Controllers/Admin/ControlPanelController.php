@@ -53,7 +53,7 @@ class ControlPanelController extends Controller
             }
             
             DB::commit();
-            return redirect()->back()->with('status-success', 'System control panel is updated!');
+            return redirect()->back()->with('status-success', 'Control panel is updated!');
         } catch (\Exception $ex) {
             DB::rollback();
             return redirect()->back()
