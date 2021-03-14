@@ -3,13 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Setting extends Model
+class Setting extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+    
+    protected $auditExclude = [
+        'created_by',
+        'updated_by'
+    ];
+    
+    
     protected $primaryKey = 'keyword';
     public $incrementing = false;
     
     protected $fillable = ['keyword', 'keyvalue'];
+    
+    public function generateTags(): array
+    {
+        return ['displayToDashboard'];
+    }
 
     protected function serializeDate(\DateTimeInterface $date)
     {
