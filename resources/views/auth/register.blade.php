@@ -26,10 +26,10 @@
                         </div>
 
                         <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >USERNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' >USERNAME:</label>
+                            <input id="email" type="text" class="mt-0 @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required >
 
-                            @error('email')
+                            @error('username')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="txtb">
-                            <label for="exampleFormControlInput1" class='mb-0' >PASSWORD:</label>
+                            <label class='mb-0' >PASSWORD:</label>
                             <input id="password" type="password" class="mt-0 @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                             @error('password')
@@ -48,15 +48,15 @@
                         </div>
 
                         <div class="txtb">
-                            <label for="exampleFormControlInput1" class='mb-0' >CONFIRM PASSWORD:</label>
+                            <label class='mb-0' >CONFIRM PASSWORD:</label>
                             <input id="password-confirm" type="password" class="mt-0 " name="password_confirmation" required autocomplete="new-password">
                         </div>
 
                         <div class="txtb">
-                            <label for="exampleFormControlInput1" class='mb-0' >SPONSOR:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' >SPONSOR:</label>
+                            <input id="email" type="text" class="mt-0 @error('sponsor') is-invalid @enderror" name="sponsor" value="{{ old('sponsor') }}" required >
 
-                            @error('email')
+                            @error('sponsor')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -64,10 +64,10 @@
                         </div>
 
                         <div class="txtb">
-                            <label for="exampleFormControlInput1" class='mb-0' >PLACEMENT:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' >PLACEMENT:</label>
+                            <input id="email" type="text" class="mt-0 @error('placement') is-invalid @enderror" name="placement" value="{{ old('placement') }}" required >
 
-                            @error('email')
+                            @error('placement')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -75,10 +75,15 @@
                         </div>
 
                         <div class="txtb">
-                            <label for="exampleFormControlInput1" class='mb-0' >POSITION:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
+                            <label class='mb-0' >POSITION:</label>
+                            
+                            <select name='position' class="mt-0 form-control @error('position') is-invalid @enderror">
+                                <option value='0'>Select Placement Position</option>
+                                <option value='L' {{ 'L' == old('position') ? 'selected' : '' }}>Place to LEFT Position</option>
+                                <option value='R' {{ 'R' == old('position') ? 'selected' : '' }}>Place to RIGHT Position</option>
+                            </select>
+                            
+                            @error('position')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -92,8 +97,52 @@
                         </div>
 
                         <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >FIRSTNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' >FIRSTNAME:</label>
+                            <input id="email" type="text" class="mt-0 @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required >
+
+                            @error('firstname')
+                            <span class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="txtb" style='margin-top: 5px'>
+                            <label class='mb-0' >MIDDLENAME:</label>
+                            <input id="email" type="text" class="mt-0 @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" required >
+
+                            @error('middlename')
+                            <span class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="txtb" style='margin-top: 5px'>
+                            <label class='mb-0' >LASTNAME:</label>
+                            <input id="email" type="text" class="mt-0 @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
+
+                            @error('lastname')
+                            <span class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="txtb" style='margin-top: 5px'>
+                            <label class='mb-0' >ADDRESS:</label>
+                            <input id="email" type="text" class="mt-0 @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required >
+
+                            @error('address')
+                            <span class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="txtb" style='margin-top: 5px'>
+                            <label class='mb-0' >EMAIL:</label>
+                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required >
 
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -103,71 +152,29 @@
                         </div>
 
                         <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >MIDDLENAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' >MOBILE:</label>
+                            <input id="email" type="text" class="mt-0 @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required >
 
-                            @error('email')
+                            @error('mobile')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
                             @enderror
                         </div>
 
-                        <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >LASTNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >ADDRESS:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >EMAIL:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' >MOBILE:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group row mb-0 mt-4">
+                        <div id='accesscodes' class="form-group row mb-0 mt-4">
                             <div class="col-12 text-center">
                                 <span class='signup100'>ACCOUNT ACCESS CODES</span>
                             </div>
                         </div>
+                        
+                        @include('common.serverresponse')
 
                         <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' style="color:#062c78;">PINCODE 1:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' style="color:#062c78;">PINCODE 1:</label>
+                            <input id="email" type="text" class="mt-0 @error('pincode1') is-invalid @enderror" name="pincode1" value="{{ old('pincode1') }}" required >
 
-                            @error('email')
+                            @error('pincode1')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -175,10 +182,10 @@
                         </div>
 
                         <div class="txtb" style='margin-top: 5px'>
-                            <label for="exampleFormControlInput1" class='mb-0' style="color:#062c78;" >PINCODE 2:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label class='mb-0' style="color:#062c78;" >PINCODE 2:</label>
+                            <input id="email" type="text" class="mt-0 @error('pincode2') is-invalid @enderror" name="pincode2" value="{{ old('pincode2') }}" required >
 
-                            @error('email')
+                            @error('pincode2')
                             <span class="invalid-feedback" role="alert">
                                 {{ $message }}
                             </span>
@@ -210,6 +217,23 @@
                             </div>
                         </div>
                     </form>
+                    
+                    @if($errors->all())
+                        <script>
+                            <?php $pageerrors = ""; ?>
+                                @foreach ($errors->all() as $error)
+                                    <?php $pageerrors .= $error . '\n'; ?>
+                                @endforeach
+                              alert('{{ $pageerrors }}');
+                        </script>
+                    @endif
+                    
+                    @if (session('status-failed'))
+                        <script>
+                              alert('{{ session('status-failed') }}');
+                        </script>
+                    @endif
+                    
                 </div>
             </div>
         </div>
