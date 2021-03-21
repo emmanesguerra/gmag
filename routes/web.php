@@ -27,8 +27,8 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::middleware('auth:web,admin')->group(function () {
     Route::view('/home', 'home');
     
-    Route::middleware('auth:admin')->group(function () {
-        Route::view('/admin', 'admin.home');
+    Route::middleware('auth:admin')->prefix('admin')->group(function () {
+        Route::view('/dashboard', 'admin.home');
         
         Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
         Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');
@@ -42,5 +42,13 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');
         Route::get('/products/{slug}/edit', 'Admin\ProductsController@edit')->name('admin.products.edit');
         Route::put('/products/{id}', 'Admin\ProductsController@update')->name('admin.products.update');
+        
+        Route::get('/entry-codes', 'Admin\RegistrationCodesController@index')->name('admin.entrycodes.index');
+        Route::get('/entry-codes/create', 'Admin\RegistrationCodesController@create')->name('admin.entrycodes.create');
+        Route::post('/entry-codes', 'Admin\RegistrationCodesController@store')->name('admin.entrycodes.store');
+        Route::get('/entry-codes/{id}', 'Admin\RegistrationCodesController@show')->name('admin.entrycodes.show');
+        Route::get('/entry-codes/{id}/edit', 'Admin\RegistrationCodesController@edit')->name('admin.entrycodes.edit');
+        Route::put('/entry-codes/{id}', 'Admin\RegistrationCodesController@update')->name('admin.entrycodes.update');
+        Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
     });
 });

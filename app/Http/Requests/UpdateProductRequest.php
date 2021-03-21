@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\VerifyPassword;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -13,7 +14,10 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if(Auth::guard('admin')->check()) {
+            return true;
+        }
+        return false;
     }
 
     /**

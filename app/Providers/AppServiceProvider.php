@@ -11,6 +11,9 @@ use App\Observers\SettingsObserver;
 use App\Models\Product;
 use App\Observers\ProductObserver;
 
+use App\Models\MembersRegistrationCode;
+use App\Observers\MembersRegistrationCodeObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -34,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
         
         Setting::observe(SettingsObserver::class);
         Product::observe(ProductObserver::class);
+        MembersRegistrationCode::observe(MembersRegistrationCodeObserver::class);
     }
 }

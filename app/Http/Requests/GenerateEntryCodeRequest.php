@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class AddProductRequest extends FormRequest
+class GenerateEntryCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,13 +28,9 @@ class AddProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required',
-            'code' => 'required|unique:products,code',
-            'name' => 'required|unique:products,name',
-            'price' => 'required|numeric',
-            'pv' => 'required|numeric',
-            'upv' => 'required|numeric',
-            'registration_code_prefix' => 'required|max:2|unique:products,registration_code_prefix'
+            'product_id' => 'required',
+            'code_count' => 'required|numeric|max:5000',
+            'administrator_password' => 'required|verifypassword'
         ];
     }
     
@@ -46,8 +42,10 @@ class AddProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'upv.required' => 'UPoints value is required',
-            'pv.required' => 'Points value is required'
+            'code_count.required' => "The number of codes field is required",
+            'code_count.max' => "The number of codes field may not be greater than 100",
+            'administrator_password.required' => "The adminstrator's password is required",
+            'administrator_password.verifypassword' => "The adminstrator's password is incorrect"
         ];
     }
 }

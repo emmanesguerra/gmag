@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\VerifyPassword;
+use Illuminate\Support\Facades\Auth;
 
 class ChangeAdminPasswordRequest extends FormRequest
 {
@@ -14,7 +14,10 @@ class ChangeAdminPasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if(Auth::guard('admin')->check()) {
+            return true;
+        }
+        return false;
     }
 
     /**

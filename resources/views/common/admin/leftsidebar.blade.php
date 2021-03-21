@@ -28,7 +28,7 @@
                     <span>MEMBERSHIP CODES</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> ENTRY CODES</a></li>
+                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> ENTRY CODES</a></li>
                 </ul>
             </li>
             <li>

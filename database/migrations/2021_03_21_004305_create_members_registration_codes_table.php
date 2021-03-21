@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateMembersRegistrationCodesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('members_registration_codes', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('member_id')->nullable();
+            $table->string('pincode1', 8)->nullable()->comment('use to be registration code');
+            $table->string('pincode2', 8)->nullable()->comment('use to be password code');
+            $table->unsignedBigInteger('product_id');
+            $table->boolean('is_used')->comment('1 = used, 0 = still available')->default(0);
+            $table->date('date_used')->nullable();
+            $table->string('remarks', 500)->nullable();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+            
+            $table->index(['pincode1', 'pincode2']);
+            $table->unique(['pincode1', 'pincode2']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('members_registration_codes');
+    }
+}
