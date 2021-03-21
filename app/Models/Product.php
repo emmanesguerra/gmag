@@ -10,7 +10,7 @@ class Product extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'type', 'code', 'name', 'price', 'pv', 'upv'
+        'type', 'code', 'name', 'price', 'pv', 'upv', 'registration_code_prefix'
     ];
     
     /*
@@ -30,5 +30,20 @@ class Product extends Model implements Auditable
         $query->where('name', 'LIKE', '%' . $search . '%')
             ->orWhere('code', 'LIKE', '%' . $search . '%')
             ->orWhere('price', 'LIKE', '%' . $search . '%');
+    }
+    
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
+    
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
+    }
+    
+    public function setRegistrationCodePrefixAttribute($value)
+    {
+        $this->attributes['registration_code_prefix'] = strtoupper($value);
     }
 }

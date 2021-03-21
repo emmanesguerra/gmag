@@ -29,7 +29,8 @@ class AddProductRequest extends FormRequest
             'name' => 'required|unique:products,name',
             'price' => 'required|numeric',
             'pv' => 'required|numeric',
-            'upv' => 'required|numeric'
+            'upv' => 'required|numeric',
+            'registration_code_prefix' => 'required|max:2|unique:products,registration_code_prefix'
         ];
     }
     

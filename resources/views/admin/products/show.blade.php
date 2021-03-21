@@ -49,6 +49,12 @@
             <span class="form-control form-control-sm">{{ number_format($product->upv, 2) }}</span>
         </div>
     </div>
+    <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Registration Code Prefix</label>
+        <div class="col-sm-1">
+            <span class="form-control form-control-sm">{{ number_format($product->registration_code_prefix, 2) }}</span>
+        </div>
+    </div>
 
     <div class="form-group row text-center">
         <div class="col-12 p-3">

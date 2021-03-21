@@ -28,13 +28,13 @@
     <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">PRODUCT CODE</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control form-control-sm"  name="code" value="{{ old('code') }}">
+            <input type="text" class="form-control form-control-sm text-uppercase"  name="code" value="{{ old('code') }}">
         </div>
     </div>
     <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">PRODUCT NAME</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control form-control-sm"  name="name" value="{{ old('name') }}">
+            <input type="text" class="form-control form-control-sm text-uppercase"  name="name" value="{{ old('name') }}">
         </div>
     </div>
     <div class="form-group row field">
@@ -53,6 +53,12 @@
         <label  class="col-sm-3 col-form-label">UPoints Value</label>
         <div class="col-sm-3">
             <input type="number" class="form-control form-control-sm"  name="upv" value="{{ old('upv') }}">
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Registration Code Prefix</label>
+        <div class="col-sm-1">
+            <input maxlength="2" type="text" class="form-control form-control-sm text-uppercase"  name="registration_code_prefix" value="{{ old('registration_code_prefix') }}">
         </div>
     </div>
 

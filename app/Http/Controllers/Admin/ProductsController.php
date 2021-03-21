@@ -56,7 +56,8 @@ class ProductsController extends Controller
                 'code', 
                 'price', 
                 'pv', 
-                'upv']));
+                'upv',
+                'registration_code_prefix']));
             
             DB::commit();
             
@@ -116,7 +117,8 @@ class ProductsController extends Controller
                 'code', 
                 'price', 
                 'pv', 
-                'upv']));
+                'upv',
+                'registration_code_prefix']));
             
             DB::commit();
             
