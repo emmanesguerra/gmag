@@ -148,6 +148,14 @@ class RegistrationCodesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            MembersRegistrationCode::find($id)->delete();
+            return redirect()->route('admin.entrycodes.index')
+                            ->with('status-success','Entry code #'.$id.' deleted successfully');
+        } catch (Exception $ex) {
+            return redirect()->route('admin.entrycodes.index')
+                            ->with('status-failed', $ex->getMessage());
+        }
     }
 }

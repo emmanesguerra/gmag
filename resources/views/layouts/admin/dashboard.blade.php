@@ -40,5 +40,34 @@
         </main>
         @include('common.admin.footer')
     </div>   
+    
+    <div class="modal fade in" id="delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h4 class="modal-title">Danger!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to remove this record (<strong id="idtobedeleted"></strong>:<strong id="texttobedeleted"></strong>) in the system. Do you wish to continue?</p>
+
+                    <form id="deletemodalform" method="POST" accept-charset="UTF-8" style="display:inline">
+                        <input name="_method" type="hidden" value="DELETE">
+                        @csrf
+                        <input class="btn btn-outline text-danger" type="submit" value="Delete">
+                    </form>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var showdeletemodal = function (id, text, url) {
+            $('#deletemodalform').attr('action', url)
+            $('#idtobedeleted').html(id);
+            $('#texttobedeleted').html(text);
+            $('#delete-modal').modal('show');
+        }
+    </script>
 </body>
 </html>

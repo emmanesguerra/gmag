@@ -84,7 +84,8 @@
                     <td>{{ $entrycode->remarks }}</td>
                     <td class='small'> 
                         <a href="{{ route('admin.entrycodes.edit', $entrycode->id) }}">Update</a> | 
-                        <a href="{{ route('admin.entrycodes.delete', $entrycode->id) }}">Delete</a>
+                        <a href="#" 
+                           onclick="showdeletemodal('{{ $entrycode->id }}', '', '{{ route('admin.entrycodes.delete', $entrycode->id) }}')" >Delete</a>
                     </td>
                 </tr>
                 @endforeach 
