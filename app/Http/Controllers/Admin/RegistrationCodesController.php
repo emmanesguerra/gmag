@@ -105,7 +105,9 @@ class RegistrationCodesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $entrycode = MembersRegistrationCode::find($id);
+        
+        return view('admin.registrationcodes.edit', ['entrycode' => $entrycode]);
     }
 
     /**
@@ -117,7 +119,25 @@ class RegistrationCodesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {            
+            DB::beginTransaction();
+            
+            $entrycode = MembersRegistrationCode::find($id);           
+            $entrycode->update($request->only([
+                'is_used', 
+                'remarks']));
+            
+            DB::commit();
+            
+            return redirect()->route('admin.entrycodes.index')->with('status-success', 'Entry code # ['.$entrycode->id.'] has been updated');
+            
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**
