@@ -82,7 +82,7 @@
                     <td>{{ number_format($entrycode->product->price) }}</td>
                     <td>{{ ($entrycode->is_used) ? 'Used' : 'Available' }}</td>
                     <td>{{ $entrycode->remarks }}</td>
-                    <td> 
+                    <td class='small'> 
                         <a href="{{ route('admin.entrycodes.edit', $entrycode->id) }}">Update</a> | 
                         <a href="{{ route('admin.entrycodes.delete', $entrycode->id) }}">Delete</a>
                     </td>

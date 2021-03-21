@@ -72,7 +72,7 @@
                     @else
                     <td>PRODUCT</td>
                     @endif
-                    <td>
+                    <td class='small'>
                         <a href="{{ route('admin.products.show', $product->slug) }}">View</a> | 
                         <a href="{{ route('admin.products.edit', $product->slug) }}">Update</a>
                     </td>
