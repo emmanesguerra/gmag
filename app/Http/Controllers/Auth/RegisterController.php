@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Models\Member;
-use App\Models\MembersRegistrationCode;
+use App\Models\RegistrationCode;
 use App\Library\HierarchicalDB;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\MemberRegistrationRequest;
 
 class RegisterController extends Controller
 {
@@ -67,8 +68,8 @@ class RegisterController extends Controller
             'address' => ['required', 'string', 'max:150'],
             'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
             'mobile' => ['required', 'numeric'],
-            'pincode1' => ['required', 'string', 'exists:members_registration_codes,pincode1'],
-            'pincode2' => ['required', 'string', 'exists:members_registration_codes,pincode2'],
+            'pincode1' => ['required', 'string', 'exists:registration_codes,pincode1'],
+            'pincode2' => ['required', 'string', 'exists:registration_codes,pincode2'],
         ]);
     }
 
@@ -78,16 +79,16 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function register(Request $request)
+    protected function register(MemberRegistrationRequest $request)
     {
         $sponsor = Member::select('id')->where('username', $request->sponsor)->first();
         $placement = Member::select('id', 'rgt', 'lft', 'lvl')->where('username', $request->placement)->first();
-        
-        $registrationCode = MembersRegistrationCode::select('id', 'is_used')->where([
+
+        $registrationCode = RegistrationCode::select('id', 'is_used')->where([
             'pincode1' => $request->pincode1, 
             'pincode2' => $request->pincode2,
         ])->first();
-        
+            
         try
         {
             if($registrationCode) {

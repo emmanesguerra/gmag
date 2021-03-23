@@ -16,15 +16,25 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Rules\VerifyPassword;
+use App\Rules\VerifyAvailablePosition;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class ValidatorServiceProvider  extends ServiceProvider {
 
     public function boot()
     {
-        $verify = new VerifyPassword();
-        $this->app['validator']->extend('verifypassword', function ($attribute, $value, $parameters) use ($verify) {
-            return $verify->passes($attribute, $value);
-        }, $verify->message());
+        $verfPasswd = new VerifyPassword();
+        $this->app['validator']->extend('verifypassword', function ($attribute, $value, $parameters) use ($verfPasswd) {
+            return $verfPasswd->passes($attribute, $value);
+        }, $verfPasswd->message());
+        
+        
+        Validator::extend('verifyavailableposition', function ($attribute, $value, $parameters, $validator) {
+            $placementUser = Arr::get($validator->getData(), $parameters[0], null);
+            $vap= new VerifyAvailablePosition($placementUser);
+            return $vap->passes($attribute, $value);
+        });
     }
 
     public function register()

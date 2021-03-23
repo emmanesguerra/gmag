@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\MembersRegistrationCode;
+use App\Models\RegistrationCode;
 use App\Models\Product;
 use App\Http\Requests\GenerateEntryCodeRequest;
 
@@ -23,7 +23,7 @@ class RegistrationCodesController extends Controller
         $status = (isset($request->status)) ? $request->status: 0;
         $show = (isset($request->show)) ? $request->show: 10;
         
-        $entrycodes = MembersRegistrationCode::select(['id', 'pincode1', 'pincode2', 'product_id', 'is_used', 'remarks', 'created_at', 'created_by'])
+        $entrycodes = RegistrationCode::select(['id', 'pincode1', 'pincode2', 'product_id', 'is_used', 'remarks', 'created_at', 'created_by'])
                 ->with(['product' => function ($query) {
                     $query->select('name', 'price', 'id');
                 }, 'creator' => function ($query) {
@@ -72,7 +72,7 @@ class RegistrationCodesController extends Controller
                 ];
             }
             
-            MembersRegistrationCode::insertOrIgnore($data);                
+            RegistrationCode::insertOrIgnore($data);                
             
             DB::commit();
             
@@ -105,7 +105,7 @@ class RegistrationCodesController extends Controller
      */
     public function edit($id)
     {
-        $entrycode = MembersRegistrationCode::find($id);
+        $entrycode = RegistrationCode::find($id);
         
         return view('admin.registrationcodes.edit', ['entrycode' => $entrycode]);
     }
@@ -123,7 +123,7 @@ class RegistrationCodesController extends Controller
         {            
             DB::beginTransaction();
             
-            $entrycode = MembersRegistrationCode::find($id);           
+            $entrycode = RegistrationCode::find($id);           
             $entrycode->update($request->only([
                 'is_used', 
                 'remarks']));
@@ -150,7 +150,7 @@ class RegistrationCodesController extends Controller
     {
         try
         {
-            MembersRegistrationCode::find($id)->delete();
+            RegistrationCode::find($id)->delete();
             return redirect()->route('admin.entrycodes.index')
                             ->with('status-success','Entry code #'.$id.' deleted successfully');
         } catch (Exception $ex) {

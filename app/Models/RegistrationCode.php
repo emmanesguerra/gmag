@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class MembersRegistrationCode extends Model implements Auditable
+class RegistrationCode extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'member_id', 'product_id', 'is_used', 'remarks', 'created_by', 'pincode1', 'pincode2'
+        'assigned_to_member_id', 'product_id', 'is_used', 'remarks', 'created_by', 'pincode1', 'pincode2'
     ];
     
     /*

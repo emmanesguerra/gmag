@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMembersRegistrationCodesTable extends Migration
+class CreateRegistrationCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateMembersRegistrationCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('members_registration_codes', function (Blueprint $table) {
+        Schema::create('registration_codes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('member_id')->nullable();
+            $table->unsignedBigInteger('assigned_to_member_id')->nullable();
             $table->string('pincode1', 8)->nullable()->comment('use to be registration code');
             $table->string('pincode2', 8)->nullable()->comment('use to be password code');
             $table->unsignedBigInteger('product_id');
@@ -39,6 +39,6 @@ class CreateMembersRegistrationCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members_registration_codes');
+        Schema::dropIfExists('registration_codes');
     }
 }
