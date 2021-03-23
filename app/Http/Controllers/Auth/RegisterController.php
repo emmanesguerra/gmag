@@ -99,10 +99,21 @@ class RegisterController extends Controller
                     $hierarchyLib = new HierarchicalDB('members');
 
                     if($placement) {
-                        $hierarchyLib->updateLftPlus($placement->rgt);
-                        $hierarchyLib->updateRgtPlus($placement->rgt);
+                        // set left with parent's right
                         $left = $placement->rgt;
                         $lvl = $placement->lvl + 1;
+                        
+                        if($request->position == 'L') {
+                            // check if Position R has alreayd have a record
+                            $positionRMember = Member::select('id', 'rgt', 'lft')->where(['placement_id' => $placement->id, 'position' => 'R'])->first();
+                            if($positionRMember) {
+                                //set left with RMembers left
+                                $left = $positionRMember->lft;
+                            }
+                        }
+                        $hierarchyLib->updateLftPlus($left);
+                        $hierarchyLib->updateRgtPlus($left);
+                        
                     } else {
                         $left = $hierarchyLib->getLastRgt() + 1;
                         $lvl = 1;
