@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Member;
+use App\Models\MembersPlacement;
 
 class VerifyAvailablePosition implements Rule
 {
@@ -29,7 +30,7 @@ class VerifyAvailablePosition implements Rule
     {
         $member = Member::select('id')->where('username', $this->placementUser)->first();
         if($member) {
-            $available = Member::select('id')->where(['placement_id' => $member->id, 'position' => $value])->first();
+            $available = MembersPlacement::select('id')->where(['placement_id' => $member->id, 'position' => $value])->first();
             if(!$available) {
                 return true;
             }

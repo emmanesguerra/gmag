@@ -17,11 +17,6 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->string('username', 50);
             $table->string('password');
-            $table->unsignedBigInteger('placement_id');
-            $table->unsignedBigInteger('lft');
-            $table->unsignedBigInteger('rgt');
-            $table->unsignedBigInteger('lvl');
-            $table->char('position', 1);
             $table->unsignedBigInteger('sponsor_id');
             $table->string('firstname', 50);
             $table->string('middlename', 50);
