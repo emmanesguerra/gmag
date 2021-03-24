@@ -34,4 +34,9 @@ class Member extends Authenticatable implements Auditable
     {
         return ['displayToDashboard'];
     }
+    
+    public function placement()
+    {
+        return $this->hasOne(MembersPlacement::class, 'member_id', 'id');
+    }
 }

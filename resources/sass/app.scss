@@ -260,3 +260,32 @@
         font-weight: 700;
     }
 }
+
+.contentheader100
+{
+    background-color: #208bc0;
+    border-bottom: 1px solid #dfe4ec;
+    padding: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.card-content {
+    background: #fff;
+}
+
+.gtree {
+    
+    .need-data {
+        font-family: "Century Gothic";
+        font-size: 13px;
+    }
+    
+    .gtree-img {
+        width: 64px;
+    }
+}

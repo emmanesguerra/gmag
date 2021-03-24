@@ -10,7 +10,7 @@
     @yield('title')
     
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300" rel="stylesheet" type="text/css">
@@ -48,5 +48,6 @@
             </div>
         </main>
     </div>
+    @yield('javascripts')
 </body>
 </html>

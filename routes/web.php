@@ -27,6 +27,10 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::middleware('auth:web,admin')->group(function () {
     Route::view('/home', 'home');
     
+    Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
+    Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');
+        
+    
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::view('/dashboard', 'admin.home');
         
