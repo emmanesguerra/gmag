@@ -26,6 +26,23 @@
         <main>
             <div class="container p-0">
                 @include('common.leftsidebar')
+                
+                <div class="row pagehead100 py-2">
+                    <div class="col-4">
+                        <span class="pagetitle100">
+                            @yield('pagetitle')
+                        </span>
+                    </div>
+                    <div class="col-8 text-right">
+                        <span style=" float:right; color:#fcee7d; font-weight:normal; font-size:15px;">
+                            @if(Auth::guard('admin')->check())
+                                <i class="fa fa-user"></i> {{Auth::guard('admin')->user()->name}}
+                            @elseif(Auth::guard('web')->check())
+                                <i class="fa fa-user"></i> {{Auth::guard('web')->user()->username}}
+                            @endif
+                        </span>
+                    </div>
+                </div>
 
                 @yield('module-content')
             </div>
