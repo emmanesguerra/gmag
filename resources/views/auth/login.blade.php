@@ -20,9 +20,9 @@
 
             <div class="mb-0">
                 <label for="exampleFormControlInput1" class="txt1 form-label">USERNAME</label>
-                <input id="email" type="text" class="input100 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="username" type="text" class="input100 form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                 
-                @error('email')
+                @error('username')
                     <span class="invalid-feedback" role="alert">
                         {{ $message }}
                     </span>
