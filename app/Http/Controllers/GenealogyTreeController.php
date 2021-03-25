@@ -73,15 +73,10 @@ class GenealogyTreeController extends Controller
         $data = [];
         foreach($tempPosition as $key => $targetPosition) {
             if($key == 0) {
-                if(Auth::id() != $members[$key]['member_id']) {
-                    $parent = MembersPlacement::where('member_id' , $members[$key]['member_id'])->first();
-                }
-                
                 $data[$key] = [
                     'id' => $members[$key]['member_id'],
                     'username' => $members[$key]['member']['username'],
-                    'product_id' => $members[$key]['product_id'],
-                    'parent_id' => (isset($parent)) ? $parent->placement_id: 0
+                    'product_id' => $members[$key]['product_id']
                 ];
             } else {
                 $memberKey = $this->searcharray($data[$targetPosition['target']]['id'], $targetPosition['position'], $members);

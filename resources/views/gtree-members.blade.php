@@ -1,9 +1,13 @@
 
 @if ($data['id'] > 0)
     @if (isset($first))
-        <a href='{{ route('gtree.index') }}'>
+        @if (auth()->user()->id == $data['id'])
+            <a href='{{ route('gtree.index') }}'>
+        @else
+            <a href='javascript:history.back()'>
+        @endif
     @else
-    <a href='{{ route('gtree.index', ['top' => $data['id']]) }}'>
+        <a href='{{ route('gtree.index', ['top' => $data['id']]) }}'>
     @endif
 @else
     @if ($data['username'] == 'Sign Up')

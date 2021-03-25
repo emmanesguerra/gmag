@@ -79,6 +79,27 @@
                 </tr>
             </tbody>
         </table>
+        <div class='col-12'>
+            <div class='row'>
+                <div class='col-5 alert alert-light'>
+                    <p>Instructions:</p>
+                    <ol>
+                        <li>Click the icon to Move Down the Genealogy</li>
+                        <li>Click the icon at the top to Move Up the Genealogy</li>
+                    </ol>
+                </div>
+                <div class='col-5 offset-2 alert alert-light'>
+                    <p>Legends:</p>
+                    <ul class='list-group list-group-horizontal text-center'>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/open.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> Available</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/starter.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> STARTER <br />1,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/bronze.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> BRONZE <br />5,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/silver.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> SILVER <br />19,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/gold.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> GOLD <br />49,998</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
