@@ -4,18 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\User;
+use App\Library\Modules\MembersLibrary;
 use App\Models\Member;
-use App\Models\MembersPlacement;
 use App\Models\RegistrationCode;
-use App\Library\HierarchicalDB;
+use App\Http\Requests\MemberRegistrationRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\MemberRegistrationRequest;
 
 class RegisterController extends Controller
 {
@@ -108,7 +104,7 @@ class RegisterController extends Controller
                         'registration_code_id' => $registrationCode->id,
                     ]);
                     
-                    $this->ProcessMemberPlacement($member, $request, $registrationCode);
+                    MembersLibrary::processMemberPlacement($member, $request, $registrationCode);
                     
                     $this->guard()->login($member);
                     
@@ -135,47 +131,5 @@ class RegisterController extends Controller
                     ->with('status-failed', $ex->getMessage())
                     ->withInput($request->input());
         }
-    }
-    
-    private function ProcessMemberPlacement($member, $request, $registrationCode)
-    {
-        $placement = Member::select('id')->where('username', $request->placement)->first();
-        $memberPlacement = MembersPlacement::select('member_id', 'rgt', 'lft', 'lvl')->where('member_id', $placement->id)->first();
-        
-        $hierarchyLib = new HierarchicalDB('members_placements');
-
-        if($memberPlacement) {
-            // set left with parent's right
-            $left = $memberPlacement->rgt;
-            $lvl = $memberPlacement->lvl + 1;
-
-            if($request->position == 'L') {
-                // check if Position R has alreayd have a record
-                $positionRMember = MembersPlacement::select('member_id', 'rgt', 'lft')->where(['placement_id' => $placement->id, 'position' => 'R'])->first();
-                if($positionRMember) {
-                    //set left with RMembers left
-                    $left = $positionRMember->lft;
-                }
-            }
-            $hierarchyLib->updateLftPlus($left);
-            $hierarchyLib->updateRgtPlus($left);
-
-        } else {
-            $left = $hierarchyLib->getLastRgt() + 1;
-            $lvl = 1;
-        }
-        $right = $left + 1;
-
-        MembersPlacement::create([
-            'member_id' => $member->id,
-            'placement_id' => $placement->id,
-            'lft' => $left,
-            'rgt' => $right,
-            'lvl' => $lvl,
-            'position' => $request->position,
-            'product_id' => $registrationCode->product_id,
-        ]);
-
-        return;
     }
 }
