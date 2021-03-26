@@ -4,31 +4,35 @@
         @if (auth()->user()->id == $data['id'])
             <a href='{{ route('gtree.index') }}'>
         @else
+            @if(app('request')->input('r'))
+            <a href='{{ route('gtree.index') }}'>
+            @else
             <a href='javascript:history.back()'>
+            @endif
         @endif
     @else
         <a href='{{ route('gtree.index', ['top' => $data['id']]) }}'>
     @endif
 @else
     @if ($data['username'] == 'Sign Up')
-    <a href='{{ route('gtree.index') }}'>
+    <a href='{{ route('register.member.create', ['target_id' => $data['target_id'], 'position' => $data['position']]) }}'>
     @endif
 @endif
     @switch($data['product_id'])
     @case(4)
-    <img class='gtree-img' src='{{ asset('images/gold.png') }}' />
+    <img class='gtree-img' src='{{ asset('images/gold_s.png') }}' />
     @break
     @case(3)
-    <img class='gtree-img' src='{{ asset('images/silver.png') }}' />
+    <img class='gtree-img' src='{{ asset('images/silver_s.png') }}' />
     @break
     @case(2)
-    <img class='gtree-img' src='{{ asset('images/bronze.png') }}' />
+    <img class='gtree-img' src='{{ asset('images/bronze_s.png') }}' />
     @break
     @case(1)
-    <img class='gtree-img' src='{{ asset('images/starter.png') }}' />
+    <img class='gtree-img' src='{{ asset('images/starter_s.png') }}' />
     @break
     @default
-    <img class='gtree-img' src='{{ asset('images/open.png') }}' />
+    <img class='gtree-img' src='{{ asset('images/open_s.png') }}' />
     @endswitch
 <br />
 <br />

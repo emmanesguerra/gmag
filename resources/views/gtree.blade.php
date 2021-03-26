@@ -15,8 +15,9 @@
         Genealogy Tree
     </div>
     <div class='col-12 card-content' style='position: relative'>
+        @include('common.serverresponse')
         @if(app('request')->input('top'))
-        <span style='position: absolute; top: 15px; right: 25px; z-index: 5'><a href='{{ route('gtree.index') }}'>Back to top</a></span>
+        <span style='position: absolute; top: 30px; right: 50px; z-index: 5'><a href='{{ route('gtree.index') }}'>Back to top</a></span>
         @endif
         <table class="table table-borderless table-hover gtree">
             <tbody>
@@ -91,47 +92,15 @@
                 <div class='col-5 offset-2 alert alert-light'>
                     <p>Legends:</p>
                     <ul class='list-group list-group-horizontal text-center'>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/open.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> Available</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/starter.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> STARTER <br />1,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/bronze.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> BRONZE <br />5,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/silver.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> SILVER <br />19,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/gold.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> GOLD <br />49,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/open_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> Available</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/starter_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> STARTER <br />1,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/bronze_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> BRONZE <br />5,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/silver_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> SILVER <br />19,998</li>
+                        <li class="list-group-item border-0"><img src='{{ asset('images/gold_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> GOLD <br />49,998</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
-
-@section('javascripts')
-<script>
-
-//    $('.need-data').each(function() {
-//        var targetId = $(this).data('target-id');
-//        var id = $('#'+targetId).data('id');
-//        var position = $(this).data('position');
-//        
-//        console.log(targetId);
-//        console.log(id);
-//        console.log(position);
-//        
-//        var element = this;
-//        $.ajax({
-//            url: "{{ route('gtree.member.data') }}",  
-//            method: "POST",
-//            data: { "id": id, "position": position, "_token": "{{ csrf_token() }}"},
-//            async: false,
-//            success: function(result){
-//                $(element).data('id', result.target_id)
-//                $(element).html("<img class='gtree-img' src='"+result.image+"' /><br /><br />"+result.username);
-//            },error: function () {
-//                $(element).data('id', 0)
-//                $(element).html("<img class='gtree-img' src='{{ asset('images/open.png') }}' /><br /><br />");
-//            }
-//        });
-//
-//    });
-
-</script>
 @endsection
