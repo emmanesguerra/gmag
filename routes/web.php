@@ -24,7 +24,10 @@ Route::get('/register/admin', 'Auth\RegisterController@showAdminRegisterForm');
 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
-Route::middleware('auth:web,admin')->group(function () {
+Route::get('/changepswd', 'ChangePasswordController@index')->name('changepswd');
+Route::post('/changepswd', 'ChangePasswordController@store')->name('changepswd.store');
+
+Route::middleware(['auth:web,admin', 'mustchanged'])->group(function () {
     Route::view('/home', 'home');
     
     Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');

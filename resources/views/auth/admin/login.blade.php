@@ -15,6 +15,15 @@
             <div class="my-4">
                 <h3 style="font-family: 'Arial Black', Gadget, sans-serif;font-size: 28px;color: #666;">AdminPanel</h3>
             </div>
+                
+                
+            @if (count($errors) > 0)
+            <ul class='small'>
+                @foreach ($errors->all() as $error)
+                <li class='text-danger'>{{ $error }}</li>
+                @endforeach
+            </ul>
+            @endif
 
             <div class="form-group">
                 <input id="email" type="text" class="input100 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Enter ADMIN Username">
