@@ -96,6 +96,7 @@ class GenealogyTreeController extends Controller
                     ];
                     if ($data[$targetPosition['target']]['id'] > 0) {
                         $data[$key]['username'] = 'Sign Up';
+                        $data[$key]['target_id'] = $data[$targetPosition['target']]['id'];
                     }
                 }
             }
