@@ -28,7 +28,7 @@
                 @include('common.leftsidebar')
                 
                 <div class="row pagehead100 py-2">
-                    <div class="col-4">
+                    <div class="col-4 pl-0">
                         <span class="pagetitle100">
                             @yield('pagetitle')
                         </span>
