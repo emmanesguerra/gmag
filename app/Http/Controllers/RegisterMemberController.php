@@ -60,26 +60,11 @@ class RegisterMemberController extends Controller
                 if(!$registrationCode->is_used) {
                     DB::beginTransaction();
 
-                    $member = Member::create([
-                        'username' => $request->username,
-                        'password' => Hash::make('gmag12345678'),
-                        'sponsor_id' => $sponsor->id,
-                        'firstname' => $request->firstname,
-                        'middlename' => $request->middlename,
-                        'lastname' => $request->lastname,
-                        'address' => $request->address,
-                        'email' => $request->email,
-                        'mobile' => $request->mobile,
-                        'registration_code_id' => $registrationCode->id,
-                    ]);
+                    $member = MembersLibrary::insertMember($registrationCode, $request, 'gmag12345678', $sponsor);
                     
-                    MembersLibrary::processMemberPlacement($member, $request, $registrationCode);
+                    MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     
-                    $registrationCode->is_used = 1;
-                    $registrationCode->used_by_member_id = $member->id;
-                    $registrationCode->date_used = \Carbon\Carbon::now();
-                    $registrationCode->remarks = 'Used by: ' . $member->username;
-                    $registrationCode->save();
+                    MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
 
                     DB::commit();
                     

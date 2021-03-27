@@ -9,7 +9,6 @@ use App\Models\Member;
 use App\Models\RegistrationCode;
 use App\Http\Requests\MemberRegistrationRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -90,29 +89,14 @@ class RegisterController extends Controller
             if($registrationCode) {
                 if(!$registrationCode->is_used) {
                     DB::beginTransaction();
-
-                    $member = Member::create([
-                        'username' => $request->username,
-                        'password' => Hash::make($request->password),
-                        'sponsor_id' => $sponsor->id,
-                        'firstname' => $request->firstname,
-                        'middlename' => $request->middlename,
-                        'lastname' => $request->lastname,
-                        'address' => $request->address,
-                        'email' => $request->email,
-                        'mobile' => $request->mobile,
-                        'registration_code_id' => $registrationCode->id,
-                    ]);
                     
-                    MembersLibrary::processMemberPlacement($member, $request, $registrationCode);
+                    $member = MembersLibrary::insertMember($registrationCode, $request, $request->password, $sponsor);
+                    
+                    MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     
                     $this->guard()->login($member);
                     
-                    $registrationCode->is_used = 1;
-                    $registrationCode->used_by_member_id = $member->id;
-                    $registrationCode->date_used = \Carbon\Carbon::now();
-                    $registrationCode->remarks = 'Used by: ' . $member->username;
-                    $registrationCode->save();
+                    MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
 
                     DB::commit();
                     
