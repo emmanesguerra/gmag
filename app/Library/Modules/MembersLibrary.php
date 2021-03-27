@@ -10,7 +10,10 @@ namespace App\Library\Modules;
 
 use App\Models\Member;
 use App\Models\MembersPlacement;
+use App\Models\RegistrationCode;
 use App\Library\HierarchicalDB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Description of MembersLibrary
@@ -20,7 +23,23 @@ use App\Library\HierarchicalDB;
 class MembersLibrary {
     //put your code here
     
-    public static function processMemberPlacement($member, $request, $registrationCode)
+    public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor)
+    {
+        return Member::create([
+            'username' => $request->username,
+            'password' => Hash::make($password),
+            'sponsor_id' => $sponsor->id,
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'address' => $request->address,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'registration_code_id' => $registrationCode->id,
+        ]);
+    }
+    
+    public static function processMemberPlacement(Member $member, RegistrationCode $registrationCode, Request $request)
     {
         $placement = Member::select('id')->where('username', $request->placement)->first();
         
@@ -60,6 +79,17 @@ class MembersLibrary {
             'product_id' => $registrationCode->product_id,
         ]);
 
+        return;
+    }
+    
+    public static function updateMemberRegistrationCode(Member $member, RegistrationCode $registrationCode)
+    {
+        $registrationCode->is_used = 1;
+        $registrationCode->used_by_member_id = $member->id;
+        $registrationCode->date_used = \Carbon\Carbon::now();
+        $registrationCode->remarks = 'Used by: ' . $member->username;
+        $registrationCode->save();
+        
         return;
     }
 }
