@@ -27,14 +27,16 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::get('/changepswd', 'ChangePasswordController@index')->name('changepswd');
 Route::post('/changepswd', 'ChangePasswordController@store')->name('changepswd.store');
 
-Route::middleware(['auth:web,admin', 'mustchanged'])->group(function () {
-    Route::view('/home', 'home');
+Route::middleware('auth:web,admin')->group(function () {
     
-    Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
-    Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');
-    Route::get('/register-member', 'RegisterMemberController@create')->name('register.member.create');
-    Route::post('/register-member', 'RegisterMemberController@store')->name('register.member.store');
-        
+    Route::middleware('mustchanged')->group(function () {
+        Route::view('/home', 'home');
+
+        Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
+        Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');
+        Route::get('/register-member', 'RegisterMemberController@create')->name('register.member.create');
+        Route::post('/register-member', 'RegisterMemberController@store')->name('register.member.store');
+    });
     
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::view('/dashboard', 'admin.home');
