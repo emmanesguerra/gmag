@@ -27,6 +27,11 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::get('/changepswd', 'ChangePasswordController@index')->name('changepswd');
 Route::post('/changepswd', 'ChangePasswordController@store')->name('changepswd.store');
 
+use App\Library\Modules\MembersLibrary;
+Route::get('/test-search', function() {
+    MembersLibrary::searchForTodaysPair(1);
+});
+
 Route::middleware('auth:web,admin')->group(function () {
     
     Route::middleware('mustchanged')->group(function () {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMembersPlacementsTable extends Migration
+class CreateMembersPairingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,21 @@ class CreateMembersPlacementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('members_placements', function (Blueprint $table) {
+        Schema::create('members_pairings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('placement_id');
-            $table->unsignedBigInteger('lft');
-            $table->unsignedBigInteger('rgt');
-            $table->unsignedBigInteger('lvl');
-            $table->char('position', 1);
+            $table->unsignedBigInteger('lft_mid');
+            $table->unsignedBigInteger('rgt_mid');
             $table->unsignedBigInteger('product_id');
-            $table->boolean('product_claimed')->default(0);
+            $table->string('type', 2)->nullable();
             $table->timestamps();
             
             $table->foreign('member_id')->references('id')->on('members');
+            $table->foreign('lft_mid')->references('id')->on('members');
+            $table->foreign('rgt_mid')->references('id')->on('members');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->index(['lft', 'position']);
-            $table->index(['rgt', 'position']);
+            $table->index(['member_id']);
+            $table->index(['type']);
         });
     }
 
@@ -39,6 +38,6 @@ class CreateMembersPlacementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members_placements');
+        Schema::dropIfExists('members_pairings');
     }
 }

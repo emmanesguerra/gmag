@@ -62,9 +62,11 @@ class RegisterMemberController extends Controller
 
                     $member = MembersLibrary::insertMember($registrationCode, $request, 'gmag12345678', $sponsor);
                     
-                    MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
+                    $placement = MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     
                     MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
+                    
+                    MembersLibrary::searchForTodaysPair($member->placement->placement_id);
 
                     DB::commit();
                     

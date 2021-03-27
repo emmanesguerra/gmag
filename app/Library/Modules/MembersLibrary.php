@@ -11,9 +11,11 @@ namespace App\Library\Modules;
 use App\Models\Member;
 use App\Models\MembersPlacement;
 use App\Models\RegistrationCode;
+use App\Models\MembersPairing;
 use App\Library\HierarchicalDB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 /**
  * Description of MembersLibrary
@@ -69,7 +71,7 @@ class MembersLibrary {
         }
         $right = $left + 1;
 
-        MembersPlacement::create([
+        return MembersPlacement::create([
             'member_id' => $member->id,
             'placement_id' => $placement->id,
             'lft' => $left,
@@ -78,8 +80,6 @@ class MembersLibrary {
             'position' => $request->position,
             'product_id' => $registrationCode->product_id,
         ]);
-
-        return;
     }
     
     public static function updateMemberRegistrationCode(Member $member, RegistrationCode $registrationCode)
@@ -91,5 +91,81 @@ class MembersLibrary {
         $registrationCode->save();
         
         return;
+    }
+    
+    public static function searchForTodaysPair(int $memberId)
+    {
+        if (!empty($memberId)) {
+            $member = Member::find($memberId);
+            $today = Carbon::today();
+
+            self::saveTodaysPair($member, $today);
+        }
+        return;
+    }
+    
+    private static function saveTodaysPair(Member $member, $today)
+    {
+        $childL = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id')->where(['lft' => ($member->placement->lft + 1), 'position' => 'L'])->first();
+        $childR = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id')->where(['rgt' => ($member->placement->rgt - 1), 'position' => 'R'])->first();
+
+        if(!empty($childL) && !empty($childR))
+        {
+            $pairedIds = MembersPairing::select('lft_mid', 'rgt_mid')->where('member_id', $member->id)
+                                    ->whereNotNull('type')
+                                    ->whereDate('created_at', $today)
+                                    ->get();
+            
+            $childrenL = MembersPlacement::select('member_id', 'product_id')->whereBetween('lft', [$childL->lft, $childL->rgt])
+                                        ->whereDate('created_at', $today)
+                                        ->whereNotIn('member_id', $pairedIds->pluck('lft_mid'))
+                                        ->get();
+            $childrenR = MembersPlacement::select('member_id', 'product_id')->whereBetween('lft', [$childR->lft, $childR->rgt])
+                                        ->whereDate('created_at', $today)
+                                        ->whereNotIn('member_id', $pairedIds->pluck('rgt_mid'))
+                                        ->get();
+
+            if(!empty($childrenL) && !empty($childrenR)) {
+                
+                foreach($childrenL as $chL) {
+                    foreach($childrenR as $chR) {
+                        if($chR->product_id == $chL->product_id) {
+                            $pair = MembersPairing::create([
+                                'member_id' => $member->id,
+                                'lft_mid' => $chL->member_id,
+                                'rgt_mid' => $chR->member_id,
+                                'product_id' => $chR->product_id,
+                                'type' => 'TP'
+                            ]);
+                            if($pair) {
+                                
+                                MembersPairing::where(['member_id' => $member->id, 'type' => null])->delete();
+                                
+                                if($member->pair_date != date('Y-m-d') ) {
+                                    $member->pair_ctr = 1;
+                                    $member->pair_date = date('Y-m-d');
+                                } else {
+                                    $member->pair_ctr += 1;
+                                }
+                                $member->save();
+                                break 2;
+                            }
+                        }
+                    }
+                }
+                
+                if(!isset($pair) && count($pairedIds) == 0) {
+                    $pair = MembersPairing::create([
+                        'member_id' => $member->id,
+                        'lft_mid' => $childL->member_id,
+                        'rgt_mid' => $childR->member_id,
+                        'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
+                        'type' => null
+                    ]);
+                }
+            }
+        }
+            
+        return self::searchForTodaysPair($member->placement->placement_id);
     }
 }

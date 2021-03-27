@@ -17,7 +17,7 @@ class AddFieldsForMembersTable extends Migration
             $table->boolean('must_change_password')->default(0);
             $table->timestamp('password_changed_date')->nullable();
             $table->unsignedSmallInteger('pair_ctr')->nullable();
-            $table->unsignedSmallInteger('pair_date')->nullable();
+            $table->date('pair_date')->nullable();
         });
     }
 
@@ -31,7 +31,7 @@ class AddFieldsForMembersTable extends Migration
         Schema::table('members', function (Blueprint $table) {
             $table->dropColumn('must_change_password');
             $table->dropColumn('password_changed_date');
-            $table->dropColumn('daily_pair_ctr');
+            $table->dropColumn('pair_ctr');
             $table->dropColumn('pair_date');
         });
     }

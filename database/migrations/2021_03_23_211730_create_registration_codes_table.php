@@ -27,6 +27,9 @@ class CreateRegistrationCodesTable extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
+            $table->foreign('assigned_to_member_id')->references('id')->on('members');
+            $table->foreign('used_by_member_id')->references('id')->on('members');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->index(['pincode1', 'pincode2']);
             $table->unique(['pincode1', 'pincode2']);
         });
