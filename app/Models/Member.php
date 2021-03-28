@@ -39,4 +39,15 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasOne(MembersPlacement::class, 'member_id', 'id');
     }
+    
+    public function children()
+    {
+        return MembersPlacement::whereBetween('lft', [$this->placement->lft, $this->placement->rgt]);
+    }
+    
+    public function pairings()
+    {
+        return $this->hasMany(MembersPairing::class, 'member_id', 'id')
+                ->orderBy('created_at', 'desc');
+    }
 }

@@ -39,6 +39,7 @@ Route::middleware('auth:web,admin')->group(function () {
 
         Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
         Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');
+        Route::get('/gtree-pairing', 'GenealogyTreeController@pairing')->name('gtree.pairing');
         Route::get('/register-member', 'RegisterMemberController@create')->name('register.member.create');
         Route::post('/register-member', 'RegisterMemberController@store')->name('register.member.store');
     });

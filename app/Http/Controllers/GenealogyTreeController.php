@@ -214,4 +214,21 @@ class GenealogyTreeController extends Controller
     {
         //
     }
+    
+    public function pairing(Request $request)
+    {
+        $topId = (isset($request->top)) ? $request->top: Auth::id();
+        $member = Member::find($topId);
+        
+        $childrenIds = $member->children()->pluck('member_id');
+        
+        
+        $show = (isset($request->show)) ? $request->show: 10;
+        
+        $pairs = \App\Models\MembersPairing::whereIn('member_id', $childrenIds)
+                ->orderBy('id', 'desc')
+                ->paginate($show);
+        
+        return view('gtree-pairing-list', ['pairs' => $pairs, 'member' => $member]);
+    }
 }

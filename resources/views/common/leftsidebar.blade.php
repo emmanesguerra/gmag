@@ -27,6 +27,7 @@
                     <li><a href="{{ route('gtree.index') }}"><i class="fa fa-ellipsis-h"></i> Genealogy Tree</a></li>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i>Binary List</a>
                     </li><li><a href="#"><i class="fa fa-ellipsis-h"></i>D/I Genealogy List</a>
+                    </li><li><a href="{{ route('gtree.pairing') }}"><i class="fa fa-ellipsis-h"></i>Pair List</a>
                     </li> 
                 </ul>
             </li>
