@@ -106,9 +106,9 @@ class MembersLibrary {
     
     private static function saveTodaysPair(Member $member, $today)
     {
-        $childL = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id')->where(['lft' => ($member->placement->lft + 1), 'position' => 'L'])->first();
-        $childR = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id')->where(['rgt' => ($member->placement->rgt - 1), 'position' => 'R'])->first();
-
+        $childL = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['lft' => ($member->placement->lft + 1), 'position' => 'L'])->first();
+        $childR = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['rgt' => ($member->placement->rgt - 1), 'position' => 'R'])->first();
+        
         if(!empty($childL) && !empty($childR))
         {
             $pairedIds = MembersPairing::select('lft_mid', 'rgt_mid')->where('member_id', $member->id)
@@ -155,13 +155,16 @@ class MembersLibrary {
                 }
                 
                 if(!isset($pair) && count($pairedIds) == 0) {
-                    $pair = MembersPairing::create([
-                        'member_id' => $member->id,
-                        'lft_mid' => $childL->member_id,
-                        'rgt_mid' => $childR->member_id,
-                        'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
-                        'type' => null
-                    ]);
+                    if(($childL->created_at->format('Y-m-d') == $today) && 
+                            ($childR->created_at->format('Y-m-d') == $today)) {
+                        $pair = MembersPairing::create([
+                            'member_id' => $member->id,
+                            'lft_mid' => $childL->member_id,
+                            'rgt_mid' => $childR->member_id,
+                            'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
+                            'type' => null
+                        ]);
+                    }
                 }
             }
         }
