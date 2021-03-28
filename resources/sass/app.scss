@@ -280,16 +280,34 @@
 
 .gtree {
     
-    td {
-        font-family: "Century Gothic";
-        font-size: 13px;
+    .gtree-rw0,
+    .gtree-rw1,
+    .gtree-rw2,
+    .gtree-rw3 {
         
-        &.td-border-l {
-            border-right: 2px solid #666666;
+        .gtree-a {
+            display: inline-block;
+            text-align: center;
+        }
+    
+        td {
+            font-family: "Century Gothic";
+            font-size: 13px;
+
+            &.td-border-l {
+                border-right: 2px solid #666666;
+            }
+        }
+
+        .gtree-img {
+            width: 64px;
         }
     }
     
-    .gtree-img {
-        width: 64px;
+    .gtree-rw3 {
+        .gtree-a {
+            width: 100px;
+            word-wrap: break-word;
+        }
     }
 }

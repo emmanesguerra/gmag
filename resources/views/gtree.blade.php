@@ -21,7 +21,7 @@
         @endif
         <table class="table table-borderless table-hover gtree">
             <tbody>
-                <tr style="text-align: center">
+                <tr class='gtree-rw0' style="text-align: center">
                     <td class="p-0" colspan="16">
                         <div class="row">
                             <span class="p-3 col-6 offset-3 center" style='border-bottom: 2px solid #666666;' data-target-id="0" id="row0">
@@ -30,7 +30,7 @@
                         </div>
                     </td> <!-- lvl 0 -->
                 </tr>
-                <tr style="text-align: center">
+                <tr class='gtree-rw1' style="text-align: center">
                     <td class="p-3 td-border-l" colspan="8">
                         @include('gtree-members', ['data' => $member[1]])
                     </td>  <!-- lvl 1 -->
@@ -38,7 +38,7 @@
                         @include('gtree-members', ['data' => $member[2]])
                     </td>
                 </tr>
-                <tr style="text-align: center">
+                <tr class='gtree-rw2' style="text-align: center">
                     <td class="p-3" colspan="4">
                         @include('gtree-members', ['data' => $member[3]])
                     </td>  <!-- lvl 2 -->
@@ -52,7 +52,7 @@
                         @include('gtree-members', ['data' => $member[6]])
                     </td>
                 </tr>
-                <tr style="text-align: center">
+                <tr class='gtree-rw3' style="text-align: center">
                     <td class="p-3" colspan="2">
                         @include('gtree-members', ['data' => $member[7]])
                     </td>  <!-- lvl 3 -->
