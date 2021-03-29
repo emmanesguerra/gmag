@@ -91,7 +91,7 @@
                     <button type="submit" class="btn btn-success">
                         {{ __('Register Member') }}
                     </button>
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-dark">
+                    <a href="{{ route('gtree.index') }}" class="btn btn-dark">
                         {{ __('Go Back to Genealogy tree') }}
                     </a>
                 </div>
