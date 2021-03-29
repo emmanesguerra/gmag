@@ -97,7 +97,7 @@ class MembersLibrary {
     {
         if (!empty($memberId)) {
             $member = Member::find($memberId);
-            $today = Carbon::today();
+            $today = date('Y-m-d');
 
             self::saveTodaysPair($member, $today);
         }
@@ -157,13 +157,16 @@ class MembersLibrary {
                 if(!isset($pair) && count($pairedIds) == 0) {
                     if(($childL->created_at->format('Y-m-d') == $today) && 
                             ($childR->created_at->format('Y-m-d') == $today)) {
-                        $pair = MembersPairing::create([
-                            'member_id' => $member->id,
-                            'lft_mid' => $childL->member_id,
-                            'rgt_mid' => $childR->member_id,
-                            'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
-                            'type' => null
-                        ]);
+                        $exists = MembersPairing::where(['member_id' => $member->id, 'lft_mid' => $childL->member_id, 'rgt_mid' => $childR->member_id, 'type' => null])->first();
+                        if(!$exists) {
+                            $pair = MembersPairing::create([
+                                'member_id' => $member->id,
+                                'lft_mid' => $childL->member_id,
+                                'rgt_mid' => $childR->member_id,
+                                'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
+                                'type' => null
+                            ]);
+                        }
                     }
                 }
             }
