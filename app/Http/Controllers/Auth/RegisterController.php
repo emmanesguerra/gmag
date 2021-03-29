@@ -90,7 +90,7 @@ class RegisterController extends Controller
                 if(!$registrationCode->is_used) {
                     DB::beginTransaction();
                     
-                    $member = MembersLibrary::insertMember($registrationCode, $request, $request->password, $sponsor);
+                    $member = MembersLibrary::insertMember($registrationCode, $request, $request->password, $sponsor, false);
                     
                     $placement = MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     

@@ -25,7 +25,7 @@ use Carbon\Carbon;
 class MembersLibrary {
     //put your code here
     
-    public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor)
+    public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor, $shouldChangePassword = true)
     {
         return Member::create([
             'username' => $request->username,
@@ -38,6 +38,7 @@ class MembersLibrary {
             'email' => $request->email,
             'mobile' => $request->mobile,
             'registration_code_id' => $registrationCode->id,
+            'must_change_password' => ($shouldChangePassword) ? 1 : 0 
         ]);
     }
     

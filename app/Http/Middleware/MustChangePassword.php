@@ -16,12 +16,14 @@ class MustChangePassword
      */
     public function handle($request, Closure $next)
     {   
-        if(Auth::guard('admin')) {
+        if(Auth::guard('admin')->check()) {
             return $next($request);
         }
         
-        if(Auth::guard('web')->user()->must_change_password) {
-            return redirect()->route('changepswd');
+        if(Auth::guard('web')->check()) {
+            if(Auth::guard('web')->user()->must_change_password) {
+                return redirect()->route('changepswd');
+            }
         }
 
         return $next($request);
