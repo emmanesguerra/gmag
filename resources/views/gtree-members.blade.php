@@ -15,7 +15,7 @@
     @endif
 @else
     @if ($data['username'] == 'Sign Up')
-    <a href='{{ route('register.member.create', ['target_id' => $data['target_id'], 'position' => $data['position']]) }}' class='gtree-a'>
+    <a href='{{ route('register.member.create', ['target_id' => $data['target_id'], 'position' => $data['position']]) }}' target="_blank" class='gtree-a'>
     @endif
 @endif
     @switch($data['product_id'])
