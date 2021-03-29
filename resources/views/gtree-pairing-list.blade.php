@@ -54,7 +54,7 @@
             </tr>
             @foreach($pairs as $ctr => $pair)
             <tr>
-                <td>{{ $ctr + 1 }}</td>
+                <td>{{ $pair->id }}</td>
                 <td>{{ $pair->member->username }}</td>
                 <td><a href='{{ route('gtree.pairing', ['top' => $pair->lft_mid]) }}'>{{ $pair->lmember->username }}</a></td>
                 <td><a href='{{ route('gtree.pairing', ['top' => $pair->rgt_mid]) }}'>{{ $pair->rmember->username }}</a></td>
