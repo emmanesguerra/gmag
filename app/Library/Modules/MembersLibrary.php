@@ -117,11 +117,11 @@ class MembersLibrary {
                                     ->whereDate('created_at', $today)
                                     ->get();
             
-            $childrenL = MembersPlacement::select('member_id', 'product_id')->whereBetween('lft', [$childL->lft, $childL->rgt])
+            $childrenL = MembersPlacement::select('member_id', 'product_id', 'position')->whereBetween('lft', [$childL->lft, $childL->rgt])
                                         ->whereDate('created_at', $today)
                                         ->whereNotIn('member_id', $pairedIds->pluck('lft_mid'))
                                         ->get();
-            $childrenR = MembersPlacement::select('member_id', 'product_id')->whereBetween('lft', [$childR->lft, $childR->rgt])
+            $childrenR = MembersPlacement::select('member_id', 'product_id', 'position')->whereBetween('lft', [$childR->lft, $childR->rgt])
                                         ->whereDate('created_at', $today)
                                         ->whereNotIn('member_id', $pairedIds->pluck('rgt_mid'))
                                         ->get();
@@ -130,7 +130,8 @@ class MembersLibrary {
                 
                 foreach($childrenL as $chL) {
                     foreach($childrenR as $chR) {
-                        if($chR->product_id == $chL->product_id) {
+                        if(($chR->product_id == $chL->product_id) && 
+                                ($chR->position != $chL->position)) {
                             $pair = MembersPairing::create([
                                 'member_id' => $member->id,
                                 'lft_mid' => $chL->member_id,
