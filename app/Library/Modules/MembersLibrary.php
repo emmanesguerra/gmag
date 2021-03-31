@@ -140,7 +140,10 @@ class MembersLibrary {
                             ]);
                             if($pair) {
                                 
-                                MembersPairing::where(['member_id' => $member->id, 'type' => null])->delete();
+                                $tmpPair = MembersPairing::select('id', 'created_at')->where(['member_id' => $member->id, 'type' => null])->first();
+                                if($tmpPair && $tmpPair->created_at->format('Y-m-d') == $today) {
+                                    $tmpPair->delete();
+                                }
                                 
                                 if($member->pair_date != date('Y-m-d') ) {
                                     $member->pair_ctr = 1;

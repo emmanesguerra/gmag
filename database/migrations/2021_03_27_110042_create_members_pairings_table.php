@@ -21,6 +21,7 @@ class CreateMembersPairingsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->string('type', 2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
             
             $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('lft_mid')->references('id')->on('members');

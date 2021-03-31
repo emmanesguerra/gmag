@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MembersPairing extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'member_id', 'lft_mid', 'rgt_mid', 'product_id', 'type'
     ];
