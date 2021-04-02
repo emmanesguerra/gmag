@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterMemberRequest;
 use App\Library\Modules\MembersLibrary;
+use App\Library\Modules\TransactionLibrary;
 use App\Models\Member;
 use App\Models\RegistrationCode;
 
@@ -67,6 +68,12 @@ class RegisterMemberController extends Controller
                     MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
                     
                     MembersLibrary::searchForTodaysPair($member->placement->placement_id);
+                    
+                    TransactionLibrary::saveProductPurchase($member);
+                    
+                    TransactionLibrary::saveDirectReferralBonus($member);
+                    
+                    TransactionLibrary::saveEncodingBonus($member);
 
                     DB::commit();
                     
