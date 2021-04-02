@@ -46,7 +46,8 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Points(UPV)</th>
+                    <th>Product Value</th>
+                    <th>Flush Bonus Pts</th>
                     <th>Type</th>
                     <th>Action</th>
                 </tr>
@@ -62,11 +63,12 @@
                     @else
                     <td>0</td>
                     @endif
-                    @if($product->upv > 0)
-                    <td>{{ number_format($product->upv, 2) }}</td>
+                    @if($product->product_value > 0)
+                    <td>{{ number_format($product->product_value, 2) }}</td>
                     @else
                     <td>0</td>
                     @endif
+                    <td>{{$product->flush_bonus}}</td>
                     @if($product->type == 'ACT')
                     <td>ACTIVATION</td>
                     @else

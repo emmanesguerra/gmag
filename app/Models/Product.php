@@ -10,7 +10,7 @@ class Product extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'type', 'code', 'name', 'price', 'pv', 'upv', 'registration_code_prefix'
+        'type', 'code', 'name', 'price', 'product_value', 'flush_bonus', 'display_icon', 'registration_code_prefix'
     ];
     
     /*

@@ -40,19 +40,25 @@
     <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">Points Value</label>
         <div class="col-sm-3">
-            <span class="form-control form-control-sm">{{ number_format($product->pv, 2) }}</span>
+            <span class="form-control form-control-sm">{{ number_format($product->product_value, 2) }}</span>
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">UPoints Value</label>
+        <label  class="col-sm-3 col-form-label">Flush Bonus</label>
         <div class="col-sm-3">
-            <span class="form-control form-control-sm">{{ number_format($product->upv, 2) }}</span>
+            <span class="form-control form-control-sm">{{ $product->flush_bonus }}</span>
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Display Icon</label>
+        <div class="col-sm-3">
+            <img class="m-1 mb-3" src="{{ asset('images/' . $product->display_icon) }}" />
         </div>
     </div>
     <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">Registration Code Prefix</label>
         <div class="col-sm-1">
-            <span class="form-control form-control-sm">{{ number_format($product->registration_code_prefix, 2) }}</span>
+            <span class="form-control form-control-sm">{{ $product->registration_code_prefix }}</span>
         </div>
     </div>
 

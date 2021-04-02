@@ -44,15 +44,21 @@
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">Points Value</label>
+        <label  class="col-sm-3 col-form-label">Product Value</label>
         <div class="col-sm-3">
-            <input type="number" class="form-control form-control-sm"  name="pv" value="{{ old('pv') }}">
+            <input type="number" class="form-control form-control-sm"  name="product_value" value="{{ old('product_value') }}">
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">UPoints Value</label>
+        <label  class="col-sm-3 col-form-label">Flush Bonus</label>
         <div class="col-sm-3">
-            <input type="number" class="form-control form-control-sm"  name="upv" value="{{ old('upv') }}">
+            <input type="number" class="form-control form-control-sm"  name="flush_bonus" value="{{ old('flush_bonus') }}">
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Display Icon</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm"  name="display_icon" value="{{ old('display_icon') }}">
         </div>
     </div>
     <div class="form-group row field">

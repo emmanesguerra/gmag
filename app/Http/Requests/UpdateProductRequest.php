@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\VerifyPassword;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -35,8 +36,8 @@ class UpdateProductRequest extends FormRequest
             'code' => 'required|unique:products,code,'.$productid,
             'name' => 'required|unique:products,name,'.$productid,
             'price' => 'required|numeric',
-            'pv' => 'required|numeric',
-            'upv' => 'required|numeric',
+            'product_value' => 'required|numeric',
+            'flush_bonus' => 'required|numeric',
             'registration_code_prefix' => 'required|max:2|unique:products,registration_code_prefix,'.$productid
         ];
     }

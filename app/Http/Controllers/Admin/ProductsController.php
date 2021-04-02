@@ -21,7 +21,7 @@ class ProductsController extends Controller
         $search = $request->search;
         $show = (isset($request->show)) ? $request->show: 10;
         
-        $products = Product::select(['id', 'name', 'code', 'slug', 'upv', 'price', 'type'])
+        $products = Product::select(['id', 'name', 'code', 'slug', 'product_value', 'price', 'type', 'flush_bonus', 'display_icon'])
                 ->search($search)->orderBy('id', 'desc')
                 ->paginate($show);
         
@@ -55,8 +55,9 @@ class ProductsController extends Controller
                 'name', 
                 'code', 
                 'price', 
-                'pv', 
-                'upv',
+                'product_value', 
+                'flush_bonus',
+                'display_icon',
                 'registration_code_prefix']));
             
             DB::commit();
@@ -116,8 +117,9 @@ class ProductsController extends Controller
                 'name', 
                 'code', 
                 'price', 
-                'pv', 
-                'upv',
+                'product_value', 
+                'flush_bonus',
+                'display_icon',
                 'registration_code_prefix']));
             
             DB::commit();

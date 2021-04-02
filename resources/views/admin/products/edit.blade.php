@@ -23,8 +23,8 @@
         <label class="col-sm-3 col-form-label">PRODUCT TYPE</label>
         <div class="col-sm-9">
             <select name="type" class="form-control form-control-sm col-2 ">
-                <option value='ACT' {{ 'ACT' == old('type') ? 'selected' : '' }}>ACTIVATION</option>
-                <option value='PROD' {{ 'PROD' == old('type') ? 'selected' : '' }}>PRODUCT</option>
+                <option value='ACT' {{ 'ACT' == old('type', $product->type) ? 'selected' : '' }}>ACTIVATION</option>
+                <option value='PROD' {{ 'PROD' == old('type', $product->type) ? 'selected' : '' }}>PRODUCT</option>
             </select>
         </div>
     </div>
@@ -47,15 +47,21 @@
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">Points Value</label>
+        <label  class="col-sm-3 col-form-label">Product value</label>
         <div class="col-sm-3">
-            <input type="number" class="form-control form-control-sm"  name="pv" value="{{ old('pv', $product->pv) }}">
+            <input type="number" class="form-control form-control-sm"  name="product_value" value="{{ old('product_value', $product->product_value) }}">
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">UPoints Value</label>
+        <label  class="col-sm-3 col-form-label">Flush bonus</label>
         <div class="col-sm-3">
-            <input type="number" class="form-control form-control-sm"  name="upv" value="{{ old('upv', $product->upv) }}">
+            <input type="number" class="form-control form-control-sm"  name="flush_bonus" value="{{ old('flush_bonus', $product->flush_bonus) }}">
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Display Icon</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm"  name="display_icon" value="{{ old('display_icon', $product->display_icon) }}">
         </div>
     </div>
     <div class="form-group row field">
