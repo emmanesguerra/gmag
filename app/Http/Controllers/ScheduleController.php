@@ -37,6 +37,10 @@ class ScheduleController extends Controller
             
             $pairs = $member->pairings()
                             ->whereDate('created_at', Carbon::now())
+                            ->where(function ($query) {
+                                $query->where('type', 'TP')
+                                      ->orWhereNull('type');
+                            })
                             ->orderBy('product_value', 'desc')
                             ->get();
 
