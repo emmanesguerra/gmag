@@ -50,4 +50,9 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasMany(MembersPairing::class, 'member_id', 'id');
     }
+    
+    public function entry_code()
+    {
+        return $this->hasOne(RegistrationCode::class, 'id', 'registration_code_id');
+    }
 }
