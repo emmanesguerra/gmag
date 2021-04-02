@@ -25,6 +25,8 @@ class ScheduleController extends Controller
         $pairIds->map(function($member) {
             $this->SetMemberPairsType($member->member);
         });
+        
+        return redirect()->back();
     }
     
     private function SetMemberPairsType(Member $member)
