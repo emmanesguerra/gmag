@@ -45,6 +45,14 @@ class RegistrationCode extends Model implements Auditable
     /**
      * Get the creator associated with the member codes.
      */
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'id', 'assigned_to_member_id');
+    }
+    
+    /**
+     * Get the creator associated with the member codes.
+     */
     public function creator()
     {
         return $this->hasOne(Admin::class, 'id', 'created_by');
