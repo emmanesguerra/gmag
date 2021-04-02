@@ -107,8 +107,8 @@ class MembersLibrary {
     
     private static function saveTodaysPair(Member $member, $today)
     {
-        $childL = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['lft' => ($member->placement->lft + 1), 'position' => 'L'])->first();
-        $childR = MembersPlacement::select('member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['rgt' => ($member->placement->rgt - 1), 'position' => 'R'])->first();
+        $childL = MembersPlacement::select('id', 'member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['lft' => ($member->placement->lft + 1), 'position' => 'L'])->first();
+        $childR = MembersPlacement::select('id', 'member_id', 'lft', 'rgt', 'product_id', 'created_at')->where(['rgt' => ($member->placement->rgt - 1), 'position' => 'R'])->first();
         
         if(!empty($childL) && !empty($childR))
         {
@@ -117,11 +117,14 @@ class MembersLibrary {
                                     ->whereDate('created_at', $today)
                                     ->get();
             
-            $childrenL = MembersPlacement::select('member_id', 'product_id', 'position')->whereBetween('lft', [$childL->lft, $childL->rgt])
+            $childrenL = MembersPlacement::select('id', 'member_id', 'product_id', 'position')->whereBetween('lft', [$childL->lft, $childL->rgt])
                                         ->whereDate('created_at', $today)
                                         ->whereNotIn('member_id', $pairedIds->pluck('lft_mid'))
                                         ->get();
-            $childrenR = MembersPlacement::select('member_id', 'product_id', 'position')->whereBetween('lft', [$childR->lft, $childR->rgt])
+            $childrenR = MembersPlacement::select('id', 'member_id', 'product_id', 'position')->whereBetween('lft', [$childR->lft, $childR->rgt])
+                                        ->with([ 'product' => function($query) {
+                                                $query->select('id', 'product_value');
+                                            }])
                                         ->whereDate('created_at', $today)
                                         ->whereNotIn('member_id', $pairedIds->pluck('rgt_mid'))
                                         ->get();
@@ -137,6 +140,7 @@ class MembersLibrary {
                                 'lft_mid' => $chL->member_id,
                                 'rgt_mid' => $chR->member_id,
                                 'product_id' => $chR->product_id,
+                                'product_value' => $chR->product->product_value,
                                 'type' => 'TP'
                             ]);
                             if($pair) {
@@ -169,6 +173,7 @@ class MembersLibrary {
                                 'lft_mid' => $childL->member_id,
                                 'rgt_mid' => $childR->member_id,
                                 'product_id' => ($childL->product_id > $childR->product_id) ? $childR->product_id: $childL->product_id,
+                                'product_value' => ($childL->product_id > $childR->product_id) ? $childR->product->product_value: $childL->product->product_value,
                                 'type' => null
                             ]);
                         }

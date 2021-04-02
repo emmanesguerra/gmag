@@ -10,7 +10,7 @@ class MembersPairing extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'member_id', 'lft_mid', 'rgt_mid', 'product_id', 'type'
+        'member_id', 'lft_mid', 'rgt_mid', 'product_id', 'product_value', 'type'
     ];
     
     public function member()

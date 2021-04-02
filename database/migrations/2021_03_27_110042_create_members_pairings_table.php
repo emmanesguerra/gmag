@@ -19,6 +19,7 @@ class CreateMembersPairingsTable extends Migration
             $table->unsignedBigInteger('lft_mid');
             $table->unsignedBigInteger('rgt_mid');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedMediumInteger('product_value');
             $table->string('type', 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
