@@ -14,8 +14,9 @@
     <div class='col-12 contentheader100'>
         Pairing List of {{ $member->username }}
         @if(app('request')->input('top'))
-        <span style='float: right;'><a href='javascript:history.back()' style=' font-style: normal; font-size: 14px; color: #fff;'>Back</a></span>
+        <span style='float: right; margin-right: 10px;'><a href='javascript:history.back()' class="btn btn-sm btn-dark">Back</a></span>
         @endif
+        <span style='float: right; margin-right: 10px;'><a href='{{ route('set.yesterdays.pair.type') }}' class="btn btn-sm btn-success">Compute Today's Pair Status</a></span>
     </div>
     <div class='col-12 content-container' style='position: relative'>
         
@@ -60,7 +61,7 @@
                 <td><a href='{{ route('gtree.pairing', ['top' => $pair->rgt_mid]) }}'>{{ $pair->rmember->username }}</a></td>
                 <td>{{ $pair->product->name }}</td>
                 @switch($pair->type)
-                    @case('BP')
+                    @case('MP')
                         <td>Bonus Pair</td>
                         @break
                     @case('FP')
