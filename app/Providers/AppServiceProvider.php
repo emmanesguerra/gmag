@@ -17,6 +17,12 @@ use App\Observers\RegistrationCodeObserver;
 use App\Models\Member;
 use App\Observers\MemberObserver;
 
+use App\Models\Transaction;
+use App\Observers\TransactionObserver;
+
+use App\Models\TransactionBonus;
+use App\Observers\TransactionBonusObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -42,5 +48,7 @@ class AppServiceProvider extends ServiceProvider
         Product::observe(ProductObserver::class);
         RegistrationCode::observe(RegistrationCodeObserver::class);
         Member::observe(MemberObserver::class);
+        Transaction::observe(TransactionObserver::class);
+        TransactionBonus::observe(TransactionBonusObserver::class);
     }
 }
