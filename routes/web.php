@@ -32,8 +32,9 @@ Route::get('/test-search', function() {
     MembersLibrary::searchForTodaysPair(1);
 });
 
+Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->name('set.yesterdays.pair.type');
+
 Route::middleware('auth:web,admin')->group(function () {
-    
     Route::middleware('mustchanged')->group(function () {
         Route::view('/home', 'home');
 
