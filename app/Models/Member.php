@@ -48,7 +48,6 @@ class Member extends Authenticatable implements Auditable
     
     public function pairings()
     {
-        return $this->hasMany(MembersPairing::class, 'member_id', 'id')
-                ->orderBy('created_at', 'desc');
+        return $this->hasMany(MembersPairing::class, 'member_id', 'id');
     }
 }
