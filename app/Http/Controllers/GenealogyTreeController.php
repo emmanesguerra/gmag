@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use App\Models\Member;
 use App\Models\MembersPlacement;
 
@@ -26,14 +27,18 @@ class GenealogyTreeController extends Controller
             ->with(['member' => function($query) {
                 $query->select('id', 'username');
             }])
+            ->with(['product' => function($query) {
+                $query->select('id', 'display_icon');
+            }])
             ->whereBetween('lft', [$memberLft, $memberRgt])
             ->where('lvl', '<', ($memberLvl + 4))
             ->orderBy('lvl', 'asc')
             ->get();
             
         $sortedMembers = $this->sortMemberViaChildParent($members->toArray(), $topId);
+        $products = Product::select('code', 'price', 'display_icon')->where('type', 'ACT')->get();
         
-        return view('gtree', ['member' => $sortedMembers]);
+        return view('gtree', ['member' => $sortedMembers, 'products' => $products]);
     }
     
     private function sortMemberViaChildParent($members, $topId)
@@ -76,7 +81,8 @@ class GenealogyTreeController extends Controller
                 $data[$key] = [
                     'id' => $members[$key]['member_id'],
                     'username' => $members[$key]['member']['username'],
-                    'product_id' => $members[$key]['product_id']
+                    'product_id' => $members[$key]['product_id'],
+                    'display_icon' => $members[$key]['product']['display_icon']
                 ];
             } else {
                 $memberKey = $this->searcharray($data[$targetPosition['target']]['id'], $targetPosition['position'], $members);
@@ -84,7 +90,8 @@ class GenealogyTreeController extends Controller
                     $data[$key] = [
                         'id' => $members[$memberKey]['member_id'],
                         'username' => $members[$memberKey]['member']['username'],
-                        'product_id' => $members[$memberKey]['product_id']
+                        'product_id' => $members[$memberKey]['product_id'],
+                        'display_icon' => $members[$memberKey]['product']['display_icon']
                     ];
                 } else {
                     $data[$key] = [
@@ -92,7 +99,8 @@ class GenealogyTreeController extends Controller
                         'username' => 'Available',
                         'product_id' => 0,
                         'available' => false,
-                        'position' => $targetPosition['position']
+                        'position' => $targetPosition['position'],
+                        'display_icon' => 'open_s.png'
                     ];
                     if ($data[$targetPosition['target']]['id'] > 0) {
                         $data[$key]['username'] = 'Sign Up';

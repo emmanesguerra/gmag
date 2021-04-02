@@ -14,4 +14,9 @@ class MembersPlacement extends Model
     {
         return $this->hasOne(Member::class, 'id', 'member_id');
     }
+    
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

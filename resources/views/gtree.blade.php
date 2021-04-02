@@ -89,14 +89,16 @@
                         <li>Click the icon at the top to Move Up the Genealogy</li>
                     </ol>
                 </div>
-                <div class='col-5 offset-2 alert alert-light'>
+                <div class='col-6 offset-1 alert alert-light'>
                     <p>Legends:</p>
                     <ul class='list-group list-group-horizontal text-center'>
                         <li class="list-group-item border-0"><img src='{{ asset('images/open_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> Available</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/starter_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> STARTER <br />1,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/bronze_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> BRONZE <br />5,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/silver_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> SILVER <br />19,998</li>
-                        <li class="list-group-item border-0"><img src='{{ asset('images/gold_s.png') }}' style='margin-bottom: 4px;' width="42" /> <br /> GOLD <br />49,998</li>
+                        @foreach($products as $product)
+                        <li class="list-group-item border-0"><img src='{{ asset('images/' . $product->display_icon) }}' style='margin-bottom: 4px;' width="42" /> 
+                            <br /> {{ $product->code }} 
+                            <br /> {{ number_format($product->price,2) }}
+                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
