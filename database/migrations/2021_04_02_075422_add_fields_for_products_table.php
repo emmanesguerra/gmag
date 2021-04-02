@@ -17,8 +17,8 @@ class AddFieldsForProductsTable extends Migration
             $table->dropColumn('upv');
             $table->dropColumn('pv');
             $table->string('display_icon', 15)->after('price')->nullable();
-            $table->unsignedSmallInteger('flush_bonus')->after('price');
-            $table->unsignedInteger('product_value')->after('price');
+            $table->unsignedTinyInteger('flush_bonus')->after('price');
+            $table->unsignedMediumInteger('product_value')->after('price');
         });
     }
 

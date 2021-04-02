@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class="form-group row field">
-        <label  class="col-sm-3 col-form-label">Product Value</label>
+        <label max="16777215"  class="col-sm-3 col-form-label">Product Value</label>
         <div class="col-sm-3">
             <input type="number" class="form-control form-control-sm"  name="product_value" value="{{ old('product_value') }}">
         </div>
@@ -52,7 +52,7 @@
     <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">Flush Bonus</label>
         <div class="col-sm-3">
-            <input type="number" class="form-control form-control-sm"  name="flush_bonus" value="{{ old('flush_bonus') }}">
+            <input max="255" type="number" class="form-control form-control-sm"  name="flush_bonus" value="{{ old('flush_bonus') }}">
         </div>
     </div>
     <div class="form-group row field">
