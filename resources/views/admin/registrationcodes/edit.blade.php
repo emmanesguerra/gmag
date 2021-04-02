@@ -32,6 +32,12 @@
         </div>
     </div>
     <div class="form-group row field">
+        <label  class="col-sm-3 col-form-label">Assigned To:</label>
+        <div class="col-sm-3">
+            <span class="form-control form-control-sm">{{ $entrycode->member->username }}</span>
+        </div>
+    </div>
+    <div class="form-group row field">
         <label  class="col-sm-3 col-form-label">Pincode 1:</label>
         <div class="col-sm-3">
             <span class="form-control form-control-sm">{{ $entrycode->pincode1 }}</span>

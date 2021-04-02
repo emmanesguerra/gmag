@@ -28,6 +28,7 @@ class GenerateEntryCodeRequest extends FormRequest
     public function rules()
     {
         return [
+            'username' => 'sometimes|nullable|exists:members,username',
             'product_id' => 'required',
             'code_count' => 'required|numeric|max:5000',
             'administrator_password' => 'required|verifypassword'

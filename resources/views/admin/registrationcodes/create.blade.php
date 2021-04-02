@@ -38,7 +38,7 @@
         </div>
         <label  class="col-sm-3 col-form-label">Member's Username: <small>(Optional)</small></label>
         <div class="col-sm-3">
-            <input type="text" class="form-control form-control-sm text-uppercase" />
+            <input type="text" class="form-control form-control-sm text-uppercase"  name="username" value="{{ old('username') }}" />
         </div>
     </div>
     <div class="form-group row field">

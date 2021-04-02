@@ -59,10 +59,19 @@ class RegistrationCodesController extends Controller
         {            
             DB::beginTransaction();
             
+            $assignedMember = null;
+            if($request->username) {
+                $member = \App\Models\Member::where('username', $request->username)->first();
+                if($member) {
+                    $assignedMember = $member->id;
+                }
+            }
+            
             $product = Product::find($request->product_id);
             $data = array();
             for ($i = 0; $i < $request->code_count; $i++) {
                 $data[] = [
+                    'assigned_to_member_id' => $assignedMember,
                     'product_id' => $request->product_id,
                     'remarks' => $request->remarks,
                     'pincode1' => $product->registration_code_prefix . substr(strtoupper(bin2hex(random_bytes(10))), 0, 6),
