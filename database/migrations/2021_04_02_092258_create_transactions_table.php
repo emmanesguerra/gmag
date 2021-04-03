@@ -21,7 +21,11 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('product_id');
-            $table->float('price');
+            $table->string('firstname', 50);
+            $table->string('lastname', 50);
+            $table->string('email');
+            $table->string('product_code', 50);
+            $table->float('product_price');
             $table->date('transaction_date');
             $table->boolean('package_claimed')->default(0);
             $table->unsignedBigInteger('created_by');

@@ -10,7 +10,8 @@ class Transaction extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'member_id', 'product_id', 'price', 'transaction_date'
+        'member_id', 'product_id', 'firstname', 'lastname', 'email',
+        'product_code', 'product_price', 'transaction_date'
     ];
     
     /*
