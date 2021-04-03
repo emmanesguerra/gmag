@@ -23,11 +23,13 @@ class RegistrationCodesController extends Controller
         $status = (isset($request->status)) ? $request->status: 0;
         $show = (isset($request->show)) ? $request->show: 10;
         
-        $entrycodes = RegistrationCode::select(['id', 'pincode1', 'pincode2', 'product_id', 'is_used', 'remarks', 'created_at', 'created_by'])
+        $entrycodes = RegistrationCode::select(['id', 'assigned_to_member_id', 'pincode1', 'pincode2', 'product_id', 'is_used', 'remarks', 'created_at', 'created_by'])
                 ->with(['product' => function ($query) {
                     $query->select('name', 'price', 'id');
                 }, 'creator' => function ($query) {
                     $query->select('name', 'id');
+                }, 'member' => function ($query) {
+                    $query->select('username', 'id');
                 }])
                 ->search(['search' => $search, 'status' => $status])->orderBy('id', 'desc')
                 ->paginate($show);

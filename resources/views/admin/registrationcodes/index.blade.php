@@ -60,6 +60,7 @@
                 <tr>
                     <th>NO</th>
                     <th>Date Created</th>
+                    <th>Assigned To</th>
                     <th>Pincode 1</th>
                     <th>Pincode 2</th>
                     <th>Created By</th>
@@ -75,6 +76,7 @@
                 <tr>
                     <th>{{ $entrycode->id }}</th>
                     <td>{{ $entrycode->created_at }}</a></td>
+                    <td>{{ ($entrycode->member) ? $entrycode->member->username : "" }}</td>
                     <td>{{ $entrycode->pincode1 }}</td>
                     <td>{{ $entrycode->pincode2 }}</td>
                     <td>{{ $entrycode->creator->name }}</td>
