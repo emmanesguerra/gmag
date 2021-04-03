@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Library\Modules\MembersLibrary;
+use App\Library\Modules\TransactionLibrary;
 use App\Models\Member;
 use App\Models\RegistrationCode;
 use App\Http\Requests\MemberRegistrationRequest;
