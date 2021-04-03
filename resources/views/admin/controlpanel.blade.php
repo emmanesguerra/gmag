@@ -18,6 +18,26 @@
     
     <div class="form-group row">
         <div class="col-12 head">
+            Bonuses
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label for="staticEmail" class="col-sm-3 col-form-label">Direct Referral Bonus</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm"  name="direct_referral_bonus" value="{{ old('direct_referral_bonus', $data['model']['direct_referral_bonus']) }}">
+        </div>
+        <small class="col-sm-6 col-form-label small">{{ $data['model']['direct_referral_bonus'] * 100 }}% of 100</small>
+    </div>
+    <div class="form-group row field">
+        <label for="staticEmail" class="col-sm-3 col-form-label">Encoding Bonus</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm"  name="encoding_bonus" value="{{ old('encoding_bonus', $data['model']['encoding_bonus']) }}">
+        </div>
+        <small class="col-sm-6 col-form-label small">{{ $data['model']['encoding_bonus'] * 100 }}% of 100</small>
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-12 head">
             Encashment Settings
         </div>
     </div>
@@ -35,7 +55,7 @@
         <div class="col-sm-3">
             <input type="text" class="form-control form-control-sm"  name="admin_fee" value="{{ old('admin_fee', $data['model']['admin_fee']) }}">
         </div>
-        <label for="inputPassword" class="col-sm-6 col-form-label">percentage 0.1 = 10%</label>
+        <small class="col-sm-6 col-form-label small">{{ $data['model']['admin_fee'] * 100 }}% of 100</small>
     </div>
     <div class="form-group row">
         <div class="col-12 head">

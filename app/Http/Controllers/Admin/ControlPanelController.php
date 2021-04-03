@@ -65,6 +65,8 @@ class ControlPanelController extends Controller
     private function requiredFields () 
     {
         return  [
+            'direct_referral_bonus', 
+            'encoding_bonus', 
             'encash_status', 
             'admin_fee', 
             'unilvl_personal', 
