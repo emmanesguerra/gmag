@@ -35,6 +35,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Username</th>
                     <th>Member Name</th>
                     <th colspan="2">Bonus From</th>
                     <th>Type</th>
@@ -46,9 +47,10 @@
                 <tr>
                     <th>{{ $tran->id }}</th>
                     <td>{{ $tran->member->username }}</td>
+                    <td>{{ $tran->member->firstname }} {{ $tran->member->lastname }}</td>
                     @if (in_array($tran->type, ['MP', 'FP']))
-                        <td>{{ $tran->membertype->lmember->username }}</td>
-                        <td >{{ $tran->membertype->rmember->username }}</td>
+                        <td>{{ $tran->membertype->lmember->firstname }} {{ $tran->membertype->lmember->lastname }}</td>
+                        <td >{{ $tran->membertype->rmember->firstname }} {{ $tran->membertype->rmember->lastname }}</td>
                     @else
                         <td  colspan="2">{{ $tran->membertype->username }}</td>
                     @endif

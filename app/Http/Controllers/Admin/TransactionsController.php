@@ -37,7 +37,7 @@ class TransactionsController extends Controller
         
         $trans = TransactionBonus::select(['id', 'member_id', 'class_id', 'type', 'acquired_amt'])
                 ->with(['member' => function($query) {
-                    $query->select('id', 'username');
+                    $query->select('id', 'username', 'firstname', 'lastname');
                 }])
                 ->orderBy('id', 'desc')
                 ->paginate($show);
