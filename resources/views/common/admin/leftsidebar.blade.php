@@ -18,8 +18,9 @@
                     <span>MEMBERS MENU</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i>View/Edit Account Details</a></li> 
+                    <li><a href="{{ route('admin.member.index') }}"><i class="fa fa-ellipsis-h"></i> Dashboard</a></li>
+                    <li><a href="{{ route('admin.transactions.index') }}"><i class="fa fa-ellipsis-h"></i> Transactions</a></li>
+                    <li><a href="{{ route('admin.transactions.bonus') }}"><i class="fa fa-ellipsis-h"></i> Transaction Bonuses</a></li>
                 </ul>
             </li>
             <li>

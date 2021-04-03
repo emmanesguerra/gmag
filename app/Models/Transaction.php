@@ -25,4 +25,12 @@ class Transaction extends Model implements Auditable
     {
         return ['displayToDashboard'];
     }
+    
+    public function scopeSearch($query, $search)
+    {
+        $query->where('firstname', 'LIKE', '%' . $search . '%')
+            ->orWhere('lastname', 'LIKE', '%' . $search . '%')
+            ->orWhere('email', 'LIKE', '%' . $search . '%')
+            ->orWhere('product_code', 'LIKE', '%' . $search . '%');
+    }
 }

@@ -36,6 +36,13 @@ class Member extends Authenticatable implements Auditable
         return ['displayToDashboard'];
     }
     
+    public function scopeSearch($query, $search)
+    {
+        $query->where('username', 'LIKE', '%' . $search . '%')
+            ->orWhere('firstname', 'LIKE', '%' . $search . '%')
+            ->orWhere('lastname', 'LIKE', '%' . $search . '%');
+    }
+    
     public function placement()
     {
         return $this->hasOne(MembersPlacement::class, 'member_id', 'id');
@@ -54,5 +61,10 @@ class Member extends Authenticatable implements Auditable
     public function entry_code()
     {
         return $this->hasOne(RegistrationCode::class, 'id', 'registration_code_id');
+    }
+    
+    public function sponsor()
+    {
+        return $this->hasOne(Member::class, 'id', 'sponsor_id');
     }
 }

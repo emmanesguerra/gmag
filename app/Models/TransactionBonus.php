@@ -22,4 +22,24 @@ class TransactionBonus extends Model implements Auditable
     {
         return ['displayToDashboard'];
     }
+    
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'id', 'member_id');
+    }
+    
+    public function membertype()
+    {
+        switch ($this->type)
+        {
+            case 'MP':
+            case 'FP':
+                return $this->hasOne(MembersPairing::class, 'id', 'class_id');
+                break;
+            case 'EB':
+            case 'DR':
+                return $this->hasOne(Member::class, 'id', 'class_id');
+                break;
+        }
+    }
 }

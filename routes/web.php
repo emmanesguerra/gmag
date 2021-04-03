@@ -68,5 +68,12 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/entry-codes/{id}/edit', 'Admin\RegistrationCodesController@edit')->name('admin.entrycodes.edit');
         Route::put('/entry-codes/{id}', 'Admin\RegistrationCodesController@update')->name('admin.entrycodes.update');
         Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
+        
+        Route::get('/members', 'Admin\MembersController@index')->name('admin.member.index');
+        Route::get('/members/{slug}', 'Admin\MembersController@show')->name('admin.member.show');
+        Route::get('/members/{slug}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
+        
+        Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
+        Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
     });
 });
