@@ -51,20 +51,37 @@ class ScheduleController extends Controller
                 $pair->type = $type;
                 $pair->save();
 
-                if($type == 'MP') {
-                    $acquiredAmt = $pair->product->price / 2;
+                if($pair->product->price > $member->placement->product->price) {
+                    $price = $member->placement->product->price;
+                    $fbonus = $member->placement->product->flush_bonus;
                 } else {
-                    $acquiredAmt = $pair->product->flush_bonus;
+                    $price = $pair->product->price;
+                    $fbonus = $pair->product->flush_bonus;
                 }
-
-                TransactionBonus::create([
+                
+                if($type == 'MP') {
+                    $acquiredAmt = $price / 2;
+                } else {
+                    $acquiredAmt = $fbonus;
+                }
+                
+                $trans = TransactionBonus::create([
                     'member_id' => $member->id,
                     'class_id' => $pair->id,
                     'class_type' => 'App\Models\MemberPairing',
                     'type' => $type,
                     'acquired_amt' => $acquiredAmt
                 ]);
-
+                
+                if($trans) {
+                    if($type == 'MP') {
+                        $member->matching_pairs += $acquiredAmt;
+                        $member->total_amt += $acquiredAmt;
+                    } else {
+                        $member->flush_pts += $acquiredAmt;
+                    }
+                    $member->save();
+                }
                 $ctr++;
             }
             
