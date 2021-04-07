@@ -226,14 +226,11 @@ class GenealogyTreeController extends Controller
     public function pairing(Request $request)
     {
         $topId = (isset($request->top)) ? $request->top: Auth::id();
-        $member = Member::find($topId);
-        
-        $childrenIds = $member->children()->pluck('member_id');
-        
+        $member = Member::find($topId);        
         
         $show = (isset($request->show)) ? $request->show: 10;
         
-        $pairs = \App\Models\MembersPairing::whereIn('member_id', $childrenIds)
+        $pairs = $member->pairings()
                 ->orderBy('id', 'desc')
                 ->paginate($show);
         
