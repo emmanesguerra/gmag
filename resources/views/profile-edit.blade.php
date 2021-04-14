@@ -23,7 +23,7 @@
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">My Referral Link:</label>
                 <div class="col-sm-4">
-                    <input type="text" id="copylink" class="form-control form-control-sm text-primary" value="{{ route('register', ['ref' => $member->referral_code]) }}" disabled />
+                    <input type="text" id="copylink" class="form-control form-control-sm text-primary" value="{{ route('register', ['ref' => $member->referral_code]) }}" />
                 </div>
                 <div class="col-sm-4 ml-0 pl-0">
                     <button type="button" class="btn btn-dark btn-sm" onclick="Copy()">Copy Link</button>
