@@ -49,6 +49,8 @@ Route::middleware('auth:web,admin')->group(function () {
         
         Route::get('/profile/{id}/edit', 'ProfileController@edit')->name('profile.edit');
         Route::put('/profile/{id}', 'ProfileController@update')->name('profile.update');
+        
+        Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
     });
     
     Route::middleware('auth:admin')->prefix('admin')->group(function () {

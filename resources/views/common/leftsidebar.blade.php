@@ -32,7 +32,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('transactions.bonus') }}">
                     <span><i class="fa fa-bar-chart"></i></span>
                     <span>Commissions</span>
                 </a>
