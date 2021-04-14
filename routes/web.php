@@ -44,6 +44,8 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/register-member', 'RegisterMemberController@create')->name('register.member.create');
         Route::post('/register-member', 'RegisterMemberController@store')->name('register.member.store');
         
+        Route::get('/gtree/genealogy-list', 'GenealogyTreeController@genealogy')->name('gtree.genealogy');
+        
         Route::get('/change-password', 'ChangePasswordController@indexIn')->name('changepassword.index');
         Route::post('/change-password', 'ChangePasswordController@storeIn')->name('changepassword.store');
         

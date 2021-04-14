@@ -18,7 +18,7 @@
         
         <div class="row my-3">
             <div class="col-sm-6">
-                <form class="form-inline"  method="GET" action="{{ route('admin.transactions.bonus') }}">
+                <form class="form-inline"  method="GET" action="{{ route('transactions.bonus') }}">
                     <div class="col-sm-3">
                         <div class="form-group row">
                             <label for="staticEmail" class="col-sm-4 col-form-label">Show</label>

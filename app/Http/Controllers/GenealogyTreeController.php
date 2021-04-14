@@ -236,4 +236,28 @@ class GenealogyTreeController extends Controller
         
         return view('gtree-pairing-list', ['pairs' => $pairs, 'member' => $member]);
     }
+    
+    public function genealogy(Request $request)
+    {
+        $show = (isset($request->show)) ? $request->show: 10;
+        
+        $palacement = MembersPlacement::where('member_id', Auth::id())->first();
+        
+        $members = MembersPlacement::select('member_id', 'product_id', 'lvl', 'created_at')
+                            ->whereBetween('lft', [$palacement->lft, $palacement->rgt])
+                            ->where('member_id', '!=', $palacement->member_id)
+                            ->with(['product' => function($query) {
+                                $query->select('id', 'code', 'price');
+                            }, 'member' => function($query) {
+                                $query->select('id', 'username', 'firstname', 'lastname', 'sponsor_id')
+                                      ->with(['sponsor' => function($query) {
+                                          $query->select('id', 'username');
+                                      }]);
+                            }])
+                            ->orderBy('lvl', 'asc')
+                            ->orderBy('lft', 'asc')
+                            ->paginate($show);
+        
+        return view('gtree-genealogy-list', ['members' => $members, 'lvl' => $palacement->lvl]);
+    }
 }
