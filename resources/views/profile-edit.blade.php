@@ -23,9 +23,10 @@
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">My Referral Link:</label>
                 <div class="col-sm-4">
-                    <span class="form-control form-control-sm border-0"> 
-                        <a href="{{ route('register', ['ref' => $member->referral_code]) }}">{{ route('register', ['ref' => $member->referral_code]) }}</a>
-                    </span>
+                    <input type="text" id="copylink" class="form-control form-control-sm text-primary" value="{{ route('register', ['ref' => $member->referral_code]) }}" disabled />
+                </div>
+                <div class="col-sm-4 ml-0 pl-0">
+                    <button type="button" class="btn btn-dark btn-sm" onclick="Copy()">Copy Link</button>
                 </div>
             </div>
             <div class="form-group row field">
@@ -108,5 +109,13 @@
                 dateFormat: 'yy-mm-dd'
             });
         });
+        
+        function Copy() {
+            var copyText = document.getElementById("copylink");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+            alert("Link copied to clipboard");
+        }
     </script>
 @endsection
