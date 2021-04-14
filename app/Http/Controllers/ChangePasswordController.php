@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\NewUserChangePasswordRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\Member;
 
 class ChangePasswordController extends Controller
@@ -25,5 +26,20 @@ class ChangePasswordController extends Controller
         $user->save();
         
         return redirect('home');
+    }
+    
+    public function indexIn()
+    {
+        return view('changepassword');
+    }
+    
+    public function storeIn(ChangePasswordRequest $request)
+    {
+        $user = Member::find(Auth::id());
+        $user->password = Hash::make($request->password);
+        $user->save();
+        
+        return redirect(route('changepassword.index'))
+                ->with('status-success', 'Password has been changed');
     }
 }
