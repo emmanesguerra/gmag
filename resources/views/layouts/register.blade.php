@@ -19,7 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body style='background: url(/images/bg_3.jpg) no-repeat center center fixed; background-size: cover'>
+<body style='background: url("{{ asset('images/bg_3.jpg') }}") no-repeat center center fixed; background-size: cover'>
     <div id="app">
         <main class="py-4">
             @yield('content')
