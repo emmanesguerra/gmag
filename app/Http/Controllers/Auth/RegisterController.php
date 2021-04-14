@@ -12,6 +12,7 @@ use App\Http\Requests\MemberRegistrationRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -68,6 +69,22 @@ class RegisterController extends Controller
             'pincode1' => ['required', 'string', 'exists:registration_codes,pincode1'],
             'pincode2' => ['required', 'string', 'exists:registration_codes,pincode2'],
         ]);
+    }
+    
+    public function showRegistrationForm(Request $request)
+    {
+        $member = [];
+        $hasSponsor = false;
+        if($request->has('ref')) {
+            $member = Member::where('referral_code', $request->ref)->first();
+            if($member) {
+                $hasSponsor = true;
+            } else {
+                echo "<script>alert('Referrence code is invalid')</script>";
+            }
+        }
+        
+        return view('auth.register', ['member' => $member, 'hasSponsor' => $hasSponsor]);
     }
 
     /**

@@ -23,7 +23,9 @@
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">My Referral Link:</label>
                 <div class="col-sm-4">
-                    <span class="form-control form-control-sm border-0">{{ $member->referral_code }}</span>
+                    <span class="form-control form-control-sm border-0"> 
+                        <a href="{{ route('register', ['ref' => $member->referral_code]) }}">{{ route('register', ['ref' => $member->referral_code]) }}</a>
+                    </span>
                 </div>
             </div>
             <div class="form-group row field">

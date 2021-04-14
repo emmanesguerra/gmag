@@ -27,7 +27,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >USERNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required >
+                            <input type="text" class="mt-0 @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required >
 
                             @error('username')
                             <span class="invalid-feedback" role="alert">
@@ -53,19 +53,35 @@
                         </div>
 
                         <div class="txtb">
-                            <label class='mb-0' >SPONSOR:</label>
-                            <input id="email" type="text" class="mt-0 @error('sponsor') is-invalid @enderror" name="sponsor" value="{{ old('sponsor') }}" required >
+                            @if($hasSponsor)
+                                <label class='mb-0' >SPONSOR:</label>
+                                <span class="mt-0" style="color: #000;
+                                        width: 100%;
+                                        border: none;
+                                        border-bottom-color: currentcolor;
+                                        border-bottom-style: none;
+                                        border-bottom-width: medium;
+                                        border-bottom: 0px solid #333;
+                                        background: none;
+                                        outline: none;
+                                        font-size: 18px;">{{ $member->username }}</span>
+                                <input type="hidden" class="mt-0" name="referral_code" value="{{ $member->referral_code }}">
+                                <input type="hidden" class="mt-0" name="sponsor" value="{{ $member->username }}">
+                            @else
+                                <label class='mb-0' >SPONSOR:</label>
+                                <input type="text" class="mt-0 @error('sponsor') is-invalid @enderror" name="sponsor" value="{{ old('sponsor') }}" required >
 
-                            @error('sponsor')
-                            <span class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </span>
-                            @enderror
+                                @error('sponsor')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            @endif
                         </div>
 
                         <div class="txtb">
                             <label class='mb-0' >PLACEMENT:</label>
-                            <input id="email" type="text" class="mt-0 @error('placement') is-invalid @enderror" name="placement" value="{{ old('placement') }}" required >
+                            <input type="text" class="mt-0 @error('placement') is-invalid @enderror" name="placement" value="{{ old('placement') }}" required >
 
                             @error('placement')
                             <span class="invalid-feedback" role="alert">
@@ -98,7 +114,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >FIRSTNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required >
+                            <input type="text" class="mt-0 @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required >
 
                             @error('firstname')
                             <span class="invalid-feedback" role="alert">
@@ -109,7 +125,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >MIDDLENAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" required >
+                            <input type="text" class="mt-0 @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" required >
 
                             @error('middlename')
                             <span class="invalid-feedback" role="alert">
@@ -120,7 +136,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >LASTNAME:</label>
-                            <input id="email" type="text" class="mt-0 @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
+                            <input type="text" class="mt-0 @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
 
                             @error('lastname')
                             <span class="invalid-feedback" role="alert">
@@ -131,7 +147,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >ADDRESS:</label>
-                            <input id="email" type="text" class="mt-0 @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required >
+                            <input type="text" class="mt-0 @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required >
 
                             @error('address')
                             <span class="invalid-feedback" role="alert">
@@ -142,7 +158,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >EMAIL:</label>
-                            <input id="email" type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required >
+                            <input type="text" class="mt-0 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required >
 
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -153,7 +169,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >MOBILE:</label>
-                            <input id="email" type="text" class="mt-0 @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required >
+                            <input type="text" class="mt-0 @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required >
 
                             @error('mobile')
                             <span class="invalid-feedback" role="alert">
@@ -172,7 +188,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' style="color:#062c78;">PINCODE 1:</label>
-                            <input id="email" type="text" class="mt-0 @error('pincode1') is-invalid @enderror" name="pincode1" value="{{ old('pincode1') }}" required >
+                            <input type="text" class="mt-0 @error('pincode1') is-invalid @enderror" name="pincode1" value="{{ old('pincode1') }}" required >
 
                             @error('pincode1')
                             <span class="invalid-feedback" role="alert">
@@ -183,7 +199,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' style="color:#062c78;" >PINCODE 2:</label>
-                            <input id="email" type="text" class="mt-0 @error('pincode2') is-invalid @enderror" name="pincode2" value="{{ old('pincode2') }}" required >
+                            <input type="text" class="mt-0 @error('pincode2') is-invalid @enderror" name="pincode2" value="{{ old('pincode2') }}" required >
 
                             @error('pincode2')
                             <span class="invalid-feedback" role="alert">
