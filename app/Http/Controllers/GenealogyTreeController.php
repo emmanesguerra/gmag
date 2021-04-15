@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Member;
 use App\Models\MembersPlacement;
+use App\Library\DataTables;
 
 class GenealogyTreeController extends Controller
 {
@@ -259,5 +261,76 @@ class GenealogyTreeController extends Controller
                             ->paginate($show);
         
         return view('gtree-genealogy-list', ['members' => $members, 'lvl' => $palacement->lvl]);
+    }
+    
+    public function binary(Request $request)
+    {
+        return view('gtree-binary-list');
+    }
+    
+    public function binaryleft(Request $request)
+    {
+        $tablecols = [
+            0 => 'members.created_at',
+            1 => 'members.username',
+            2 => 'products.code',
+            3 => 'products.price'
+        ];
+        
+        $member = MembersPlacement::where('member_id', Auth::id())->first();
+        $childL = MembersPlacement::select('lft', 'rgt')->where(['lft' => ($member->lft + 1), 'position' => 'L'])->first();
+        
+        DB::enableQueryLog();
+        
+        $filteredmodel = DB::table('members_placements')
+                                ->join('members', 'members.id', '=', 'members_placements.member_id')
+                                ->join('products', 'products.id', '=', 'members_placements.product_id')
+                                ->whereBetween('members_placements.lft', [$childL->lft, $childL->rgt])
+                                ->select(DB::raw("members.created_at, 
+                                                members.username, 
+                                                products.code,
+                                                products.price")
+                            );
+        
+        $modelcnt = $filteredmodel->count();
+        
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+        
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
+    public function binaryright(Request $request)
+    {
+        $tablecols = [
+            0 => 'members.created_at',
+            1 => 'members.username',
+            2 => 'products.code',
+            3 => 'products.price'
+        ];
+        
+        $member = MembersPlacement::where('member_id', Auth::id())->first();
+        $childR = MembersPlacement::select('lft', 'rgt')->where(['rgt' => ($member->rgt - 1), 'position' => 'R'])->first();
+        
+        $filteredmodel = DB::table('members_placements')
+                                ->join('members', 'members.id', '=', 'members_placements.member_id')
+                                ->join('products', 'products.id', '=', 'members_placements.product_id')
+                                ->whereBetween('members_placements.lft', [$childR->lft, $childR->rgt])
+                                ->select(DB::raw("members.created_at, 
+                                                members.username, 
+                                                products.code,
+                                                products.price")
+                            );
+        
+        $modelcnt = $filteredmodel->count();
+        
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+        
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
 }

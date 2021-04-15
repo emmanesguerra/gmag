@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - Pairing Lists</title>
+<title>GOLDEN MAG - Genealogy Lists</title>
 @endsection
 
 @section('pagetitle')

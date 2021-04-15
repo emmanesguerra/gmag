@@ -45,6 +45,9 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::post('/register-member', 'RegisterMemberController@store')->name('register.member.store');
         
         Route::get('/gtree/genealogy-list', 'GenealogyTreeController@genealogy')->name('gtree.genealogy');
+        Route::get('/gtree/binary-list', 'GenealogyTreeController@binary')->name('gtree.binary');
+        Route::get('/gtree/binary-list-left', 'GenealogyTreeController@binaryleft')->name('gtree.binary.left');
+        Route::get('/gtree/binary-list-right', 'GenealogyTreeController@binaryright')->name('gtree.binary.right');
         
         Route::get('/change-password', 'ChangePasswordController@indexIn')->name('changepassword.index');
         Route::post('/change-password', 'ChangePasswordController@storeIn')->name('changepassword.store');
