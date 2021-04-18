@@ -12,7 +12,9 @@ use App\Models\Member;
 use App\Models\MembersPlacement;
 use App\Models\RegistrationCode;
 use App\Models\MembersPairing;
+use App\Models\MembersPairCycle;
 use App\Library\HierarchicalDB;
+use App\Library\Modules\SettingLibrary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -100,7 +102,13 @@ class MembersLibrary {
             $member = Member::find($memberId);
             $today = date('Y-m-d');
 
-            self::saveTodaysPair($member, $today);
+            /*
+             * Only process the members with cycle ids
+             * Member without cycle ids means they reached the maximum pair per cycle
+             */
+            if($member->pair_cycle_id > 0) {
+                self::saveTodaysPair($member, $today);
+            }
         }
         return;
     }
@@ -207,5 +215,17 @@ class MembersLibrary {
         }
             
         return self::searchForTodaysPair($member->placement->placement_id);
+    }
+    
+    public static function registerMemberPairingCycle(Member $member)
+    {
+        $cycle = MembersPairCycle::create([
+            'member_id' => $member->id,
+            'start_date' => Carbon::now(),
+            'max_pair' => SettingLibrary::retrieve('max_pairing_ctr'),
+        ]);
+
+        $member->pair_cycle_id = $cycle->id;
+        $member->save();
     }
 }
