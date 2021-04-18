@@ -39,7 +39,7 @@ class TransactionLibrary {
     public static function saveDirectReferralBonus(Member $member)
     {
         $targetMember = Member::find($member->sponsor_id);
-        $price = ($member->placement->product->price > $targetMember->placement->product->price) ? $targetMember->placement->product->price: $member->placement->product->price;
+        $price = $member->placement->product->price;
         $acquiredAmt = self::ComputeMemberBonus($price, 'direct_referral_bonus');
         
         $trans = TransactionBonus::create([
@@ -62,7 +62,7 @@ class TransactionLibrary {
         if($member->entry_code->assigned_to_member_id > 0) 
         {
             $targetMember = Member::find($member->entry_code->assigned_to_member_id);
-            $price = ($member->placement->product->price > $targetMember->placement->product->price) ? $targetMember->placement->product->price: $member->placement->product->price;
+            $price = $member->placement->product->price;
             $acquiredAmt = self::ComputeMemberBonus($price, 'encoding_bonus');
             
             $trans = TransactionBonus::create([
