@@ -56,8 +56,8 @@
                         <tr>
                             <th>{{ $tran->id }}</th>
                             @if (in_array($tran->type, ['MP', 'FP']))
-                                <td>{{ $tran->membertype->lmember->firstname }} {{ $tran->membertype->lmember->lastname }}</td>
-                                <td >{{ $tran->membertype->rmember->firstname }} {{ $tran->membertype->rmember->lastname }}</td>
+                                <td>{{ $tran->membertype->lmember->username }}</td>
+                                <td >{{ $tran->membertype->rmember->username }}</td>
                             @else
                                 <td  colspan="2">{{ $tran->membertype->username }}</td>
                             @endif
