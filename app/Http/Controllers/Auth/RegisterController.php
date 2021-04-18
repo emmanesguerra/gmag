@@ -114,6 +114,8 @@ class RegisterController extends Controller
                     
                     $this->guard()->login($member);
                     
+                    MembersLibrary::registerMemberPairingCycle($member);
+                    
                     MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
                     
                     MembersLibrary::searchForTodaysPair($member->placement->placement_id);

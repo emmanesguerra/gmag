@@ -65,6 +65,8 @@ class RegisterMemberController extends Controller
                     
                     $placement = MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     
+                    MembersLibrary::registerMemberPairingCycle($member);
+                    
                     MembersLibrary::updateMemberRegistrationCode($member, $registrationCode);
                     
                     MembersLibrary::searchForTodaysPair($member->placement->placement_id);
