@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Member;
 use App\Models\MembersPairing;
 use App\Models\TransactionBonus;
@@ -11,7 +12,11 @@ use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
-    //
+    
+    /*
+     * THIS IS TEMPORARY, THIS FUNCTION will be move on a CRONJOB
+     */
+    
     public function checkTodaysPairs()
     {
         $pairIds = MembersPairing::distinct()->select('member_id')
@@ -87,8 +92,9 @@ class ScheduleController extends Controller
             
             DB::commit();
             return;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             DB::rollback();
+            Log::error(__CLASS__ . "::" . __METHOD__ . "  " . $ex->getMessage() . " MEMBERID:" . $member->id);
         }
     }
 }
