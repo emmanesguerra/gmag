@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
+    const MAX_PAIR_PER_DAY = 3;
     
     /*
      * THIS IS TEMPORARY, THIS FUNCTION will be move on a CRONJOB
@@ -52,7 +53,7 @@ class ScheduleController extends Controller
             $ctr = 0;
             foreach($pairs as $pair)
             {
-                $type = ($ctr < 3) ? 'MP': 'FP';
+                $type = ($ctr < self::MAX_PAIR_PER_DAY) ? 'MP': 'FP';
                 $pair->type = $type;
                 $pair->save();
 
@@ -65,7 +66,7 @@ class ScheduleController extends Controller
                 }
                 
                 if($type == 'MP') {
-                    $acquiredAmt = $price / 2;
+                    $acquiredAmt = $price / 2; // 50% of total price
                 } else {
                     $acquiredAmt = $fbonus;
                 }
