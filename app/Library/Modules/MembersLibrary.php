@@ -128,9 +128,11 @@ class MembersLibrary {
                                         ->whereDate('created_at', $today)
                                         ->whereNotIn('member_id', $pairedIds->pluck('rgt_mid'))
                                         ->get();
-
+                                            
             if(!empty($childrenL) && !empty($childrenR)) {
-                
+                /*
+                 * Check for match pairs
+                 */
                 foreach($childrenL as $chL) {
                     foreach($childrenR as $chR) {
                         if($chR->product_id == $chL->product_id) {
@@ -162,7 +164,13 @@ class MembersLibrary {
                     }
                 }
                 
+                /*
+                 * Check for temporary pairs
+                 */
                 if(!isset($pair) && count($pairedIds) == 0) {
+                    /*
+                     * Assuming both L and R are created today, and no pair is created. Make both L and R a temporary pair
+                     */
                     if(($childL->created_at->format('Y-m-d') == $today) && 
                             ($childR->created_at->format('Y-m-d') == $today)) {
                         $exists = MembersPairing::where(['member_id' => $member->id, 'lft_mid' => $childL->member_id, 'rgt_mid' => $childR->member_id, 'type' => null])->first();
@@ -175,6 +183,23 @@ class MembersLibrary {
                                 'product_value' => ($childL->product_id > $childR->product_id) ? $childR->product->product_value: $childL->product->product_value,
                                 'type' => null
                             ]);
+                        }
+                    } else {
+                        foreach($childrenL as $chL) {
+                            foreach($childrenR as $chR) {
+                                $exists = MembersPairing::where(['member_id' => $member->id, 'type' => null])->first();
+                                if(!$exists) {
+                                    $pair = MembersPairing::create([
+                                        'member_id' => $member->id,
+                                        'lft_mid' => $chL->member_id,
+                                        'rgt_mid' => $chR->member_id,
+                                        'product_id' => ($chL->product_id > $chR->product_id) ? $chR->product_id: $chL->product_id,
+                                        'product_value' => ($chL->product_id > $chR->product_id) ? $chR->product->product_value: $chL->product->product_value,
+                                        'type' => null
+                                    ]);
+                                }
+                                break 2;
+                            }
                         }
                     }
                 }
