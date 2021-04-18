@@ -67,4 +67,9 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasOne(Member::class, 'id', 'sponsor_id');
     }
+    
+    public function pair_cycle()
+    {
+        return $this->hasOne(MembersPairCycle::class, 'id', 'pair_cycle_id');
+    }
 }

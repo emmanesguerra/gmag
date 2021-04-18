@@ -29,7 +29,13 @@ class ScheduleController extends Controller
                             ->get();
         
         $pairIds->map(function($member) {
-            $this->SetMemberPairsType($member->member);
+            /*
+             * Only process the members with cycle ids
+             * Member without cycle ids means they reached the maximum pair per cycle
+             */
+            if($member->member->pair_cycle_id > 0) {
+                $this->SetMemberPairsType($member->member);
+            }
         });
         
         return redirect()->back();
@@ -41,6 +47,8 @@ class ScheduleController extends Controller
         {
             DB::beginTransaction();
             
+            $maxPair = $member->pair_cycle->max_pair;
+            
             $pairs = $member->pairings()
                             ->whereDate('created_at', Carbon::now())
                             ->where(function ($query) {
@@ -50,10 +58,11 @@ class ScheduleController extends Controller
                             ->orderBy('product_value', 'desc')
                             ->get();
 
-            $ctr = 0;
+            $ctr = $member->pair_cycle_ctr % self::MAX_PAIR_PER_DAY;
             foreach($pairs as $pair)
             {
-                $type = ($ctr < self::MAX_PAIR_PER_DAY) ? 'MP': 'FP';
+                $type = (($ctr < self::MAX_PAIR_PER_DAY) && ($member->pair_cycle_ctr < $maxPair)) ? 'MP': 'FP';
+                
                 $pair->type = $type;
                 $pair->save();
 
@@ -81,6 +90,7 @@ class ScheduleController extends Controller
                 
                 if($trans) {
                     if($type == 'MP') {
+                        $member->pair_cycle_ctr += 1;
                         $member->matching_pairs += $acquiredAmt;
                         $member->total_amt += $acquiredAmt;
                     } else {
@@ -89,6 +99,16 @@ class ScheduleController extends Controller
                     $member->save();
                 }
                 $ctr++;
+            }
+            
+            if($member->pair_cycle_ctr >= $maxPair) {
+                $pairCycle = $member->pair_cycle;
+                $pairCycle->end_date = Carbon::now();
+                $pairCycle->save();
+                
+                $member->pair_cycle_ctr = 0;
+                $member->pair_cycle_id = 0;
+                $member->save();
             }
             
             DB::commit();
