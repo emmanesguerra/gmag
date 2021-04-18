@@ -15,8 +15,8 @@ class Member extends Authenticatable implements Auditable
     protected $guard = 'member';
 
     protected $fillable = [
-        'username', 'email', 'password', 'sponsor_id', 'firstname',
-        'middlename', 'middlename', 'lastname', 'address', 'email',  'mobile',  'registration_code_id', 
+        'username', 'password', 'sponsor_id', 'firstname',
+        'middlename', 'lastname', 'address', 'email',  'mobile',  'registration_code_id', 
         'must_change_password', 'birthdate'
     ];
 

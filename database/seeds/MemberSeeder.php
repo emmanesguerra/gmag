@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+use App\Models\Member;
+use App\Models\MembersPlacement;
+use Illuminate\Support\Facades\Hash;
+
+class MemberSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $member = Member::create([
+            'username' => 'goldenmagtop',
+            'email' => 'goldenmagtop@gmail.com',
+            'password' => Hash::make('gmag12345'),
+            'sponsor_id' => 0,
+            'firstname' => 'Golden',
+            'middlename' => 'Mag',
+            'lastname' => 'USA',
+            'address' => 'NA',
+            'mobile' => 'NA',
+            'registration_code_id' => 0,
+            'must_change_password' => 0,
+        ]);
+        
+        if($member) {
+            MembersPlacement::create([
+                'member_id' => $member->id,
+                'placement_id' => 0,
+                'lft' => '1',
+                'rgt' => 2,
+                'lvl' => 1,
+                'position' => 0,
+                'product_id' => 4,
+            ]);
+        }
+    }
+}

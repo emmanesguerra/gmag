@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->float('price');
             $table->string('type', 5);
             $table->char('registration_code_prefix', 2)->comment('used for registration codes (pincode1)');
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });

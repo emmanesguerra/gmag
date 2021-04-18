@@ -15,7 +15,7 @@ class Admin extends Authenticatable implements Auditable
     protected $guard = 'admin';
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'is_super'
     ];
 
     protected $hidden = [

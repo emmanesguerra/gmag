@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration
             $table->string('keyword');
             $table->text('keyvalue')->nullable();
             $table->string('definition', 250)->nullable();
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
