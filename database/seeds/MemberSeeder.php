@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Member;
 use App\Models\MembersPlacement;
+use App\Models\MembersPairCycle;
+use App\Library\Modules\SettingLibrary;
 use Illuminate\Support\Facades\Hash;
 
 class MemberSeeder extends Seeder
@@ -39,6 +41,15 @@ class MemberSeeder extends Seeder
                 'position' => 0,
                 'product_id' => 4,
             ]);
+            
+            $cycle = MembersPairCycle::create([
+                'member_id' => $member->id,
+                'start_date' => Carbon\Carbon::now(),
+                'max_pair' => SettingLibrary::retrieve('max_pairing_ctr'),
+            ]);
+            
+            $member->pair_cycle_id = $cycle->id;
+            $member->save();
         }
     }
 }

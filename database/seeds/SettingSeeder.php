@@ -22,5 +22,10 @@ class SettingSeeder extends Seeder
             'keyword' => 'encoding_bonus',
             'keyvalue' => '.01'
         ]);
+        
+        Setting::create([
+            'keyword' => 'max_pairing_ctr',
+            'keyvalue' => '20'
+        ]);
     }
 }
