@@ -23,6 +23,16 @@ class TransactionBonus extends Model implements Auditable
         return ['displayToDashboard'];
     }
     
+    public function scopeOfType($query, $type)
+    {
+        $query->where('type', $type);
+    }
+    
+    public function scopeOfNotType($query, $type)
+    {
+        $query->where('type', '!=', $type);
+    }
+    
     public function member()
     {
         return $this->hasOne(Member::class, 'id', 'member_id');
