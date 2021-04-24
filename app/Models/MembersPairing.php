@@ -13,6 +13,16 @@ class MembersPairing extends Model
         'member_id', 'lft_mid', 'rgt_mid', 'product_id', 'product_value', 'type'
     ];
     
+    public function scopeOfType($query, $type)
+    {
+        $query->where('type', $type);
+    }
+    
+    public function scopeWhenDate($query, $date)
+    {
+        $query->whereDate('created_at', $date);
+    }
+    
     public function member()
     {
         return $this->hasOne(Member::class, 'id', 'member_id');
