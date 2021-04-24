@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - CONTROL PANEL</title>
+<title>GOLDEN MAG - Genealogy Tree</title>
 @endsection
 
 @section('pagetitle')
