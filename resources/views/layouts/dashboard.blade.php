@@ -16,7 +16,8 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300" rel="stylesheet" type="text/css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     
-    <link href="{{ asset('fonts/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <!-- For font awesome -->
+    <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
