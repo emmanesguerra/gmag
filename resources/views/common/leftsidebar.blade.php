@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('home') }}">
                     <span><i class="fas fa-tachometer-alt"></i></span>
                     <span>Dashboard</span>
                 </a>
