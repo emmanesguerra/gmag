@@ -67,26 +67,7 @@ class ControlPanelController extends Controller
         return  [
             'direct_referral_bonus', 
             'encoding_bonus', 
-            'encash_status', 
-            'admin_fee', 
-            'unilvl_personal', 
-            'unilvl_1', 
-            'unilvl_2', 
-            'unilvl_3', 
-            'unilvl_4', 
-            'unilvl_5', 
-            'unilvl_6', 
-            'unilvl_7', 
-            'unilvl_8', 
-            'unilvl_9', 
-            'unilvl_10', 
-            'indirect_1', 
-            'indirect_2', 
-            'indirect_3', 
-            'indirect_4', 
-            'indirect_5', 
-            'indirect_6', 
-            'indirect_7', 
+            'max_pairing_ctr'
         ];
     }
 
