@@ -97,16 +97,26 @@
 </div>
 @endsection
 
+@section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
+@endsection
+
 @section('javascripts')
-    <link href="{{ asset('js/jquery-ui-1.12.1.datepicker/jquery-ui.min.css') }}"  rel="stylesheet">
-    <script src="{{ asset('js/jquery-ui-1.12.1.datepicker/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script>
         $(function() {
-            $("#birthdate").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '1960:+0',
-                dateFormat: 'yy-mm-dd'
+            $("#birthdate").daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                var years = moment().diff(start, 'years');
+                alert("You are " + years + " years old!");
             });
         });
         
