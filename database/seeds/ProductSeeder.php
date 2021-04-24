@@ -18,8 +18,8 @@ class ProductSeeder extends Seeder
             'type' => 'ACT',
             'code' => 'STARTER',
             'name' => 'STARTER PACKAGE',
-            'price' => 1999,
-            'product_value' => 1999,
+            'price' => 1998,
+            'product_value' => 1998,
             'flush_bonus' => 1,
             'display_icon' => 'starter_s.png',
             'registration_code_prefix' => 'ST'
@@ -29,8 +29,8 @@ class ProductSeeder extends Seeder
             'type' => 'ACT',
             'code' => 'BRONZE',
             'name' => 'BRONZE PACKAGE',
-            'price' => 4999,
-            'product_value' => 4999,
+            'price' => 5998,
+            'product_value' => 5998,
             'flush_bonus' => 3,
             'display_icon' => 'bronze_s.png',
             'registration_code_prefix' => 'BR'
@@ -40,9 +40,9 @@ class ProductSeeder extends Seeder
             'type' => 'ACT',
             'code' => 'SILVER',
             'name' => 'SILVER PACKAGE',
-            'price' => 14999,
-            'product_value' => 14999,
-            'flush_bonus' => 5,
+            'price' => 19998,
+            'product_value' => 19998,
+            'flush_bonus' => 10,
             'display_icon' => 'silver_s.png',
             'registration_code_prefix' => 'SL'
         ]);
@@ -51,9 +51,9 @@ class ProductSeeder extends Seeder
             'type' => 'ACT',
             'code' => 'GOLD',
             'name' => 'GOLD PACKAGE',
-            'price' => 49999,
-            'product_value' => 49999,
-            'flush_bonus' => 7,
+            'price' => 49998,
+            'product_value' => 49998,
+            'flush_bonus' => 25,
             'display_icon' => 'gold_s.png',
             'registration_code_prefix' => 'GL'
         ]);
