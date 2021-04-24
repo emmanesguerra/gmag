@@ -14,9 +14,14 @@
     <div class='col-12 p-0' style="background-image: linear-gradient(to bottom right, #fff , #fff , #edebb1); border-radius: 6px;">
         <div class='col-12 contentheader100'>
             Total Earnings
+            
+            <div id="reportrange" class='float-right btn btn-sm btn-dark small' style='margin-top: -4px'>
+                <i class="fa fa-calendar"></i>&nbsp; 
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>
         </div>
         <div class='col-12 contentbody100 p-3'>
-            <span class="dashamount">{{ number_format($member->total_amt, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='total_earnings'>{{ number_format($member->total_amt, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-university pb-1" style="color: #bba701"></i>
         </div>
     </div>
@@ -28,7 +33,7 @@
             Indirect Bonus <small>(Not Qualified)</small>
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #fadcae); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">0.00 <sup>PHP</sup></span>
+            <span class="dashamount" id='indirect_bonus'>0.00 <sup>PHP</sup></span>
             <i class="fa fa-group pb-1" style="color: #f9bd61"></i>
         </div>
     </div>
@@ -37,7 +42,7 @@
             Encoding Bonus <small>(Qualified)</small>
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f8daab); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">{{ number_format($member->encoding_bonus, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='encoding_bonus'>{{ number_format($member->encoding_bonus, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-pencil-square-o pb-1" style="color: #f89c0e"></i>
         </div>
     </div>
@@ -46,7 +51,7 @@
             Sales Match Bonus
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #ee907d); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">{{ number_format($member->matching_pairs, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='sales_match_bonus'>{{ number_format($member->matching_pairs, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-star pb-1" style="color: #e63816"></i>
         </div>
     </div>
@@ -58,7 +63,7 @@
             Unilevel Bonus
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f6e8c4); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">0.00 <sup>PHP</sup></span>
+            <span class="dashamount" id='unilevel_bonus'>0.00 <sup>PHP</sup></span>
             <i class="fa fa-shopping-bag pb-1" style="color: #f4d070"></i>
         </div>
     </div>
@@ -67,7 +72,7 @@
             Direct Referral
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #ba9b85); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">{{ number_format($member->direct_referral, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='direct_referral'>{{ number_format($member->direct_referral, 2) }} <sup>PHP</sup></span>
             <i class="fas fa-gift pb-1" style="color: #c46626"></i>
         </div>
     </div>
@@ -76,7 +81,7 @@
             Flush Points
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #ccc); border-radius: 0 0 6px 6px;">
-            <span class="dashamount">{{ ($member->flush_pts) ? $member->flush_pts: 0 }} <sup>POINTS</sup></span>
+            <span class="dashamount" id='flush_points'>{{ ($member->flush_pts) ? $member->flush_pts: 0 }} <sup>POINTS</sup></span>
             <i class="fas fa-cubes pb-1" style="color: #999"></i>
         </div>
     </div>
@@ -166,8 +171,64 @@
 @endsection
 
 
+@section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
+@endsection
+
 @section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script>
+        
+        $(function() {
+        
+            var start = moment();
+            var end = moment();
+
+            function cb(start, end) {
+                if(start.format('MMMM D, YYYY') == end.format('MMMM D, YYYY')) {
+                    $('#reportrange span').html('Display Earnings as of ' + start.format('MMMM D, YYYY'));
+                }else {
+                    $('#reportrange span').html( 'Display Earnings from ' + start.format('MMMM D, YYYY') + ' to ' + end.format('MMMM D, YYYY'));
+                }
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                autoApply: false,
+                linkedCalendars: false,
+                ranges: {
+                   'Today': [moment(), moment()],
+                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                $.ajax({
+                    url: '{{ route("home.earnings") }}',
+                    data: {
+                        start: picker.startDate.format('YYYY-MM-DD'),
+                        end: picker.endDate.format('YYYY-MM-DD'),
+                        member_id: {{ $member->id }}
+                    }
+                }).done(function(response) {
+                    $('#total_earnings').html(Number(response.te).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>' );
+//                    $('#inderect_bonus').html(response.fp);
+                    $('#encoding_bonus').html(Number(response.eb).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
+                    $('#sales_match_bonus').html(Number(response.mp).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
+//                    $('#unilevel_bonus').html(response.fp);
+                    $('#direct_referral').html(Number(response.dr).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
+                    $('#flush_points').html(response.fp + ' <sup>POINTS</sup>');
+                });
+            });
+
+            cb(start, end);
+        });
         
         function Copy() {
             var copyText = document.getElementById("copylink");
@@ -176,5 +237,6 @@
             document.execCommand("copy");
             alert("Link copied to clipboard");
         }
+        
     </script>
 @endsection
