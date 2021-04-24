@@ -280,26 +280,32 @@ class GenealogyTreeController extends Controller
         $member = MembersPlacement::where('member_id', Auth::id())->first();
         $childL = MembersPlacement::select('lft', 'rgt')->where(['lft' => ($member->lft + 1), 'position' => 'L'])->first();
         
-        DB::enableQueryLog();
+        if($childL) {
+            
+            $filteredmodel = DB::table('members_placements')
+                                    ->join('members', 'members.id', '=', 'members_placements.member_id')
+                                    ->join('products', 'products.id', '=', 'members_placements.product_id')
+                                    ->whereBetween('members_placements.lft', [$childL->lft, $childL->rgt])
+                                    ->select(DB::raw("members.created_at, 
+                                                    members.username, 
+                                                    products.code,
+                                                    products.price")
+                                );
+
+            $modelcnt = $filteredmodel->count();
+
+            $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+            return response(['data'=> $data,
+                'draw' => $request->draw,
+                'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+                'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+        }
         
-        $filteredmodel = DB::table('members_placements')
-                                ->join('members', 'members.id', '=', 'members_placements.member_id')
-                                ->join('products', 'products.id', '=', 'members_placements.product_id')
-                                ->whereBetween('members_placements.lft', [$childL->lft, $childL->rgt])
-                                ->select(DB::raw("members.created_at, 
-                                                members.username, 
-                                                products.code,
-                                                products.price")
-                            );
-        
-        $modelcnt = $filteredmodel->count();
-        
-        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
-        
-        return response(['data'=> $data,
+        return response(['data'=> [],
             'draw' => $request->draw,
-            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
-            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0], 200);
     }
     
     public function binaryright(Request $request)
@@ -314,23 +320,31 @@ class GenealogyTreeController extends Controller
         $member = MembersPlacement::where('member_id', Auth::id())->first();
         $childR = MembersPlacement::select('lft', 'rgt')->where(['rgt' => ($member->rgt - 1), 'position' => 'R'])->first();
         
-        $filteredmodel = DB::table('members_placements')
-                                ->join('members', 'members.id', '=', 'members_placements.member_id')
-                                ->join('products', 'products.id', '=', 'members_placements.product_id')
-                                ->whereBetween('members_placements.lft', [$childR->lft, $childR->rgt])
-                                ->select(DB::raw("members.created_at, 
-                                                members.username, 
-                                                products.code,
-                                                products.price")
-                            );
+        if($childR) {
         
-        $modelcnt = $filteredmodel->count();
+            $filteredmodel = DB::table('members_placements')
+                                    ->join('members', 'members.id', '=', 'members_placements.member_id')
+                                    ->join('products', 'products.id', '=', 'members_placements.product_id')
+                                    ->whereBetween('members_placements.lft', [$childR->lft, $childR->rgt])
+                                    ->select(DB::raw("members.created_at, 
+                                                    members.username, 
+                                                    products.code,
+                                                    products.price")
+                                );
+
+            $modelcnt = $filteredmodel->count();
+
+            $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+            return response(['data'=> $data,
+                'draw' => $request->draw,
+                'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+                'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+        }
         
-        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
-        
-        return response(['data'=> $data,
+        return response(['data'=> [],
             'draw' => $request->draw,
-            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
-            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0], 200);
     }
 }
