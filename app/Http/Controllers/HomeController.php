@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Member;
 
 class HomeController extends Controller
 {
@@ -21,8 +23,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $member = Member::find(Auth::id());
+        
+        $counts = [
+            'tpc' => $member->pairings->count(),
+            'mspc' => $member->pairingsMP->count(),
+            'fpc' => $member->pairingsFP->count(),
+            'tspc' => $member->pairingsToday->count(),
+            'yspc' => $member->pairingsYesterday->count()
+        ];
+        
+        return view('home', ['member' => $member, 'counts' => $counts]);
     }
 }

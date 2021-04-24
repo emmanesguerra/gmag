@@ -235,6 +235,27 @@
                 color: #000;
             }
         }
+        
+        &.no-edit {
+        
+            .field {
+                border-bottom: 1px solid #d3d3d3;
+
+                &:hover {
+                    background: transparent;
+                }
+
+                label {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 16px;
+                    color: #666;
+                }
+
+                .form-control {
+                    color: #000;
+                }
+            }
+        }
     }
 }
 
@@ -272,6 +293,30 @@
     font-weight: 600;
     font-size: 18px;
     font-family: 'Source Sans Pro', sans-serif;
+}
+
+.contentbody100 
+{
+    float: left;
+    background: transparent;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    
+    .dashamount {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        font-weight: lighter;
+        color: #333;
+        
+        sup {
+            font-size: 14px;
+        }
+    }
+        
+    i {
+        float: right;
+        font-size: 50px;
+    }
 }
 
 .card-content {
