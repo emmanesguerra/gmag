@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-    <i class="fa fa fa-line-chart"></i>   BONUSES SUMMARY
+    <i class="fa fa-chart-bar"></i>   BONUSES SUMMARY
 @endsection
 
 @section('module-content')

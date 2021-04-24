@@ -33,7 +33,7 @@
             </li>
             <li>
                 <a href="{{ route('transactions.bonus') }}">
-                    <span><i class="fa fa-bar-chart"></i></span>
+                    <span><i class="fa fa-chart-bar"></i></span>
                     <span>Commissions</span>
                 </a>
             </li>

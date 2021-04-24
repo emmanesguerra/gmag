@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-<i class="fa fa-group"></i>   PARTNERS SUMMARY
+<i class="fa fa-sitemap"></i>   PARTNERS SUMMARY
 @endsection
 
 @section('module-content')

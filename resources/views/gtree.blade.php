@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-<i class="fa fa-group"></i>  GRAPHICAL GENEALOGY TREE
+<i class="fa fa-sitemap"></i>  GRAPHICAL GENEALOGY TREE
 @endsection
 
 @section('module-content')

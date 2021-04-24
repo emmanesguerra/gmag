@@ -34,7 +34,7 @@
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #fadcae); border-radius: 0 0 6px 6px;">
             <span class="dashamount" id='indirect_bonus'>0.00 <sup>PHP</sup></span>
-            <i class="fa fa-group pb-1" style="color: #f9bd61"></i>
+            <i class="fa fa-users pb-1" style="color: #f9bd61"></i>
         </div>
     </div>
     <div class='col-4 px-0'>
@@ -43,7 +43,7 @@
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f8daab); border-radius: 0 0 6px 6px;">
             <span class="dashamount" id='encoding_bonus'>{{ number_format($member->encoding_bonus, 2) }} <sup>PHP</sup></span>
-            <i class="fa fa-pencil-square-o pb-1" style="color: #f89c0e"></i>
+            <i class="fa fa-edit pb-1" style="color: #f89c0e"></i>
         </div>
     </div>
     <div class='col-4 pr-0'>
