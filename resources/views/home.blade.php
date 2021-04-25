@@ -88,11 +88,12 @@
 </div>
 
 <div class="row p-3">
-    <div class='col-12 contentheader100'>
+    <div id='binary_status' class='col-12 contentheader100'>
         Account Binary Status
     </div>
     <div class='col-12 content-container' style='position: relative'>
         <form class='no-edit p-2' >
+            @include('common.serverresponse')
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">My Referral Link:</label>
                 <div class="col-sm-4">
