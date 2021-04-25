@@ -52,6 +52,7 @@ class HomeController extends Controller
             'mp' => $member->transactionBonuses()->ofType('MP')->whereBetween('created_at', $range)->sum('acquired_amt'),
             'dr' => $member->transactionBonuses()->ofType('DR')->whereBetween('created_at', $range)->sum('acquired_amt'),
             'fp' => $member->transactionBonuses()->ofType('FP')->whereBetween('created_at', $range)->sum('acquired_amt'),
+            'ewallet_purchased' => $member->transactions()->ofPaymentMethod('e_wallet')->whereBetween('transaction_date', $range)->sum('product_price'),
             'success' => true
         ], 200);
     }

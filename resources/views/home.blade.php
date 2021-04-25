@@ -60,10 +60,10 @@
 <div class="row pb-0 px-3 pt-3">
     <div class='col-4 pl-0'>
         <div class='col-12 contentheader100'>
-            Unilevel Bonus
+            E-wallet Purchased Transactions 
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f6e8c4); border-radius: 0 0 6px 6px;">
-            <span class="dashamount" id='unilevel_bonus'>0.00 <sup>PHP</sup></span>
+            <span class="dashamount" id='ewallet_purchased'>{{ number_format($member->purchased, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-shopping-bag pb-1" style="color: #f4d070"></i>
         </div>
     </div>
@@ -222,7 +222,7 @@
 //                    $('#inderect_bonus').html(response.fp);
                     $('#encoding_bonus').html(Number(response.eb).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#sales_match_bonus').html(Number(response.mp).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
-//                    $('#unilevel_bonus').html(response.fp);
+                    $('#ewallet_purchased').html(Number(response.ewallet_purchased).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#direct_referral').html(Number(response.dr).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#flush_points').html(response.fp + ' <sup>POINTS</sup>');
                 });

@@ -33,4 +33,9 @@ class Transaction extends Model implements Auditable
             ->orWhere('email', 'LIKE', '%' . $search . '%')
             ->orWhere('product_code', 'LIKE', '%' . $search . '%');
     }
+    
+    public function scopeOfPaymentMethod($query, $type)
+    {
+        $query->where('payment_method', $type);
+    }
 }
