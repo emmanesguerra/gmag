@@ -102,13 +102,7 @@ class MembersLibrary {
             $member = Member::find($memberId);
             $today = date('Y-m-d');
 
-            /*
-             * Only process the members with cycle ids
-             * Member without cycle ids means they reached the maximum pair per cycle
-             */
-            if($member->pair_cycle_id > 0) {
-                self::saveTodaysPair($member, $today);
-            }
+            self::saveTodaysPair($member, $today);
         }
         return;
     }

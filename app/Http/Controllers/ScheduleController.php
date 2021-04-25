@@ -29,13 +29,7 @@ class ScheduleController extends Controller
                             ->get();
         
         $pairIds->map(function($member) {
-            /*
-             * Only process the members with cycle ids
-             * Member without cycle ids means they reached the maximum pair per cycle
-             */
-            if($member->member->pair_cycle_id > 0) {
-                $this->SetMemberPairsType($member->member);
-            }
+            $this->SetMemberPairsType($member->member);
         });
         
         return redirect()->back();
@@ -47,7 +41,7 @@ class ScheduleController extends Controller
         {
             DB::beginTransaction();
             
-            $maxPair = $member->pair_cycle->max_pair;
+            $maxPair = ($member->pair_cycle) ? $member->pair_cycle->max_pair: 0;
             
             $pairs = $member->pairings()
                             ->whereDate('created_at', Carbon::now())
@@ -101,7 +95,7 @@ class ScheduleController extends Controller
                 $ctr++;
             }
             
-            if($member->pair_cycle_ctr >= $maxPair) {
+            if(($member->pair_cycle_ctr >= $maxPair) && ($maxPair != 0)) {
                 $pairCycle = $member->pair_cycle;
                 $pairCycle->end_date = Carbon::now();
                 $pairCycle->save();
