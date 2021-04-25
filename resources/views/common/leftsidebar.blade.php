@@ -49,19 +49,6 @@
             </li>
             <li>
                 <a href="#">
-                    <span><i class="fa fa-shopping-bag"></i></span>
-                    <span>Product Unilevel</span>
-                </a>
-                <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Product Activation</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Purchase Summary</a>
-                    </li>
-
-                </ul> 
-            </li>
-            <li>
-                <a href="#">
                     <span><i class="fas fa-wallet"></i></span>
                     <span>E-Wallet</span>
                 </a>
