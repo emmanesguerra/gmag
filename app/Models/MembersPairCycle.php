@@ -10,7 +10,7 @@ class MembersPairCycle extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'member_id', 'start_date', 'max_pair'
+        'member_id', 'start_date', 'max_pair', 'product_id'
     ];
     
     /*
