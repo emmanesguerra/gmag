@@ -217,9 +217,21 @@ class MembersLibrary {
             'member_id' => $member->id,
             'start_date' => Carbon::now(),
             'max_pair' => SettingLibrary::retrieve('max_pairing_ctr'),
+            'product_id' => $member->placement->product_id
         ]);
 
         $member->pair_cycle_id = $cycle->id;
         $member->save();
+        
+        return;
+    }
+    
+    public static function updateMemberPlacementProduct(Member $member, $product)
+    {
+        $placement = $member->placement;
+        $placement->product_id = $product->id;
+        $placement->save();
+        
+        return;
     }
 }
