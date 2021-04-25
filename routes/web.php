@@ -38,6 +38,9 @@ Route::middleware('auth:web,admin')->group(function () {
     Route::middleware('mustchanged')->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/home-earnings', 'HomeController@earnings')->name('home.earnings');
+        
+        Route::get('/refresh-account', 'RefeshController@index')->name('refresh.index');
+        Route::post('/refresh-account', 'RefeshController@store')->name('refresh.store');
 
         Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
         Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');

@@ -123,7 +123,7 @@
                     @if($member->pair_cycle)
                     <span class="form-control form-control-lg border-0">{{ date('F d, Y', strtotime($member->pair_cycle->start_date)) }}</span>
                     @else
-                    <span class="form-control form-control-lg border-0">No cycle assigned</span>
+                    <span class="form-control form-control-lg border-0">No cycle assigned &nbsp; <a href="{{ route('refresh.index') }}" class="btn btn-sm btn-success">Refresh Account</a></span>
                     @endif
                 </div>
             </div>
