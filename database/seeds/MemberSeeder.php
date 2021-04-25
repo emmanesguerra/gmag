@@ -46,6 +46,7 @@ class MemberSeeder extends Seeder
                 'member_id' => $member->id,
                 'start_date' => Carbon\Carbon::now(),
                 'max_pair' => SettingLibrary::retrieve('max_pairing_ctr'),
+                'product_id' => 4,
             ]);
             
             $member->pair_cycle_id = $cycle->id;

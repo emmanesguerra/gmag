@@ -18,10 +18,12 @@ class CreateMembersPairCyclesTable extends Migration
             $table->unsignedBigInteger('member_id');
             $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->unsignedBigInteger('product_id');
             $table->unsignedSmallInteger('max_pair');
             $table->timestamps();
             
             $table->foreign('member_id')->references('id')->on('members');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
