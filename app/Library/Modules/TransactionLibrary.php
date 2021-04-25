@@ -22,8 +22,10 @@ use App\Library\Modules\SettingLibrary;
 class TransactionLibrary {
     //put your code here
     
-    public static function saveProductPurchase(Member $member)
+    public static function saveProductPurchase(Member $member, $paymentMethod = 'site_reg')
     {
+        $price = $member->placement->product->price;
+        
         Transaction::create([
             'member_id' => $member->id,
             'product_id' => $member->placement->product_id,
@@ -31,9 +33,16 @@ class TransactionLibrary {
             'lastname' => $member->lastname,
             'email' => $member->email,
             'product_code' => $member->placement->product->code,
-            'product_price' => $member->placement->product->price,
-            'transaction_date' => date('Y-m-d h:i:s')
+            'product_price' => $price,
+            'transaction_date' => date('Y-m-d h:i:s'),
+            'payment_method' => $paymentMethod
         ]);
+        
+        if($paymentMethod == 'e_wallet') {
+            $member->purchased += $price;
+            $member->total_amt -= $price;
+            $member->save();
+        }
     }
     
     public static function saveDirectReferralBonus(Member $member)
