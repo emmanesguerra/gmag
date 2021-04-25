@@ -35,10 +35,9 @@
                 <label  class="col-sm-3 col-form-label">Select a Package:</label>
                 <div class="col-sm-4">
                     <select name="product_id" class="form-control form-control-sm col-7 ">
+                        <option value="0">Please select a package</option>
                         @foreach($products as $product)
-                        <option value="{{ $product->id }}" {{ ($member->placement->product->id == $product->id) ? 'selected': '' }} >
-                            {{ $product->name }} ({{ number_format($product->price) }})
-                        </option>
+                        <option value="{{ $product->id }}">{{ $product->name }} ({{ number_format($product->price) }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -47,11 +46,11 @@
                 <label  class="col-sm-3 col-form-label">Select a Payment Method:</label>
                 <div class="col-sm-4">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="ewallet" style='cursor: pointer'>
+                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio1" value="ewallet" style='cursor: pointer'>
                         <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio1" style='cursor: pointer'><small>Via E-Wallet</small></label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="paynamics" style='cursor: pointer'>
+                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio2" value="paynamics" style='cursor: pointer'>
                         <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio2" style='cursor: pointer'><small>Via Paynamics</small></label>
                     </div>
                 </div>
