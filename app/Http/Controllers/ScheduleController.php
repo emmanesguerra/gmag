@@ -91,6 +91,14 @@ class ScheduleController extends Controller
                         $member->flush_pts += $acquiredAmt;
                     }
                     $member->save();
+                    
+                    if(($member->pair_cycle)) {
+                        if(empty($member->pair_cycle->starting_pair_id)) {
+                            $pairCycle = $member->pair_cycle;
+                            $pairCycle->starting_pair_id = $pair->id;
+                            $pairCycle->save();
+                        }
+                    }
                 }
                 $ctr++;
             }
@@ -98,6 +106,7 @@ class ScheduleController extends Controller
             if(($member->pair_cycle_ctr >= $maxPair) && ($maxPair != 0)) {
                 $pairCycle = $member->pair_cycle;
                 $pairCycle->end_date = Carbon::now();
+                $pairCycle->ending_pair_id = $pair->id;
                 $pairCycle->save();
                 
                 $member->pair_cycle_ctr = 0;
