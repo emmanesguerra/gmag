@@ -59,6 +59,8 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/profile/{id}', 'ProfileController@show')->name('profile.show');
         Route::get('/profile/{id}/edit', 'ProfileController@edit')->name('profile.edit');
         Route::put('/profile/{id}', 'ProfileController@update')->name('profile.update');
+        Route::get('/profile/{id}/cycle', 'ProfileController@cycle')->name('profile.cycle');
+        Route::get('/profile/{id}/purchased', 'ProfileController@purchased')->name('profile.purchased');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
     });
