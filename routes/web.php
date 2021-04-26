@@ -56,6 +56,7 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/change-password', 'ChangePasswordController@indexIn')->name('changepassword.index');
         Route::post('/change-password', 'ChangePasswordController@storeIn')->name('changepassword.store');
         
+        Route::get('/profile/{id}', 'ProfileController@show')->name('profile.show');
         Route::get('/profile/{id}/edit', 'ProfileController@edit')->name('profile.edit');
         Route::put('/profile/{id}', 'ProfileController@update')->name('profile.update');
         

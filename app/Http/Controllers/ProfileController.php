@@ -48,7 +48,9 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+        $member = Member::find($id);
+        
+        return view('profile-show', ['member' => $member]);
     }
 
     /**

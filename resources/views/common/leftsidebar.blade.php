@@ -17,6 +17,10 @@
                     <span><i class="fas fa-tachometer-alt"></i></span>
                     <span>Dashboard</span>
                 </a>
+                <ul>
+                    <li><a href="{{ route('profile.show', Auth::id()) }}"><i class="fa fa-ellipsis-h"></i> My Profile</a></li>
+
+                </ul>  
             </li>
             <li>
                 <a href="#">
@@ -67,7 +71,6 @@
                 </a>
                 <ul>
                     <li><a href="#"><i class="fa fa-ellipsis-h"></i> Switch Account</a></li>
-                    <li><a href="{{ route('profile.edit', Auth::id()) }}"><i class="fa fa-ellipsis-h"></i> Edit Profile</a></li>
                     <li><a href="{{ route('changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
 
                 </ul>  
