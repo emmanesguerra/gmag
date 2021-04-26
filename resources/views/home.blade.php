@@ -60,7 +60,7 @@
 <div class="row pb-0 px-3 pt-3">
     <div class='col-4 pl-0'>
         <div class='col-12 contentheader100'>
-            Transactions via E-Wallet
+            Transactions Paid via E-Wallet
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f6e8c4); border-radius: 0 0 6px 6px;">
             <span class="dashamount" id='ewallet_purchased'>{{ number_format($member->purchased, 2) }} <sup>PHP</sup></span>
