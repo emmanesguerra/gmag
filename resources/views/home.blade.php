@@ -13,7 +13,7 @@
 <div class="row pb-0 px-3 pt-3">
     <div class='col-12 p-0' style="background-image: linear-gradient(to bottom right, #fff , #fff , #edebb1); border-radius: 6px;">
         <div class='col-12 contentheader100'>
-            Total Earnings
+            Current E-Wallet Amount
             
             <div id="reportrange" class='float-right btn btn-sm btn-dark small' style='margin-top: -4px'>
                 <i class="fa fa-calendar"></i>&nbsp; 
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class='col-12 contentbody100 p-3'>
-            <span class="dashamount" id='total_earnings'>{{ number_format($member->total_amt, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='curr_amount'>{{ number_format($member->total_amt, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-university pb-1" style="color: #bba701"></i>
         </div>
     </div>
@@ -30,10 +30,10 @@
 <div class="row pb-0 px-3 pt-3">
     <div class='col-4 pl-0'>
         <div class='col-12 contentheader100'>
-            Indirect Bonus <small>(Not Qualified)</small>
+            Direct Referral
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #fadcae); border-radius: 0 0 6px 6px;">
-            <span class="dashamount" id='indirect_bonus'>0.00 <sup>PHP</sup></span>
+            <span class="dashamount" id='direct_referral'>{{ number_format($member->direct_referral, 2) }} <sup>PHP</sup></span>
             <i class="fa fa-users pb-1" style="color: #f9bd61"></i>
         </div>
     </div>
@@ -60,7 +60,7 @@
 <div class="row pb-0 px-3 pt-3">
     <div class='col-4 pl-0'>
         <div class='col-12 contentheader100'>
-            E-wallet Purchased Transactions 
+            Transactions via E-Wallet
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f6e8c4); border-radius: 0 0 6px 6px;">
             <span class="dashamount" id='ewallet_purchased'>{{ number_format($member->purchased, 2) }} <sup>PHP</sup></span>
@@ -69,10 +69,10 @@
     </div>
     <div class='col-4 px-0 '>
         <div class='col-12 contentheader100'>
-            Direct Referral
+            Total Earnings
         </div>
         <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #ba9b85); border-radius: 0 0 6px 6px;">
-            <span class="dashamount" id='direct_referral'>{{ number_format($member->direct_referral, 2) }} <sup>PHP</sup></span>
+            <span class="dashamount" id='total_earnings'>{{ number_format($member->total_amt + $member->purchased, 2) }} <sup>PHP</sup></span>
             <i class="fas fa-gift pb-1" style="color: #c46626"></i>
         </div>
     </div>
@@ -218,12 +218,12 @@
                         member_id: {{ $member->id }}
                     }
                 }).done(function(response) {
-                    $('#total_earnings').html(Number(response.te).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>' );
-//                    $('#inderect_bonus').html(response.fp);
+                    $('#curr_amount').html(Number(response.curr).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>' );
+                    $('#direct_referral').html(Number(response.dr).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#encoding_bonus').html(Number(response.eb).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#sales_match_bonus').html(Number(response.mp).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
                     $('#ewallet_purchased').html(Number(response.ewallet_purchased).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
-                    $('#direct_referral').html(Number(response.dr).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>');
+                    $('#total_earnings').html(Number(response.te).toLocaleString("en", {minimumFractionDigits: 2}) + ' <sup>PHP</sup>' );
                     $('#flush_points').html(response.fp + ' <sup>POINTS</sup>');
                 });
             });
