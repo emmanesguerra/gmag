@@ -48,6 +48,7 @@
                     <th>Encoding Bonus</th>
                     <th>Total Amount</th>
                     <th>Flush Points</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,6 +79,7 @@
                     <td>0</td>
                     @endif
                     <td>{{$member->flush_pts}}</td>
+                    <td><a href='#'>View</a> | <a href='#'>Edit</a></td>
                 </tr>
                 @endforeach 
             </tbody>
