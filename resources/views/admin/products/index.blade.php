@@ -27,7 +27,7 @@
             </div>
             <div class="col-sm-9">
                 <div class="form-group row">
-                    <input class="form-control col-12" type="search" name="search" value='{{ Request::get('search') }}' placeholder="Search" aria-label="Search">
+                    <input class="form-control col-12" type="search" name="search" value='{{ Request::get('search') }}' placeholder="Search" aria-label="Search" onChange="this.form.submit()">
                 </div>
             </div>
         </form>
