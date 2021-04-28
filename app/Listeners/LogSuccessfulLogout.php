@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Auth;
 use App\Models\MemberLog;
 
 class LogSuccessfulLogout
@@ -27,10 +28,12 @@ class LogSuccessfulLogout
      */
     public function handle(Logout $event)
     {
-        $member = $event->user;
+        if(Auth::guard('web')->check()) {
+            $member = $event->user;
 
-        $userlog = MemberLog::find($member->curr_login_id);
-        $userlog->log_out = \Carbon\Carbon::now();
-        $userlog->save();
+            $userlog = MemberLog::find($member->curr_login_id);
+            $userlog->log_out = \Carbon\Carbon::now();
+            $userlog->save();
+        }
     }
 }

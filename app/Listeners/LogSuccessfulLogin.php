@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\MemberLog;
+use Illuminate\Support\Facades\Auth;
 
 class LogSuccessfulLogin
 {
@@ -32,20 +33,22 @@ class LogSuccessfulLogin
     {
         try
         {
-            DB::beginTransaction();
-            
-            $member = $event->user;
+            if(Auth::guard('web')->check()) {
+                DB::beginTransaction();
 
-            $userlog = MemberLog::create(['log_in' => \Carbon\Carbon::now(), 'ip_address' => $this->request->ip(), 'email' => $member->email]);
+                $member = $event->user;
 
-            if($userlog) {
-                $member->disableAuditing();
-                $member->ip_address = $this->request->ip();
-                $member->curr_login_id = $userlog->id;
-                $member->save();
+                $userlog = MemberLog::create(['log_in' => \Carbon\Carbon::now(), 'ip_address' => $this->request->ip(), 'username' => $member->username]);
+
+                if($userlog) {
+                    $member->disableAuditing();
+                    $member->ip_address = $this->request->ip();
+                    $member->curr_login_id = $userlog->id;
+                    $member->save();
+                }
+
+                DB::commit();
             }
-            
-            DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
             Log::error($ex->getMessage());

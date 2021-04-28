@@ -15,7 +15,7 @@ class CreateMemberLogsTable extends Migration
     {
         Schema::create('member_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
+            $table->string('username');
             $table->dateTime('log_in');
             $table->dateTime('log_out')->nullable();
             $table->string('ip_address', 45)->nullable();
