@@ -70,7 +70,7 @@
                     <span>Settings</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Switch Account</a></li>
+                    <li><a href="{{ route('switch.index') }}"><i class="fa fa-ellipsis-h"></i> Switch Account</a></li>
                     <li><a href="{{ route('changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
 
                 </ul>  

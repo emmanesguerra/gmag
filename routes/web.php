@@ -63,6 +63,9 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/profile/{id}/purchased', 'ProfileController@purchased')->name('profile.purchased');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
+        
+        Route::get('/switch', 'SwitchController@index')->name('switch.index');
+        Route::get('/switch-acount/{id}', 'SwitchController@switchaccount')->name('switch.account');
     });
     
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
