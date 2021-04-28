@@ -34,7 +34,7 @@ Route::get('/test-search', function() {
 
 Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->name('set.yesterdays.pair.type');
 
-Route::middleware('auth:web,admin')->group(function () {
+Route::middleware('auth:web')->group(function () {
     Route::middleware('mustchanged')->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/home-earnings', 'HomeController@earnings')->name('home.earnings');
@@ -67,40 +67,40 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/switch', 'SwitchController@index')->name('switch.index');
         Route::get('/switch-acount/{id}', 'SwitchController@switchaccount')->name('switch.account');
     });
-    
-    Route::middleware('auth:admin')->prefix('admin')->group(function () {
-        Route::view('/dashboard', 'admin.home');
-        
-        Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
-        Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');
-        
-        Route::get('/change-admin-password', 'Admin\ChangeAdminPassword@index')->name('admin.changepassword.index');
-        Route::post('/change-admin-password', 'Admin\ChangeAdminPassword@store')->name('admin.changepassword.store');
-        
-        Route::get('/change-members-username', 'Admin\ChangeMemberUsername@index')->name('admin.memberusername.index');
-        Route::post('/change-members-username', 'Admin\ChangeMemberUsername@store')->name('admin.memberusername.store');
-        
-        Route::get('/products', 'Admin\ProductsController@index')->name('admin.products.index');
-        Route::get('/products/create', 'Admin\ProductsController@create')->name('admin.products.create');
-        Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
-        Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');
-        Route::get('/products/{slug}/edit', 'Admin\ProductsController@edit')->name('admin.products.edit');
-        Route::put('/products/{id}', 'Admin\ProductsController@update')->name('admin.products.update');
-        
-        Route::get('/entry-codes', 'Admin\RegistrationCodesController@index')->name('admin.entrycodes.index');
-        Route::get('/entry-codes/create', 'Admin\RegistrationCodesController@create')->name('admin.entrycodes.create');
-        Route::post('/entry-codes', 'Admin\RegistrationCodesController@store')->name('admin.entrycodes.store');
-        Route::get('/entry-codes/{id}', 'Admin\RegistrationCodesController@show')->name('admin.entrycodes.show');
-        Route::get('/entry-codes/{id}/edit', 'Admin\RegistrationCodesController@edit')->name('admin.entrycodes.edit');
-        Route::put('/entry-codes/{id}', 'Admin\RegistrationCodesController@update')->name('admin.entrycodes.update');
-        Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
-        
-        Route::get('/members', 'Admin\MembersController@index')->name('admin.member.index');
-        Route::get('/members/{slug}', 'Admin\MembersController@show')->name('admin.member.show');
-        Route::get('/members/{slug}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
-        Route::get('/members-visit', 'Admin\MembersController@visit')->name('admin.member.visit');
-        
-        Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
-        Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
-    });
+});
+
+Route::middleware('auth:admin')->prefix('admin')->group(function () {
+    Route::view('/dashboard', 'admin.home');
+
+    Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
+    Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');
+
+    Route::get('/change-admin-password', 'Admin\ChangeAdminPassword@index')->name('admin.changepassword.index');
+    Route::post('/change-admin-password', 'Admin\ChangeAdminPassword@store')->name('admin.changepassword.store');
+
+    Route::get('/change-members-username', 'Admin\ChangeMemberUsername@index')->name('admin.memberusername.index');
+    Route::post('/change-members-username', 'Admin\ChangeMemberUsername@store')->name('admin.memberusername.store');
+
+    Route::get('/products', 'Admin\ProductsController@index')->name('admin.products.index');
+    Route::get('/products/create', 'Admin\ProductsController@create')->name('admin.products.create');
+    Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
+    Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');
+    Route::get('/products/{slug}/edit', 'Admin\ProductsController@edit')->name('admin.products.edit');
+    Route::put('/products/{id}', 'Admin\ProductsController@update')->name('admin.products.update');
+
+    Route::get('/entry-codes', 'Admin\RegistrationCodesController@index')->name('admin.entrycodes.index');
+    Route::get('/entry-codes/create', 'Admin\RegistrationCodesController@create')->name('admin.entrycodes.create');
+    Route::post('/entry-codes', 'Admin\RegistrationCodesController@store')->name('admin.entrycodes.store');
+    Route::get('/entry-codes/{id}', 'Admin\RegistrationCodesController@show')->name('admin.entrycodes.show');
+    Route::get('/entry-codes/{id}/edit', 'Admin\RegistrationCodesController@edit')->name('admin.entrycodes.edit');
+    Route::put('/entry-codes/{id}', 'Admin\RegistrationCodesController@update')->name('admin.entrycodes.update');
+    Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
+
+    Route::get('/members', 'Admin\MembersController@index')->name('admin.member.index');
+    Route::get('/members/{slug}', 'Admin\MembersController@show')->name('admin.member.show');
+    Route::get('/members/{slug}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
+    Route::get('/members-visit', 'Admin\MembersController@visit')->name('admin.member.visit');
+
+    Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
+    Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
 });
