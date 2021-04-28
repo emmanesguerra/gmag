@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Member;
+use App\Models\MemberLog;
 
 class MembersController extends Controller
 {
@@ -92,5 +93,17 @@ class MembersController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function visit(Request $request)
+    {
+        $search = $request->search;
+        $show = (isset($request->show)) ? $request->show: 10;
+        
+        $members = MemberLog::select(['id', 'username', 'log_in', 'ip_address'])
+                ->search($search)->orderBy('id', 'desc')
+                ->paginate($show);
+        
+        return view('admin.members.visit', ['members' => $members])->withQuery($search);
     }
 }
