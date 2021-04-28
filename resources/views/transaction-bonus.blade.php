@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - Edit Profile</title>
+<title>GOLDEN MAG - Transaction Bonus</title>
 @endsection
 
 @section('pagetitle')
