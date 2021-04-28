@@ -68,9 +68,9 @@
                     <span>ADMIN MENU</span>
                 </a>
                 <ul>
-                    <li><a href="{{ route('admin.controlpanel.index') }}"><i class="fa fa-ellipsis-h"></i> CONTROL PANEL</a></li>
+                    <li><a href="{{ route('admin.controlpanel.index') }}"><i class="fa fa-ellipsis-h"></i> Control Panel</a></li>
                     <li><a href="{{ route('admin.member.visit') }}"><i class="fa fa-ellipsis-h"></i> Members Visitor</a></li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Change Members Username</a></li>
+                    <li><a href="{{ route('admin.memberusername.index') }}"><i class="fa fa-ellipsis-h"></i> Change Members Username</a></li>
                     <li><a href="{{ route('admin.changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
                     <li><a href="#" onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fa fa-ellipsis-h"></i> Logout</a>

@@ -77,6 +77,9 @@ Route::middleware('auth:web,admin')->group(function () {
         Route::get('/change-admin-password', 'Admin\ChangeAdminPassword@index')->name('admin.changepassword.index');
         Route::post('/change-admin-password', 'Admin\ChangeAdminPassword@store')->name('admin.changepassword.store');
         
+        Route::get('/change-members-username', 'Admin\ChangeMemberUsername@index')->name('admin.memberusername.index');
+        Route::post('/change-members-username', 'Admin\ChangeMemberUsername@store')->name('admin.memberusername.store');
+        
         Route::get('/products', 'Admin\ProductsController@index')->name('admin.products.index');
         Route::get('/products/create', 'Admin\ProductsController@create')->name('admin.products.create');
         Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
