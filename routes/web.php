@@ -97,9 +97,11 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
 
     Route::get('/members', 'Admin\MembersController@index')->name('admin.member.index');
-    Route::get('/members/{slug}', 'Admin\MembersController@show')->name('admin.member.show');
-    Route::get('/members/{slug}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
+    Route::get('/members/{id}', 'Admin\MembersController@show')->name('admin.member.show');
+    Route::get('/members/{id}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
     Route::get('/members-visit', 'Admin\MembersController@visit')->name('admin.member.visit');
+    Route::get('/members/{id}/cycle', 'Admin\MembersController@cycle')->name('admin.member.cycle');
+    Route::get('/members/{id}/purchased', 'Admin\MembersController@purchased')->name('admin.member.purchased');
 
     Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
     Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');

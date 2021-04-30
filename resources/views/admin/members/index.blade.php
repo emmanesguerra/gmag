@@ -79,7 +79,7 @@
                     <td>0</td>
                     @endif
                     <td>{{$member->flush_pts}}</td>
-                    <td><a href='#'>View</a> | <a href='#'>Edit</a></td>
+                    <td><a href='{{ route("admin.member.show", $member->id) }}'>View</a> | <a href='{{ route("admin.member.edit", $member->id) }}'>Edit</a></td>
                 </tr>
                 @endforeach 
             </tbody>
