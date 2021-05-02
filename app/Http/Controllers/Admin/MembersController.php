@@ -9,6 +9,7 @@ use App\Models\Member;
 use App\Models\MemberLog;
 use App\Models\MembersPairCycle;
 use App\Library\DataTables;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class MembersController extends Controller
 {
@@ -74,7 +75,9 @@ class MembersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $member = Member::find($id);
+        
+        return view('admin.members.edit', ['member' => $member]);
     }
 
     /**
@@ -84,9 +87,29 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileUpdateRequest $request, $id)
     {
-        //
+        try
+        {            
+            DB::beginTransaction();
+            
+            $member = Member::find($id);           
+            $member->update($request->only([
+                'birthdate', 
+                'email', 
+                'mobile', 
+                'address']));
+            
+            DB::commit();
+            
+            return redirect()->route('admin.member.edit', $id)->with('status-success', 'Your profile has been updated');
+            
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**

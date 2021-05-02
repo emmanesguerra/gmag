@@ -1,7 +1,7 @@
 @extends('layouts.admin.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - PRODUCTS</title>
+<title>GOLDEN MAG - Member Info</title>
 @endsection
 
 @section('module-content')
@@ -10,10 +10,10 @@
     <div class='col-12 contentheader100'>
         My Profile
         
-        <span style='float: right; margin-right: 10px;'><a href='{{ route('profile.edit', $member->id) }}' class="btn btn-sm btn-success">Edit Profile</a></span>
+        <span style='float: right; margin-right: 10px;'><a href='{{ route('admin.member.edit', $member->id) }}' class="btn btn-sm btn-success">Edit Profile</a></span>
     </div>
     <div class='col-6 content-container' style='position: relative'>
-        <form method="POST" action="{{ route('profile.update', $member->id) }}" class='p-2' autocomplete="off" >
+        <form class='p-2' autocomplete="off" onsubmit="return false;" >
             <div class="form-group row field">
                 <label class="col-sm-4 col-form-label">My Referral Link:</label>
                 <div class="col-sm-6">

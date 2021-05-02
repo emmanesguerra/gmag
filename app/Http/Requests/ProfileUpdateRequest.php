@@ -17,6 +17,9 @@ class ProfileUpdateRequest extends FormRequest
         if(Auth::guard('web')->check()) {
             return true;
         }
+        if(Auth::guard('admin')->check()) {
+            return true;
+        }
         return false;
     }
 
