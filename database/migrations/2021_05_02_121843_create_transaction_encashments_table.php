@@ -27,6 +27,7 @@ class CreateTransactionEncashmentsTable extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
+            $table->index(['member_id']);
             $table->foreign('member_id')->references('id')->on('members');
         });
     }

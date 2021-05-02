@@ -70,6 +70,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/ewallet', 'WalletController@index')->name('wallet.index');
         Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');
         Route::get('/ewallet-history', 'WalletController@history')->name('wallet.history');
+        Route::get('/ewallet-history-data/{id}', 'WalletController@historydata')->name('wallet.history.data');
     });
 });
 
