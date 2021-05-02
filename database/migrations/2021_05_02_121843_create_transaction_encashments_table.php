@@ -16,6 +16,7 @@ class CreateTransactionEncashmentsTable extends Migration
         Schema::create('transaction_encashments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
+            $table->string('source', 20);
             $table->unsignedInteger('amount');
             $table->string('req_type', 20);
             $table->string('name', 150);

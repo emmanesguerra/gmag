@@ -26,7 +26,7 @@ class WalletController extends Controller
         {
             DB::beginTransaction();
             
-            $data = $request->only('amount', 'req_type', 'name', 'mobile');
+            $data = $request->only('source', 'amount', 'req_type', 'name', 'mobile');
             $data['member_id'] = Auth::id();
             
             TransactionEncashment::create($data);

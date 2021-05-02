@@ -10,10 +10,41 @@
 
 @section('module-content')
 
+
+<div class="row pb-0 px-3 pt-3">
+    <div class='col-4 pl-0'>
+        <div class='col-12 contentheader100'>
+            Direct Referral
+        </div>
+        <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #fadcae); border-radius: 0 0 6px 6px;">
+            <span class="dashamount" id='direct_referral'>{{ number_format($member->direct_referral, 2) }} <sup>PHP</sup></span>
+            <i class="fa fa-users pb-1" style="color: #f9bd61"></i>
+        </div>
+    </div>
+    <div class='col-4 px-0'>
+        <div class='col-12 contentheader100'>
+            Encoding Bonus <small>(Qualified)</small>
+        </div>
+        <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #f8daab); border-radius: 0 0 6px 6px;">
+            <span class="dashamount" id='encoding_bonus'>{{ number_format($member->encoding_bonus, 2) }} <sup>PHP</sup></span>
+            <i class="fa fa-edit pb-1" style="color: #f89c0e"></i>
+        </div>
+    </div>
+    <div class='col-4 pr-0'>
+        <div class='col-12 contentheader100'>
+            Sales Match Bonus
+        </div>
+        <div class='col-12 contentbody100 p-3' style="background-image: linear-gradient(to bottom right, #fff , #fff , #ee907d); border-radius: 0 0 6px 6px;">
+            <span class="dashamount" id='sales_match_bonus'>{{ number_format($member->matching_pairs, 2) }} <sup>PHP</sup></span>
+            <i class="fa fa-star pb-1" style="color: #e63816"></i>
+        </div>
+    </div>
+</div>
+
 <div class="row pb-0 px-3 pt-3">
     <div class='col-12 p-0' style="background-image: linear-gradient(to bottom right, #fff , #fff , #edebb1); border-radius: 6px;">
         <div class='col-12 contentheader100'>
-            Current E-Wallet Amount
+            Total E-Wallet Amount
         </div>
         <div class='col-12 contentbody100 p-3'>
             <span class="dashamount" id='curr_amount'>{{ number_format($member->total_amt, 2) }} <sup>PHP</sup></span>
@@ -31,10 +62,14 @@
             @csrf
             @include('common.serverresponse')
             <div class="form-group row field">
-                <label class="col-sm-3 col-form-label">Current Wallet Amount:</label>
+                <label class="col-sm-3 col-form-label">Select E-Wallet:</label>
                 <div class="col-sm-4">
-                    <span class="form-control form-control-lg border-0"><strong>{{ number_format($member->total_amt, 2) }}</strong> PHP</span>
-                    <input type="hidden" class="form-control form-control-sm "  name="total_amt" id='total_amt' value="{{ $member->total_amt }}">
+                    <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
+                        <option {{ (old('source') == 'direct_referral') ? 'selected': '' }} value='direct_referral'>Direct Referral</option>
+                        <option {{ (old('source') == 'encoding_bonus') ? 'selected': '' }} value='encoding_bonus'>Encoding Bonus</option>
+                        <option {{ (old('source') == 'matching_pairs') ? 'selected': '' }} value='matching_pairs'>Matching Pair</option>
+                    </select>
+                    <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
                 </div>
             </div>
             <div class="form-group row field">
@@ -91,4 +126,24 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('javascripts')
+    <script>
+        function updatesource (el) {
+            console.log($(el).val());
+            switch($(el).val()) {
+                case "direct_referral":
+                    $('#source_amount').val('{{ $member->direct_referral }}');
+                    break;
+                case "encoding_bonus":
+                    $('#source_amount').val('{{ $member->encoding_bonus }}');
+                    break;
+                case "matching_pairs":
+                    $('#source_amount').val('{{ $member->matching_pairs }}');
+                    break;
+            }
+            
+        }
+    </script>
 @endsection

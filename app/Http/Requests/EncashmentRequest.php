@@ -28,7 +28,8 @@ class EncashmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|gte:minimum_req|lte:total_amt',
+            'source' => 'required',
+            'amount' => 'required|gte:minimum_req|lte:source_amount',
             'req_type' => 'required',
             'name' => 'required',
             'mobile' => 'required|numeric',
