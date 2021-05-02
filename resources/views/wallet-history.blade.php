@@ -73,7 +73,7 @@
                         var stat = "";
                         switch(row.status) {
                             case "WA":
-                                stat = "Waiting for Approval";
+                                stat = "Waiting";
                                 break;
                             case "C":
                                 stat = "Confirmed";

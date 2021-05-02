@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.member.index') }}">
                     <span><i class="fas fa-tachometer-alt"></i></span>
                     <span>MEMBERS MENU</span>
                 </a>
@@ -24,7 +24,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.entrycodes.index') }}">
                     <span><i class="fa fa-sitemap"></i></span>
                     <span>MEMBERSHIP CODES</span>
                 </a>
@@ -33,16 +33,16 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.encashment.index') }}">
                     <span><i class="fa fa-envelope"></i></span>
                     <span>MEMBERS ENCASHMENT</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i>All Encashment Requests</a></li>
+                    <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i>All Encashment Requests</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.products.index') }}">
                     <span><i class="fa fa-shopping-bag"></i></span>
                     <span>Products</span>
                 </a>
@@ -53,7 +53,7 @@
                 </ul> 
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.controlpanel.index') }}">
                     <span><i class="fas fa-wallet"></i></span>
                     <span>ADMIN MENU</span>
                 </a>

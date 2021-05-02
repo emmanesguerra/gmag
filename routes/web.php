@@ -111,4 +111,8 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
     Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
     Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
+    
+    Route::get('/encashment-requests', 'Admin\EncashmentController@index')->name('admin.encashment.index');
+    Route::get('/encashment-data', 'Admin\EncashmentController@data')->name('admin.encashment.data');
+    Route::get('/encashment-reject', 'Admin\EncashmentController@reject')->name('admin.encashment.reject');
 });
