@@ -9,7 +9,7 @@ class TransactionEncashment extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     
-    protected $fillable = ['member_id', 'amount', 'req_type', 'name', 'mobile'];
+    protected $fillable = ['member_id', 'source', 'amount', 'req_type', 'name', 'mobile'];
     
     /*
      * For audit tags
