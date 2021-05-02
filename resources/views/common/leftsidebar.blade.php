@@ -57,9 +57,9 @@
                     <span>E-Wallet</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> My E-Wallet</a>
+                    <li><a href="{{ route('wallet.index') }}"><i class="fa fa-ellipsis-h"></i> My E-Wallet</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Transactions History</a>
+                    <li><a href=""{{ route('wallet.history') }}""><i class="fa fa-ellipsis-h"></i> Transactions History</a>
                     </li>
 
                 </ul>  

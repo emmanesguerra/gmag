@@ -66,6 +66,10 @@ Route::middleware('auth:web')->group(function () {
         
         Route::get('/switch', 'SwitchController@index')->name('switch.index');
         Route::get('/switch-acount/{id}', 'SwitchController@switchaccount')->name('switch.account');
+        
+        Route::get('/ewallet', 'WalletController@index')->name('wallet.index');
+        Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');
+        Route::get('/ewallet-history', 'WalletController@history')->name('wallet.history');
     });
 });
 
