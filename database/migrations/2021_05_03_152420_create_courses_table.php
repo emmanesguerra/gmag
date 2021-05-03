@@ -16,9 +16,9 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('title', 50);
-            $table->string('source', 10);
-            $table->string('link', 50);
-            $table->string('filename', 50);
+            $table->char('source', 1)->comment('1 = 3rd Party Program, 2 = File Upload');
+            $table->string('link', 50)->nullable();
+            $table->string('filename', 50)->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

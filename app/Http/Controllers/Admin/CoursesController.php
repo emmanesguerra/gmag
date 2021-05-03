@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CoursesCreateRequest;
+use App\Models\Course;
+use App\Library\DataTables;
 
 class CoursesController extends Controller
 {
+    const THIRD_PARTY = 1;
+    const HOSTED = 2;
+    
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,36 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.course.index');
+    }
+    
+    public function getdata(Request $request)
+    {
+        $tablecols = [
+            0 => 'created_at',
+            1 => 'title',
+            2 => 'source',
+            3 => 'link',
+            4 => 'filename'
+        ];
+        
+        $filteredmodel = DB::table('courses')
+                                ->select(DB::raw("title, 
+                                                source, 
+                                                link,
+                                                filename,
+                                                created_at,
+                                                id")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
 
     /**
@@ -42,14 +76,24 @@ class CoursesController extends Controller
         {
             DB::beginTransaction();
             
-            $upload = $request->file('fileToUpload');
-            $newname = time() . '_' . strtolower($upload->getClientOriginalName());
+            $course = new Course();
+            $course->title = $request->title;
+            $course->link = $request->link;
+            $course->source = self::THIRD_PARTY;
             
-            Storage::disk('courses')->put($newname, file_get_contents($upload));
+            if($request->hasFile('fileToUpload')) {
+                $upload = $request->file('fileToUpload');
+                $newname = time() . '_' . strtolower($upload->getClientOriginalName());
+                Storage::disk('courses')->put($newname, file_get_contents($upload));
+                
+                $course->filename = $newname;
+                $course->source = self::HOSTED;
+            }
             
+            $course->save();
             
             DB::commit();
-            return redirect()->route('admin.course.index')->with('status-success', 'Course [] has been added to the system');
+            return redirect()->route('admin.course.index')->with('status-success', 'Course ['.$request->title.'] has been added to the system');
             
         } catch (\Exception $ex) {
             DB::rollback();
@@ -101,6 +145,14 @@ class CoursesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $course = Course::find($id);
+        
+        if($course->source == self::HOSTED) {
+            Storage::disk('courses')->delete($course->filename);
+        }
+        
+        $course->delete();
+        
+        return redirect()->route('admin.course.index')->with('status-success', 'Course ['.$id.'] has been deleted to the system');
     }
 }

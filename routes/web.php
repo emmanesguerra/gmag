@@ -117,10 +117,11 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::post('/encashment-approve', 'Admin\EncashmentController@approve')->name('admin.encashment.approve');
     Route::delete('/encashment-reject', 'Admin\EncashmentController@reject')->name('admin.encashment.reject');
     
+    Route::get('/courses/data', 'Admin\CoursesController@getdata')->name('admin.course.data');
     Route::get('/courses', 'Admin\CoursesController@index')->name('admin.course.index');
     Route::get('/courses/create', 'Admin\CoursesController@create')->name('admin.course.create');
     Route::post('/courses', 'Admin\CoursesController@store')->name('admin.course.store');
     Route::get('/courses/{id}/edit', 'Admin\CoursesController@edit')->name('admin.course.edit');
     Route::put('/courses/{id}', 'Admin\CoursesController@update')->name('admin.course.update');
-    Route::delete('/courses/{id}', 'Admin\CoursesController@destory')->name('admin.course.destory');
+    Route::delete('/courses/{id}', 'Admin\CoursesController@destroy')->name('admin.course.destroy');
 });
