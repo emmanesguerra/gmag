@@ -22,4 +22,9 @@ class MembersEncashmentRequest extends Model implements Auditable
     {
         return ['displayToDashboard'];
     }
+    
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'id', 'member_id');
+    }
 }
