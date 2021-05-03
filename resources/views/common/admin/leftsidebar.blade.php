@@ -53,6 +53,17 @@
                 </ul> 
             </li>
             <li>
+                <a href="{{ route('admin.course.index') }}">
+                    <span><i class="fa fa-certificate"></i></span>
+                    <span>Courses</span>
+                </a>
+                <ul>
+                    <li><a href="{{ route('admin.course.index') }}"><i class="fa fa-ellipsis-h"></i> Courses Lists</a></li>
+                    <li><a href="{{ route('admin.course.create') }}"><i class="fa fa-ellipsis-h"></i> Create Course</a></li>
+
+                </ul> 
+            </li>
+            <li>
                 <a href="{{ route('admin.controlpanel.index') }}">
                     <span><i class="fas fa-wallet"></i></span>
                     <span>ADMIN MENU</span>
