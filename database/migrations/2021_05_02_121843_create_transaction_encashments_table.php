@@ -19,8 +19,9 @@ class CreateTransactionEncashmentsTable extends Migration
             $table->string('account_name');
             $table->string('account_number');
             $table->string('transaction_number');
-            $table->unsignedInteger('previous_amount');
-            $table->unsignedInteger('amount_sent');
+            $table->float('previous_amount');
+            $table->float('amount_deducted');
+            $table->float('new_amount');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

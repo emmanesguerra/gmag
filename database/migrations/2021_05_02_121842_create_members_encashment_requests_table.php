@@ -17,7 +17,7 @@ class CreateMembersEncashmentRequestsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('member_id');
             $table->string('source', 20);
-            $table->unsignedInteger('amount');
+            $table->float('amount');
             $table->string('req_type', 20);
             $table->string('name', 150);
             $table->string('mobile', 50);
