@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Library\DataTables;
-use App\Models\TransactionEncashment;
+use App\Models\MembersEncashmentRequest;
 use App\Http\Requests\ApproveEncashmentRequest;
 
 class EncashmentController extends Controller
@@ -32,7 +32,7 @@ class EncashmentController extends Controller
             9 => 'a.status',
         ];
         
-        $filteredmodel = DB::table('transaction_encashments as a')
+        $filteredmodel = DB::table('members_encashment_requests as a')
                                 ->join('members as b', 'b.id', '=', 'a.member_id')
                                 ->select(DB::raw("a.id, 
                                                 a.created_at,
@@ -66,7 +66,7 @@ class EncashmentController extends Controller
         {
             DB::beginTransaction();
             
-            $trans = TransactionEncashment::find($request->id);
+            $trans = MembersEncashmentRequest::find($request->id);
             $trans->tracking_no = $request->tracking_no;
             $trans->remarks = $request->remarks;
             $trans->status = 'C';
@@ -92,7 +92,7 @@ class EncashmentController extends Controller
                 throw new \Exception('Something is missing in your request. Please refresh the page.');
             }
             
-            $trans = TransactionEncashment::find($request->id);
+            $trans = MembersEncashmentRequest::find($request->id);
             $trans->status = 'X';
             $trans->save();
             

@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class TransactionEncashment extends Model implements Auditable
+class MembersEncashmentRequest extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+    
+    protected $fillable = ['member_id', 'source', 'amount', 'req_type', 'name', 'mobile'];
     
     /*
      * For audit tags

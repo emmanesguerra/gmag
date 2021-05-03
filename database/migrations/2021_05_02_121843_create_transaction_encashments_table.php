@@ -15,21 +15,18 @@ class CreateTransactionEncashmentsTable extends Migration
     {
         Schema::create('transaction_encashments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('member_id');
-            $table->string('source', 20);
-            $table->unsignedInteger('amount');
-            $table->string('req_type', 20);
-            $table->string('name', 150);
-            $table->string('mobile', 50);
-            $table->string('tracking_no', 150)->nullable();
-            $table->string('remarks', 200)->nullable();
-            $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed, X - Cancelled');
+            $table->unsignedBigInteger('encashment_req_id');
+            $table->string('account_name');
+            $table->string('account_number');
+            $table->string('transaction_number');
+            $table->unsignedInteger('previous_amount');
+            $table->unsignedInteger('amount_sent');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
-            $table->index(['member_id']);
-            $table->foreign('member_id')->references('id')->on('members');
+            $table->index(['encashment_req_id']);
+            $table->foreign('encashment_req_id')->references('id')->on('members_encashment_requests');
         });
     }
 

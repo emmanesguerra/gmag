@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EncashmentRequest;
-use App\Models\TransactionEncashment;
+use App\Models\MembersEncashmentRequest;
 use App\Library\DataTables;
 
 class WalletController extends Controller
@@ -29,7 +29,7 @@ class WalletController extends Controller
             $data = $request->only('source', 'amount', 'req_type', 'name', 'mobile');
             $data['member_id'] = Auth::id();
             
-            TransactionEncashment::create($data);
+            MembersEncashmentRequest::create($data);
             
             DB::commit();
                     
@@ -65,7 +65,7 @@ class WalletController extends Controller
             7 => 'status',
         ];
         
-        $filteredmodel = DB::table('transaction_encashments')
+        $filteredmodel = DB::table('members_encashment_requests')
                                 ->where('member_id', $id)
                                 ->select(DB::raw("amount, 
                                                 req_type, 

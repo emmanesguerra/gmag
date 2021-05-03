@@ -26,6 +26,9 @@ use App\Observers\TransactionBonusObserver;
 use App\Models\TransactionEncashment;
 use App\Observers\TransactionEncashmentObserver;
 
+use App\Models\MembersEncashmentRequest;
+use App\Observers\MembersEncashmentRequestObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -54,5 +57,6 @@ class AppServiceProvider extends ServiceProvider
         Transaction::observe(TransactionObserver::class);
         TransactionBonus::observe(TransactionBonusObserver::class);
         TransactionEncashment::observe(TransactionEncashmentObserver::class);
+        MembersEncashmentRequest::observe(MembersEncashmentRequestObserver::class);
     }
 }
