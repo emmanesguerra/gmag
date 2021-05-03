@@ -76,10 +76,10 @@
                                 stat = "Waiting";
                                 break;
                             case "C":
-                                stat = "Confirmed";
+                                stat = "<span class='text-success'>Confirmed</span>";
                                 break;
                             default:
-                                stat = "Cancelled";
+                                stat = "<span class='text-danger'>Cancelled</span>";
                                 break;
                         }
                         return stat;

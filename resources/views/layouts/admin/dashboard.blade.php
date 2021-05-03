@@ -66,6 +66,27 @@
         </div>
     </div>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        
+        var getAjaxErrorMessage = function (xHr) {
+            console.log(typeof(xHr.responseJSON.errors));
+            var error = '';
+            if(typeof(xHr.responseJSON.errors) !== 'undefined') {
+                $.each(xHr.responseJSON.errors, function(index, errors) {
+                    $.each(errors, function(index, err) {
+                        error += err + '<br />';
+                    });
+                });
+            } else {
+                error = xHr.responseJSON.message;
+            }
+            return error;
+        }
+
         var showdeletemodal = function (id, text, url) {
             $('#deletemodalform').attr('action', url)
             $('#idtobedeleted').html(id);

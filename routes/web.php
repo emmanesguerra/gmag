@@ -114,5 +114,6 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     
     Route::get('/encashment-requests', 'Admin\EncashmentController@index')->name('admin.encashment.index');
     Route::get('/encashment-data', 'Admin\EncashmentController@data')->name('admin.encashment.data');
-    Route::get('/encashment-reject', 'Admin\EncashmentController@reject')->name('admin.encashment.reject');
+    Route::post('/encashment-approve', 'Admin\EncashmentController@approve')->name('admin.encashment.approve');
+    Route::delete('/encashment-reject', 'Admin\EncashmentController@reject')->name('admin.encashment.reject');
 });

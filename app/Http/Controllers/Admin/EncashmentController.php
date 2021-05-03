@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Library\DataTables;
+use App\Models\TransactionEncashment;
+use App\Http\Requests\ApproveEncashmentRequest;
 
 class EncashmentController extends Controller
 {
@@ -56,5 +58,51 @@ class EncashmentController extends Controller
             'draw' => $request->draw,
             'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
             'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
+    public function approve(ApproveEncashmentRequest $request)
+    {
+        try 
+        {
+            DB::beginTransaction();
+            
+            $trans = TransactionEncashment::find($request->id);
+            $trans->tracking_no = $request->tracking_no;
+            $trans->remarks = $request->remarks;
+            $trans->status = 'C';
+            $trans->save();
+            
+            DB::commit();
+            return response(['success' => true], 200);
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return response(['success' => false,
+                'message' => $ex->getMessage()], 400);
+        }
+    }
+    
+    public function reject(Request $request)
+    {
+        try 
+        {
+            DB::beginTransaction();
+            
+            if(!$request->has('id') || empty($request->id)) {
+                throw new \Exception('Something is missing in your request. Please refresh the page.');
+            }
+            
+            $trans = TransactionEncashment::find($request->id);
+            $trans->status = 'X';
+            $trans->save();
+            
+            DB::commit();
+            return response(['success' => true], 200);
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return response(['success' => false,
+                'message' => $ex->getMessage()], 400);
+        }
     }
 }

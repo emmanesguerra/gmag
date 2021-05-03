@@ -35,13 +35,16 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    <form id="approvemodalform" method="POST" accept-charset="UTF-8" style="display:inline">
-                        @csrf
+                    <form accept-charset="UTF-8" style="display:inline">
+                        <div id="approve_resp" class="alert alert-danger" style="display:none;"></div>
                         <p>Please insert the tracking number to confirm</p>
+                        <input type='text' class='form-control form-control-lg' name='tracking_no' id='tracking_no' placeholder="Tracking Number" />
                         
-                        <input type='text' class='form-control form-control-lg' name='tracking_no'>
+                        <textarea name="remarks" id="remarks"  class='form-control form-control-lg mt-1' placeholder="Remarks" rows="3"></textarea>
                         
-                        <input class="btn btn-outline text-success" type="submit" value="Confirm">
+                        <input type='hidden' name="approve_id" id="approve_id" />
+                        
+                        <input id="confirm" class="btn btn-outline text-success" type="button" value="Confirm">
                     </form>
                     <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
                 </div>
@@ -53,12 +56,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div id="reject_resp" class="alert alert-danger" style="display:none;"></div>
                     <p>You are about to reject this request. Do you wish to continue?</p>
 
-                    <form id="rejectmodalform" method="POST" accept-charset="UTF-8" style="display:inline" class="center">
-                        <input name="_method" type="hidden" value="DELETE">
-                        @csrf
-                        <input class="btn btn-outline text-danger" type="submit" value="Reject">
+                    <form accept-charset="UTF-8" style="display:inline" class="center">
+                        <input type='hidden' name="reject_id" id="reject_id" />
+                        <input id="reject" class="btn btn-outline text-danger" type="button" value="Reject">
                         <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
                     </form>
                 </div>
@@ -78,17 +81,57 @@
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         
-        var showApproveModal = function (id, text, url) {
-            $('#approvemodalform').attr('action', url);
+        var showApproveModal = function (id) {
+            $('#approve_id').val(id);
+            $('#tracking_no').val('');
+            $('#remarks').val('');
+            $('#approve_resp').css('display', 'none');
             $('#approve-modal').modal('show');
         }
         
-        var showRejectModal = function (id, text, url) {
-            $('#rejectmodalform').attr('action', url);
+        var showRejectModal = function (id) {
+            $('#reject_id').val(id);
+            $('#reject_resp').css('display', 'none');
             $('#reject-modal').modal('show');
         }
         
-        $('#encashtable').DataTable({
+        $('#confirm').click(function() {
+            $.ajax({
+                url: '{{ route("admin.encashment.approve") }}',
+                method: 'POST',
+                data: {
+                    id: $('#approve_id').val(),
+                    tracking_no: $('#tracking_no').val(),
+                    remarks: $('#remarks').val()
+                }
+            }).done(function(response) {
+                $('#approve-modal').modal('hide');
+                encashtable.ajax.reload();
+            }).fail(function(XHR) {
+                var error = getAjaxErrorMessage(XHR);
+                $('#approve_resp').html(error);
+                $('#approve_resp').css('display', 'block');
+            });
+        });
+        
+        $('#reject').click(function() {
+            $.ajax({
+                url: '{{ route("admin.encashment.reject") }}',
+                method: 'DELETE',
+                data: {
+                    id: $('#reject_id').val()
+                }
+            }).done(function(response) {
+                $('#reject-modal').modal('hide');
+                encashtable.ajax.reload();
+            }).fail(function(XHR) {
+                var error = getAjaxErrorMessage(XHR);
+                $('#reject_resp').html(error);
+                $('#reject_resp').css('display', 'block');
+            });;
+        });
+        
+        var encashtable = $('#encashtable').DataTable({
             "ajax": {
                 "url": "{{ route('admin.encashment.data') }}"
             },
@@ -125,10 +168,10 @@
                                 stat = "Waiting";
                                 break;
                             case "C":
-                                stat = "Confirmed";
+                                stat = "<span class='text-success'>Confirmed</span>";
                                 break;
                             default:
-                                stat = "Cancelled";
+                                stat = "<span class='text-danger'>Cancelled</span>";
                                 break;
                         }
                         return stat;
@@ -137,7 +180,7 @@
                 {
                     data: function ( row, type, set ) {
                         if(row.status == 'WA') {
-                            return '<a href="#" onclick="showApproveModal(' + row.id + ',\'\', \'{{ route("admin.encashment.reject") }}\')">Confirm</a> | <a href="#" onclick="showRejectModal(' + row.id + ',\'\', \'{{ route("admin.encashment.reject") }}\')" class="text-danger">Cancel</a>';
+                            return '<a href="#" onclick="showApproveModal(' + row.id + ')">Confirm</a> | <a href="#" onclick="showRejectModal(' + row.id + ')" class="text-danger">Cancel</a>';
                         }
                         return '';
                     }
