@@ -15,8 +15,10 @@ namespace App\Library\Modules;
  */
 use App\Models\Member;
 use App\Models\MembersPlacement;
+use App\Models\MembersEncashmentRequest;
 use App\Models\Transaction;
 use App\Models\TransactionBonus;
+use App\Models\TransactionEncashment;
 use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
@@ -95,5 +97,34 @@ class TransactionLibrary {
         $bonus = SettingLibrary::retrieve($bonusType);
         
         return $price * $bonus;
+    }
+    
+    public static function saveEncashmentTransaction(MembersEncashmentRequest $cashreq)
+    {
+        $member = $cashreq->member;
+        $source = $cashreq->source;
+        $previousAmount = $member->$source;
+        $deductedAmount = $cashreq->amount;
+        $newAmount = $previousAmount - $deductedAmount;
+        
+        if($newAmount < 0) {
+            throw new \Exception('Not enough wallet amount');
+        }
+        
+        $trans = new TransactionEncashment();
+        $trans->encashment_req_id  = $cashreq->id;
+        $trans->account_name = $cashreq->name;
+        $trans->account_number = $cashreq->mobile;
+        $trans->transaction_number = $cashreq->tracking_no;
+        $trans->previous_amount = $previousAmount;
+        $trans->amount_deducted = $deductedAmount;
+        $trans->new_amount = $newAmount;
+        $trans->save();
+        
+        if($trans) {
+            $member->$source -= $deductedAmount;
+            $member->total_amt -= $deductedAmount;
+            $member->save();
+        }
     }
 }
