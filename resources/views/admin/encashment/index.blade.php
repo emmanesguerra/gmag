@@ -17,10 +17,10 @@
                     <th>Request Type</th>
                     <th>Fullname</th>
                     <th>Mobile</th>
-                    <th>Source Amount</th>
                     <th>Request Amount</th>
                     <th>Tracking No</th>
                     <th>Status</th>
+                    <th>Remarks</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -40,7 +40,7 @@
                         <p>Please insert the tracking number to confirm</p>
                         <input type='text' class='form-control form-control-lg' name='tracking_no' id='tracking_no' placeholder="Tracking Number" />
                         
-                        <textarea name="remarks" id="remarks"  class='form-control form-control-lg mt-1' placeholder="Remarks" rows="3"></textarea>
+                        <textarea name="remarks" id="approve_remarks"  class='form-control form-control-lg mt-1' placeholder="Remarks" rows="3"></textarea>
                         
                         <input type='hidden' name="approve_id" id="approve_id" />
                         
@@ -60,6 +60,8 @@
                     <p>You are about to reject this request. Do you wish to continue?</p>
 
                     <form accept-charset="UTF-8" style="display:inline" class="center">
+                        <textarea name="remarks" id="reject_remarks"  class='form-control form-control-lg mt-1' placeholder="Remarks" rows="3"></textarea>
+                        
                         <input type='hidden' name="reject_id" id="reject_id" />
                         <input id="reject" class="btn btn-outline text-danger" type="button" value="Reject">
                         <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
@@ -84,13 +86,14 @@
         var showApproveModal = function (id) {
             $('#approve_id').val(id);
             $('#tracking_no').val('');
-            $('#remarks').val('');
+            $('#approve_remarks').val('');
             $('#approve_resp').css('display', 'none');
             $('#approve-modal').modal('show');
         }
         
         var showRejectModal = function (id) {
             $('#reject_id').val(id);
+            $('#approve_remarks').val('');
             $('#reject_resp').css('display', 'none');
             $('#reject-modal').modal('show');
         }
@@ -102,7 +105,7 @@
                 data: {
                     id: $('#approve_id').val(),
                     tracking_no: $('#tracking_no').val(),
-                    remarks: $('#remarks').val()
+                    remarks: $('#approve_remarks').val()
                 }
             }).done(function(response) {
                 $('#approve-modal').modal('hide');
@@ -119,7 +122,8 @@
                 url: '{{ route("admin.encashment.reject") }}',
                 method: 'DELETE',
                 data: {
-                    id: $('#reject_id').val()
+                    id: $('#reject_id').val(),
+                    remarks: $('#reject_remarks').val()
                 }
             }).done(function(response) {
                 $('#reject-modal').modal('hide');
@@ -149,13 +153,6 @@
                 {"data": "mobile"},
                 {
                     data: function ( row, type, set ) {
-                        return Number(row.source_amount).toLocaleString("en", {minimumFractionDigits: 2});
-                    },
-                    "searchable": false,
-                    "orderable": false
-                },
-                {
-                    data: function ( row, type, set ) {
                         return Number(row.amount).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 },
@@ -177,6 +174,7 @@
                         return stat;
                     }
                 },
+                {"data": "remarks"},
                 {
                     data: function ( row, type, set ) {
                         if(row.status == 'WA') {

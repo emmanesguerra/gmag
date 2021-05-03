@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Library\DataTables;
+use App\Library\Modules\TransactionLibrary;
 use App\Models\MembersEncashmentRequest;
+use App\Models\TransactionEncashment;
 use App\Http\Requests\ApproveEncashmentRequest;
 
 class EncashmentController extends Controller
@@ -27,9 +29,9 @@ class EncashmentController extends Controller
             4 => 'a.name',
             5 => 'a.mobile',
             6 => 'a.amount',
-            7 => 'a.amount',
-            8 => 'a.tracking_no',
-            9 => 'a.status',
+            7 => 'a.tracking_no',
+            8 => 'a.status',
+            9 => 'a.remarks',
         ];
         
         $filteredmodel = DB::table('members_encashment_requests as a')
@@ -40,12 +42,8 @@ class EncashmentController extends Controller
                                                 a.req_type, 
                                                 a.name,
                                                 a.mobile,
-                                                CASE 
-                                                    WHEN a.source = 'direct_referral' THEN b.direct_referral
-                                                    WHEN a.source = 'encoding_bonus' THEN b.encoding_bonus
-                                                    ELSE b.matching_pairs
-                                                END as source_amount,
                                                 a.amount,
+                                                a.remarks,
                                                 a.tracking_no,
                                                 a.status")
                             );
@@ -72,6 +70,8 @@ class EncashmentController extends Controller
             $trans->status = 'C';
             $trans->save();
             
+            TransactionLibrary::saveEncashmentTransaction($trans);
+            
             DB::commit();
             return response(['success' => true], 200);
             
@@ -93,6 +93,7 @@ class EncashmentController extends Controller
             }
             
             $trans = MembersEncashmentRequest::find($request->id);
+            $trans->remarks = $request->remarks;
             $trans->status = 'X';
             $trans->save();
             
