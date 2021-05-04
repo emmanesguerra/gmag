@@ -12,10 +12,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-
     <!-- Styles -->
+    <!-- For font awesome -->
+    <link href="{{ asset('css/fonts.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>

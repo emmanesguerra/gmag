@@ -31,10 +31,10 @@
                     </td> <!-- lvl 0 -->
                 </tr>
                 <tr class='gtree-rw1' style="text-align: center">
-                    <td class="p-3 td-border-l" colspan="8">
+                    <td class="p-3 td-border-l" colspan="8" width="50%">
                         @include('gtree-members', ['data' => $member[1]])
                     </td>  <!-- lvl 1 -->
-                    <td class="p-3 td-border-r"  colspan="8">
+                    <td class="p-3 td-border-r"  colspan="8" width="50%">
                         @include('gtree-members', ['data' => $member[2]])
                     </td>
                 </tr>

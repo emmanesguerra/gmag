@@ -1,6 +1,3 @@
-// Fonts
-@import 'fonts';
-
 // Variables
 @import 'variables';
 
@@ -276,7 +273,6 @@
     color: #fff;
     
     .pagetitle100 {
-        font-family: 'Source Sans Pro', sans-serif;
         font-size: 18px;
         font-weight: 700;
     }
@@ -292,7 +288,6 @@
     color: #fff;
     font-weight: 600;
     font-size: 18px;
-    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .contentbody100 
@@ -336,8 +331,7 @@
         }
     
         td {
-            font-family: "Century Gothic";
-            font-size: 13px;
+            font-size: 16px;
 
             &.td-border-l {
                 border-right: 2px solid #666666;
