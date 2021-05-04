@@ -13,9 +13,6 @@
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300" rel="stylesheet" type="text/css">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
     
     <!-- For font awesome -->
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
@@ -25,7 +22,7 @@
     
     @yield('css')
 </head>
-<body style="background-color: #d5dae5; font-family: 'Source Sans Pro', sans-serif; line-height: 1.15;">
+<body style="background-color: #d5dae5; line-height: 1.15;">
     <div id="app" class="dashboard">
         <main style="float: left; width: 100%;">
             <div class="container p-0">
