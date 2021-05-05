@@ -22,6 +22,13 @@
             <input type="text" class="form-control form-control-sm" name="title" value="{{ old('title') }}">
         </div>
     </div>
+
+    <div class="form-group row field">
+        <label class="col-sm-3 col-form-label">Short Description :</label>
+        <div class="col-sm-3">
+            <textarea class="form-control form-control-sm mb-2" name='description'  rows='5'>{{ old('description') }}</textarea>
+        </div>
+    </div>
     <div class="form-group row field">
         <label class="col-sm-3 col-form-label">Link :</label>
         <div class="col-sm-3">
@@ -31,7 +38,13 @@
     <div class="form-group row field">
         <label class="col-sm-3 col-form-label">Upload File :</label>
         <div class="col-sm-3">
-            <input type="file" class="form-control form-control-sm" name="fileToUpload" style="border: 0">
+            <input type="file" class="form-control form-control-sm" name="videoFile" style="border: 0">
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label class="col-sm-3 col-form-label">Upload Thumbnail :</label>
+        <div class="col-sm-3">
+            <input type="file" class="form-control form-control-sm" name="thumbnail" style="border: 0">
         </div>
     </div>
 

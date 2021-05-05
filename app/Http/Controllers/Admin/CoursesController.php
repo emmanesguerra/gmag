@@ -78,16 +78,36 @@ class CoursesController extends Controller
             
             $course = new Course();
             $course->title = $request->title;
+            $course->description = $request->description;
             $course->link = $request->link;
             $course->source = self::THIRD_PARTY;
             
-            if($request->hasFile('fileToUpload')) {
-                $upload = $request->file('fileToUpload');
+            if($request->has('link') && !empty($request->link)) {
+                preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", 
+                        $request->link, 
+                        $matches);
+                if(isset($matches[1])) {
+                    $course->link_id = $matches[1];
+                } else {
+                    throw new \Exception('Unable to read youtube link format. Please try again');
+                }
+            }
+            
+            if($request->hasFile('videoFile')) {
+                $upload = $request->file('videoFile');
                 $newname = time() . '_' . strtolower($upload->getClientOriginalName());
                 Storage::disk('courses')->put($newname, file_get_contents($upload));
                 
                 $course->filename = $newname;
                 $course->source = self::HOSTED;
+                
+                if($request->hasFile('thumbnail')) {
+                    $thumbnail = $request->file('thumbnail');
+                    $newThumbnail = time() . '_' . strtolower($thumbnail->getClientOriginalName());
+                    Storage::disk('thumbnails')->put($newThumbnail, file_get_contents($thumbnail));
+                    
+                    $course->file_thumbnail = $newThumbnail;
+                }
             }
             
             $course->save();

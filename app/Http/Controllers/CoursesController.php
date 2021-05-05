@@ -12,7 +12,7 @@ class CoursesController extends Controller
     {
         $show = (isset($request->show)) ? $request->show: 10;
         
-        $courses = Course::select(['id', 'title', 'link', 'link_id', 'source', 'filename'])
+        $courses = Course::select(['id', 'title', 'description', 'link', 'link_id', 'source', 'filename', 'file_thumbnail'])
                         ->orderBy('id', 'desc')
                         ->paginate($show);
         

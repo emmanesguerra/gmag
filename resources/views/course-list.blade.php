@@ -24,18 +24,18 @@
                 <img src="https://img.youtube.com/vi/{{ $course->link_id }}/maxresdefault.jpg" class="card-img-top" alt="...">
                 @else 
                     @if(!empty($course->file_thumbnail))
-                    <img src="{{ asset('storage/courses/thumb/'. $course->file_thumbnail) }}" class="card-img-top" alt="...">
+                    <img src="{{ asset('storage/courses/thumb/'. $course->file_thumbnail) }}" class="card-img-top" alt="..." width="auto" height="196">
                     @else
                     <img src="{{ asset('images/blackvideo.jpg') }}" class="card-img-top" alt="..." height="196">
                     @endif
                 @endif
-                <div class="card-body">
-                    <h5 class="card-title">{{ $course->title }}</h5>
-                    <p class="card-text">{{ $course->description }}</p>
+                <div class="card-body d-flex" style=' flex-direction: column;'>
+                    <h4 class="card-title">{{ $course->title }}</h4>
+                    <p id='course-desc-{{$course->id}}' class="card-text" style='flex: 1;line-height: 22px;'>{{ $course->description }}</p>
                     @if ($course->source == 1)
                     <a href="{{ $course->link }}" target="_blank" class="btn btn-primary">Visit Link</a>
                     @else 
-                    <button type="button" class='btn btn-primary' onclick='watch(this, "{{ $course->title }}")' data-filepath="{{ asset('storage/courses/' . $course->filename) }}">
+                    <button type="button" class='btn btn-primary' onclick='watch(this, "{{ $course->title }}", "course-desc-{{$course->id}}")' data-filepath="{{ asset('storage/courses/' . $course->filename) }}">
                         Watch Course
                     </button>
                     @endif
@@ -59,6 +59,9 @@
                     <video id="video" controls="false" width="100%" style='display: none'></video>
                     <canvas style='display: flex' id="canvas" width="100%"></canvas>
                 </div>
+                <p id='modal-description' class=' pt-4' style='line-height: 22px;'>
+                    
+                </p>
             </div>
         </div>
     </div>
@@ -72,11 +75,13 @@
 @section('javascripts')    
     <script>
         
-        function watch(el, title) {
+        function watch(el, title, targetdesc) {
             var filepath = $(el).data('filepath');
             $('#video').attr('src', filepath); 
             $('#modal-title').html(title);
             $('#watchModal').modal('show');
+            var desc = $('#'+targetdesc).html();
+            $('#modal-description').html(desc);
         }
             
         var canvas = document.getElementById('canvas');

@@ -29,8 +29,8 @@ class CoursesCreateRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'link' => 'required_without:fileToUpload',
-            'fileToUpload' => 'required_without:link'
+            'link' => 'required_without:videoFile',
+            'videoFile' => 'required_without:link'
         ];
     }
 }
