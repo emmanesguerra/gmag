@@ -169,6 +169,10 @@ class CoursesController extends Controller
         
         if($course->source == self::HOSTED) {
             Storage::disk('courses')->delete($course->filename);
+            
+            if(!empty($course->file_thumbnail)) {
+                Storage::disk('thumbnails')->delete($course->file_thumbnail);
+            }
         }
         
         $course->delete();
