@@ -71,6 +71,8 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');
         Route::get('/ewallet-history', 'WalletController@history')->name('wallet.history');
         Route::get('/ewallet-history-data/{id}', 'WalletController@historydata')->name('wallet.history.data');
+        
+        Route::get('/courses', 'CoursesController@index')->name('course.index');
     });
 });
 

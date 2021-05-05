@@ -11,6 +11,7 @@
     
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
     <!-- For font awesome -->
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">

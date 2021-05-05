@@ -76,7 +76,7 @@
                 </ul>  
             </li>
             <li> 
-                <a href="#">
+                <a href="{{ route('course.index') }}">
                     <span><i class="fa fa-certificate"></i></span>
                     <span>COURSES</span>
                 </a>
