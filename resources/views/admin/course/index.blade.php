@@ -1,7 +1,7 @@
 @extends('layouts.admin.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - ENCASHMENT REQUESTS</title>
+<title>GOLDEN MAG - Courses</title>
 @endsection
 
 @section('module-content')
