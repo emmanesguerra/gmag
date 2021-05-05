@@ -142,7 +142,9 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $course = Course::find($id);
+        
+        return view('admin.course.edit', ['course' => $course]);
     }
 
     /**
@@ -154,7 +156,64 @@ class CoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            DB::beginTransaction();
+            
+            $course = Course::find($id);
+            $course->title = $request->title;
+            $course->description = $request->description;
+
+            if($course->source == self::THIRD_PARTY) {
+                $course->link = $request->link;
+                if($request->has('link') && !empty($request->link)) {
+                    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", 
+                            $request->link, 
+                            $matches);
+                    if(isset($matches[1])) {
+                        $course->link_id = $matches[1];
+                    } else {
+                        throw new \Exception('Unable to read youtube link format. Please try again');
+                    }
+                }
+            } else {
+                if($request->has('videoFile')) {
+                    $oldFilename = $course->filename;
+                    $upload = $request->file('videoFile');
+                    $newname = time() . '_' . strtolower($upload->getClientOriginalName());
+                    Storage::disk('courses')->put($newname, file_get_contents($upload));
+
+                    $course->filename = $newname;
+                    if($request->hasFile('thumbnail')) {
+                        $oldFileThumbnail = $course->file_thumbnail;
+                        $thumbnail = $request->file('thumbnail');
+                        $newThumbnail = time() . '_' . strtolower($thumbnail->getClientOriginalName());
+                        Storage::disk('thumbnails')->put($newThumbnail, file_get_contents($thumbnail));
+
+                        $course->file_thumbnail = $newThumbnail;
+                    }
+                }
+            }
+            
+            $course->save();
+            
+            if(isset($oldFilename)) {
+                Storage::disk('courses')->delete($oldFilename);
+            
+                if(isset($oldFileThumbnail)) {
+                    Storage::disk('thumbnails')->delete($oldFileThumbnail);
+                }
+            }
+            
+            DB::commit();
+            return redirect()->route('admin.course.index')->with('status-success', 'Course ['.$course->id.'] has been updated');
+            
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**
