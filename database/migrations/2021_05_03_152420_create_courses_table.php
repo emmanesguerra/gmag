@@ -20,7 +20,8 @@ class CreateCoursesTable extends Migration
             $table->char('source', 1)->comment('1 = 3rd Party Program, 2 = File Upload');
             $table->string('link', 250)->nullable();
             $table->string('link_id', 50)->nullable();
-            $table->string('filename', 50)->nullable();
+            $table->string('filename', 100)->nullable();
+            $table->string('file_thumbnail', 100)->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
