@@ -43,12 +43,12 @@
             </li>
             <li>
                 <a href="#">
-                    <span><i class="fa fa-envelope"></i></span>
-                    <span>Mail</span>
+                    <span><i class="fa fa-sitemap"></i></span>
+                    <span>Entry Codes</span>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> Code Vault</a>
-                    </li>
+                    <li><a href="{{ route('codevault.index') }}"><i class="fa fa-ellipsis-h"></i> Code Vault</a></li>
+                    <li><a href="{{ route('codevault.purchaseform') }}"><i class="fa fa-ellipsis-h"></i> Purchase Product</a></li>
                 </ul>
             </li>
             <li>
