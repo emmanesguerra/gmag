@@ -19,7 +19,7 @@
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table id='encashtable' class="table table-hover table-bordered text-center">
+                <table id='encashtable' class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
                             <th>ID</th>
