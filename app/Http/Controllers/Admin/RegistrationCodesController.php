@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\RegistrationCode;
 use App\Models\Product;
+use App\Library\Modules\EntryCodesLibrary;
 use App\Http\Requests\GenerateEntryCodeRequest;
 
 class RegistrationCodesController extends Controller
@@ -69,21 +70,9 @@ class RegistrationCodesController extends Controller
                 }
             }
             
-            $product = Product::find($request->product_id);
-            $data = array();
-            for ($i = 0; $i < $request->code_count; $i++) {
-                $data[] = [
-                    'assigned_to_member_id' => $assignedMember,
-                    'product_id' => $request->product_id,
-                    'remarks' => $request->remarks,
-                    'pincode1' => $product->registration_code_prefix . substr(strtoupper(bin2hex(random_bytes(10))), 0, 6),
-                    'pincode2' => substr(strtoupper(bin2hex(random_bytes(10))), 0, 8),
-                    'created_by' => Auth::id(),
-                    'created_at' => \Carbon\Carbon::now()
-                ];
-            }
+            $product = Product::find($request->product_id);   
             
-            RegistrationCode::insertOrIgnore($data);                
+            EntryCodesLibrary::createEntryCodes($product, $assignedMember, $request->code_count, $request->remarks);
             
             DB::commit();
             
