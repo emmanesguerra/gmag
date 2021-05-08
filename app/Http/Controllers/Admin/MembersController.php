@@ -18,19 +18,47 @@ class MembersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->search;
-        $show = (isset($request->show)) ? $request->show: 10;
+        return view('admin.members.index');
+    }
+    
+    public function data(Request $request)
+    {
+        $tablecols = [
+            0 => 'a.id',
+            1 => 'a.username',
+            2 => 'a.firstname',
+            3 => 'b.username',
+            4 => 'a.matching_pairs',
+            5 => 'a.direct_referral',
+            6 => 'a.encoding_bonus',
+            7 => 'a.total_amt',
+            8 => 'a.flush_pts',
+        ];
         
-        $members = Member::select(['id', 'sponsor_id', 'username', 'firstname', 'lastname', 'matching_pairs', 'direct_referral', 'encoding_bonus', 'total_amt', 'flush_pts'])
-                ->with(['sponsor' => function($query) {
-                    $query->select('id', 'username');
-                }])
-                ->search($search)->orderBy('id', 'desc')
-                ->paginate($show);
-        
-        return view('admin.members.index', ['members' => $members])->withQuery($search);
+        $filteredmodel = DB::table('members as a')
+                                ->leftjoin('members as b', 'b.id', '=', 'a.sponsor_id')
+                                ->select(DB::raw("a.id, 
+                                                a.username, 
+                                                a.firstname,
+                                                a.lastname,
+                                                a.matching_pairs,
+                                                a.direct_referral,
+                                                a.encoding_bonus,
+                                                a.total_amt,
+                                                a.flush_pts,
+                                                b.username as sponsor")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
 
     /**
@@ -193,17 +221,20 @@ class MembersController extends Controller
     {
         $tablecols = [
             0 => 'transaction_date',
-            1 => 'product_code',
-            2 => 'product_price',
-            3 => 'payment_method'
+            1 => 'transaction_type',
+            2 => 'product_code',
+            3 => 'product_price',
+            4 => 'payment_method'
         ];
         
         $filteredmodel = DB::table('transactions')
                                 ->where('member_id', $id)
-                                ->select(DB::raw("transaction_date, 
+                                ->select(DB::raw("transaction_date,  
+                                                transaction_type, 
                                                 product_code, 
                                                 product_price,
-                                                payment_method")
+                                                payment_method,
+                                                payment_source")
                             );
 
         $modelcnt = $filteredmodel->count();

@@ -112,6 +112,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::delete('/entry-codes/{id}', 'Admin\RegistrationCodesController@destroy')->name('admin.entrycodes.delete');
 
     Route::get('/members', 'Admin\MembersController@index')->name('admin.member.index');
+    Route::get('/members/data', 'Admin\MembersController@data')->name('admin.member.data');
     Route::get('/members/{id}', 'Admin\MembersController@show')->name('admin.member.show');
     Route::get('/members/{id}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
     Route::get('/members-visit', 'Admin\MembersController@visit')->name('admin.member.visit');

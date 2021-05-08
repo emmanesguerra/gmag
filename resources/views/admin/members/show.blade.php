@@ -20,7 +20,7 @@
                     <input type="text" id="copylink" class="form-control form-control-sm text-primary" value="{{ route('register', ['ref' => $member->referral_code]) }}" />
                 </div>
                 <div class="col-sm-2 ml-0 pl-0">
-                    <button type="button" class="btn btn-dark btn-sm" onclick="Copy()">Copy Link</button>
+                    <button type="button" class="btn btn-dark btn-sm" onclick="Copy()">Copy</button>
                 </div>
             </div>
             <div class="form-group row field">
@@ -137,7 +137,7 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
@@ -159,10 +159,11 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
+                                <th>Transaction Type</th>
                                 <th>Product</th>
                                 <th>Amount</th>
                                 <th>Payment Method</th>
@@ -239,7 +240,19 @@
                         return Number(row.acquired_amt).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 },
-                {"data": "type"},
+                {
+                    data: function ( row, type, set ) {
+                        switch(row.type)
+                        {
+                            case "MP":
+                                return 'Matching Pair';
+                                break;
+                            case "FP":
+                                return 'Flush Pair';
+                                break;
+                        }
+                    }
+                },
             ]
         });
         
@@ -272,13 +285,22 @@
                         return moment(row.transaction_date).format('MMMM DD, YYYY');
                     }
                 },
+                {"data": "transaction_type"},
                 {"data": "product_code"},
                 {
                     data: function ( row, type, set ) {
                         return Number(row.product_price).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 },
-                {"data": "payment_method"},
+                {
+                    data: function ( row, type, set ) {
+                        if(row.payment_method == 'ewallet') {
+                            return row.payment_method + ': ' + row.payment_source.replace('_', ' ');
+                        } else {
+                            return row.payment_method;
+                        }
+                    }
+                }
             ]
         });
     </script>
