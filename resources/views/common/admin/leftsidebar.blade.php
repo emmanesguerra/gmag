@@ -1,7 +1,7 @@
 <section class="side-nav-admin  mb-2">
     <div class="logo m-3 text-center">
         <span>
-            <img src='{{ asset('images/goal.png') }}' width='200' height="171">
+            <img src='{{ asset('images/goal.png') }}' width='170'>
         </span>
     </div>
     <nav>
@@ -9,7 +9,7 @@
             <li class="active">
                 <a href="#">
                     <span><i class="material-icons"></i></span>
-                    <span style="color:#900; font-weight:bold; font-size:16px;">ADMINISTRATOR MENU</span>
+                    <span style="color:#900; font-weight:bold; font-size:13px;">ADMINISTRATOR MENU</span>
                 </a>
             </li>
             <li>
@@ -21,24 +21,9 @@
                     <li><a href="{{ route('admin.member.index') }}"><i class="fa fa-ellipsis-h"></i> Dashboard</a></li>
                     <li><a href="{{ route('admin.transactions.index') }}"><i class="fa fa-ellipsis-h"></i> Transactions</a></li>
                     <li><a href="{{ route('admin.transactions.bonus') }}"><i class="fa fa-ellipsis-h"></i> Transaction Bonuses</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="{{ route('admin.entrycodes.index') }}">
-                    <span><i class="fa fa-sitemap"></i></span>
-                    <span>MEMBERSHIP CODES</span>
-                </a>
-                <ul>
-                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> ENTRY CODES</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="{{ route('admin.encashment.index') }}">
-                    <span><i class="fa fa-envelope"></i></span>
-                    <span>MEMBERS ENCASHMENT</span>
-                </a>
-                <ul>
-                    <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i>All Encashment Requests</a></li>
+                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> Entry Codes</a></li>
+                    <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i> Encashment Requests</a></li>
+                    <li><a href="{{ route('admin.memberusername.index') }}"><i class="fa fa-ellipsis-h"></i> Change Username</a></li>
                 </ul>
             </li>
             <li>
@@ -47,8 +32,8 @@
                     <span>Products</span>
                 </a>
                 <ul>
-                    <li><a href="{{ route('admin.products.index') }}"><i class="fa fa-ellipsis-h"></i> Recent Products</a></li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i> PRODUCT CODES</a></li>
+                    <li><a href="{{ route('admin.products.index') }}"><i class="fa fa-ellipsis-h"></i> Product Lists</a></li>
+                    <li><a href="{{ route('admin.products.create') }}"><i class="fa fa-ellipsis-h"></i> Create Product</a></li>
 
                 </ul> 
             </li>
@@ -70,8 +55,7 @@
                 </a>
                 <ul>
                     <li><a href="{{ route('admin.controlpanel.index') }}"><i class="fa fa-ellipsis-h"></i> Control Panel</a></li>
-                    <li><a href="{{ route('admin.member.visit') }}"><i class="fa fa-ellipsis-h"></i> Member's Log</a></li>
-                    <li><a href="{{ route('admin.memberusername.index') }}"><i class="fa fa-ellipsis-h"></i> Change Members Username</a></li>
+                    <li><a href="{{ route('admin.member.visit') }}"><i class="fa fa-ellipsis-h"></i> Access Log</a></li>
                     <li><a href="{{ route('admin.changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
                     <li><a href="#" onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fa fa-ellipsis-h"></i> Logout</a>

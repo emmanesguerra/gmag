@@ -124,7 +124,7 @@
         .side-nav-admin,
         .side-nav {
             float: left;
-            width: 250px;
+            width: 200px;
             background: #fff;
             
             ul {
@@ -165,6 +165,8 @@
                         li {
                             padding-top: 18px;
                             padding-bottom: 0px;
+                            padding-left: 8px;
+                            padding-right: 0px;
                             opacity: .8;
                             margin-bottom: 0;
                             margin-left: 0;
