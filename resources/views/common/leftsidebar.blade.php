@@ -1,7 +1,7 @@
 <section class="side-nav">
     <div class="logo m-3">
         <span>
-            <img src='{{ asset('images/goal.png') }}' width='150' height="120">
+            <img src='{{ asset('images/goal.png') }}' width='200' height="170">
         </span>
     </div>
     <nav>
