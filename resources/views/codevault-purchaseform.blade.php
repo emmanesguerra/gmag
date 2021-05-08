@@ -54,7 +54,7 @@
 </div>
 
 <div class="row p-3">
-    <div id='binary_status' class='col-12 contentheader100'>
+    <div id='payment_form' class='col-12 contentheader100'>
         Purchase Form
     </div>
     <div class='col-12 content-container' style='position: relative'>
@@ -75,6 +75,12 @@
                 <label  class="col-sm-3 col-form-label">Quantity: </label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control form-control-sm "  name="quantity" id='quantity' value="{{ old('quantity') }}" onchange="updateTotalAmount(this)">
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">Total Amount: </label>
+                <div class="col-sm-4">
+                    <span class="form-control form-control-sm" id='total_amount_s'>{{ old('total_amount') }}</span>
                     <input type="hidden" class="form-control form-control-sm "  name="total_amount" id='total_amount' value="{{ old('total_amount') }}">
                 </div>
             </div>
@@ -91,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group row field" id="wallter-cont">
+            <div class="form-group row field" id="wallter-cont" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
                 <label  class="col-sm-3 col-form-label">Select a Wallet:</label>
                 <div class="col-sm-4">
                     <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
@@ -99,6 +105,12 @@
                         <option {{ (old('source') == 'encoding_bonus') ? 'selected': '' }} value='encoding_bonus'>Encoding Bonus</option>
                         <option {{ (old('source') == 'matching_pairs') ? 'selected': '' }} value='matching_pairs'>Matching Pair</option>
                     </select>
+                </div>
+            </div>
+            <div class="form-group row field" id="wallter-cont2" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
+                <label  class="col-sm-3 col-form-label">Source Amount: </label>
+                <div class="col-sm-4">
+                    <span class="form-control form-control-sm" id='source_amount_s'>{{ old('source_amount') }}</span>
                     <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
                 </div>
             </div>
@@ -120,17 +132,20 @@
     <script>
         
         function updatesource (el) {
+            var value = '';
             switch($(el).val()) {
                 case "direct_referral":
-                    $('#source_amount').val('{{ $member->direct_referral }}');
+                    value = '{{ ($member->direct_referral) ? $member->direct_referral: 0 }}';
                     break;
                 case "encoding_bonus":
-                    $('#source_amount').val('{{ $member->encoding_bonus }}');
+                    value = '{{ ($member->encoding_bonus) ? $member->encoding_bonus: 0 }}';
                     break;
                 case "matching_pairs":
-                    $('#source_amount').val('{{ $member->matching_pairs }}');
+                    value = '{{ ($member->matching_pairs) ? $member->matching_pairs: 0 }}';
                     break;
             }
+            $('#source_amount').val(value);
+            $('#source_amount_s').html(value);
         }
         
         function updateTotalAmount() {
@@ -143,15 +158,19 @@
                     break;
                 @endforeach
             }
-            $('#total_amount').val(packageAmt * quantity);
+            var ttl_amt = packageAmt * quantity;
+            $('#total_amount').val(ttl_amt);
+            $('#total_amount_s').html(ttl_amt);
         }
         
         $('input[type=radio][name=payment_method]').change(function() {
             if (this.value == 'ewallet') {
                 $('#wallter-cont').css('visibility', 'visible');
+                $('#wallter-cont2').css('visibility', 'visible');
             }
             else if (this.value == 'paynamics') {
                 $('#wallter-cont').css('visibility', 'hidden');
+                $('#wallter-cont2').css('visibility', 'hidden');
             }
         });
     </script>
