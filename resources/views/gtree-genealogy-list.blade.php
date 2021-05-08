@@ -65,7 +65,11 @@
                         return row.firstname + " " + row.lastname;
                     }
                 },
-                {"data": "lvl"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.lvl - {{ $lvl }};
+                    }
+                },
                 {
                     data: function ( row, type, set ) {
                         return row.name + " | " + Number(row.price).toLocaleString("en", {minimumFractionDigits: 2});
