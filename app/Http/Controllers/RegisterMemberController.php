@@ -71,8 +71,6 @@ class RegisterMemberController extends Controller
                     
                     MembersLibrary::searchForTodaysPair($member->placement->placement_id);
                     
-                    TransactionLibrary::saveProductPurchase($member);
-                    
                     TransactionLibrary::saveDirectReferralBonus($member);
                     
                     TransactionLibrary::saveEncodingBonus($member);
