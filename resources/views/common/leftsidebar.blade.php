@@ -43,7 +43,7 @@
             </li>
             <li>
                 <a href="#">
-                    <span><i class="fa fa-sitemap"></i></span>
+                    <span><i class="fa fa-folder-open "></i></span>
                     <span>Entry Codes</span>
                 </a>
                 <ul>

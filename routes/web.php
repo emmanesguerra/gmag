@@ -75,6 +75,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/courses', 'CoursesController@index')->name('course.index');
         
         Route::get('/code-vault', 'CodeVaultController@index')->name('codevault.index');
+        Route::get('/code-vault/{id}/data', 'CodeVaultController@data')->name('codevault.data');
         Route::get('/code-vault/purchase', 'CodeVaultController@purchaseform')->name('codevault.purchaseform');
         Route::post('/code-vault/purchase', 'CodeVaultController@purchase')->name('codevault.purchase');
     });

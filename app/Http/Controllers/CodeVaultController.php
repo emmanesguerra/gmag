@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Library\DataTables;
 use App\Library\Modules\TransactionLibrary;
 use App\Library\Modules\EntryCodesLibrary;
 use App\Library\Modules\PaynamicsLibrary;
@@ -16,7 +17,45 @@ class CodeVaultController extends Controller
     //
     public function index()
     {
+        $member = Auth::user();
         
+        return view('codevault-list', ['member' => $member]);
+    }
+    
+    public function data(Request $request, $id)
+    {
+        $tablecols = [
+            0 => 'a.id',
+            1 => 'a.created_at',
+            2 => 'a.pincode1',
+            3 => 'a.pincode2',
+            4 => 'b.name',
+            5 => 'b.price',
+            6 => 'a.is_used',
+            7 => 'a.remarks',
+        ];
+        
+        $filteredmodel = DB::table('registration_codes as a')
+                                ->join('products as b', 'b.id', '=', 'a.product_id')
+                                ->where('a.assigned_to_member_id', $id)
+                                ->select(DB::raw("a.id, 
+                                                a.created_at, 
+                                                a.pincode1,
+                                                a.pincode2,
+                                                b.name,
+                                                b.price,
+                                                a.is_used,
+                                                a.remarks")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
     
     public function purchaseform()
