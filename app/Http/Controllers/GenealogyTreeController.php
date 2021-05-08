@@ -241,26 +241,57 @@ class GenealogyTreeController extends Controller
     
     public function genealogy(Request $request)
     {
-        $show = (isset($request->show)) ? $request->show: 10;
+        $member = Auth::user();
         
-        $palacement = MembersPlacement::where('member_id', Auth::id())->first();
+        return view('gtree-genealogy-list', ['member' => $member]);
+    }
+    
+    public function genealogydata(Request $request, $id)
+    {
+        $tablecols = [
+            0 => 'a.created_at',
+            1 => 'b.username',
+            2 => 'b.firstname',
+            3 => 'a.lvl',
+            4 => 'c.name',
+            5 => 'd.username'
+        ];
         
-        $members = MembersPlacement::select('member_id', 'product_id', 'lvl', 'created_at')
-                            ->whereBetween('lft', [$palacement->lft, $palacement->rgt])
-                            ->where('member_id', '!=', $palacement->member_id)
-                            ->with(['product' => function($query) {
-                                $query->select('id', 'code', 'price');
-                            }, 'member' => function($query) {
-                                $query->select('id', 'username', 'firstname', 'lastname', 'sponsor_id')
-                                      ->with(['sponsor' => function($query) {
-                                          $query->select('id', 'username');
-                                      }]);
-                            }])
-                            ->orderBy('lvl', 'asc')
-                            ->orderBy('lft', 'asc')
-                            ->paginate($show);
+        $placement = MembersPlacement::where('member_id', $id)->first();
         
-        return view('gtree-genealogy-list', ['members' => $members, 'lvl' => $palacement->lvl]);
+        if($placement) {
+            
+            $filteredmodel = DB::table('members_placements as a')
+                                    ->join('members as b', 'b.id', '=', 'a.member_id')
+                                    ->join('members as d', 'd.id', '=', 'b.sponsor_id')
+                                    ->join('products as c', 'c.id', '=', 'a.product_id')
+                                    ->whereBetween('a.lft', [$placement->lft, $placement->rgt])
+                                    ->where('a.member_id', '!=', $placement->member_id)
+                                    ->select(DB::raw("a.created_at,
+                                                    b.username,
+                                                    b.firstname,
+                                                    b.lastname,
+                                                    a.lvl,
+                                                    c.name,
+                                                    c.price,
+                                                    d.username as sponsor
+                                                    ")
+                                );
+
+            $modelcnt = $filteredmodel->count();
+
+            $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+            return response(['data'=> $data,
+                'draw' => $request->draw,
+                'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+                'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+        }
+        
+        return response(['data'=> [],
+            'draw' => $request->draw,
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0], 200);
     }
     
     public function binary(Request $request)

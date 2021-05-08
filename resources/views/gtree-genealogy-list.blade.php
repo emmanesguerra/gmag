@@ -15,34 +15,11 @@
     <div class='col-12 contentheader100'>
         Genealogy List
     </div>
-    <div class='col-12 content-container' style='position: relative'>
-        
-        <div class="row my-3">
-            <div class="col-sm-6">
-                <form class="form-inline"  method="GET" action="{{ route('gtree.genealogy') }}">
-                    <div class="col-sm-3">
-                        <div class="form-group row">
-                            <label for="staticEmail" class="col-sm-4 col-form-label">Show</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name='show' onChange="this.form.submit()">
-                                    @foreach([10,15,20,25] as $ctr)
-                                    @if(Request::get('show') == $ctr)
-                                    <option selected>{{ $ctr }}</option>
-                                    @else 
-                                    <option>{{ $ctr }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class='col-12 content-container py-3' style='position: relative'>
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table class="table table-hover table-bordered text-center">
+                <table id="geneology-table" class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
                             <th>Date Registered</th>
@@ -53,21 +30,7 @@
                             <th>Sponsor</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($members as $member)
-                        <tr>
-                            <td>{{ $member->created_at }}</td>
-                            <td>{{ $member->member->username }}</td>
-                            <td>{{ $member->member->firstname }} {{ $member->member->lastname }}</td>
-                            <td>{{ $member->lvl - $lvl }}</td>
-                            <td>{{ $member->product->code }} | {{ $member->product->price }}</td>
-                            <td>{{ $member->member->sponsor->username }}</td>
-                        </tr>
-                        @endforeach 
-                    </tbody>
                 </table>
-
-                {{ $members->withQueryString()->links() }}
             </div>
         </div>
         
@@ -75,5 +38,41 @@
 </div>
 @endsection
 
+@section('css')
+    <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+@endsection
+
 @section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
+    <script>
+        $('#geneology-table').DataTable({
+            "ajax": {
+                "url": "{{ route('gtree.genealogydata', $member->id) }}"
+            },
+            serverSide: true,
+            responsive: true,
+            processing: true,
+            "columns": [
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.created_at).format('MMMM DD, YYYY h:m A');
+                    }
+                },
+                {"data": "username"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.firstname + " " + row.lastname;
+                    }
+                },
+                {"data": "lvl"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.name + " | " + Number(row.price).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+                {"data": "sponsor"}
+            ]
+        });
+    </script>
 @endsection
