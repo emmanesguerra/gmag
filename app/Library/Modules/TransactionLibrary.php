@@ -13,6 +13,7 @@ namespace App\Library\Modules;
  *
  * @author alvin
  */
+use App\Models\Product;
 use App\Models\Member;
 use App\Models\MembersPlacement;
 use App\Models\MembersEncashmentRequest;
@@ -22,29 +23,38 @@ use App\Models\TransactionEncashment;
 use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
-    //put your code here
-    
-    public static function saveProductPurchase(Member $member, $paymentMethod = 'site_reg')
+    //put your code here    
+    public static function saveProductPurchase(Member $member, Product $product, int $quantity, string $paymentMethod, string $source = null)
     {
-        $price = $member->placement->product->price;
+        $totalAmount = $product->price * $quantity;
         
-        Transaction::create([
+        $transaction = Transaction::create([
             'member_id' => $member->id,
-            'product_id' => $member->placement->product_id,
+            'product_id' => $product->id,
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'email' => $member->email,
-            'product_code' => $member->placement->product->code,
-            'product_price' => $price,
+            'product_code' => $product->code,
+            'product_price' => $product->price,
+            'quantity' => $quantity,
+            'total_amount' => $totalAmount,
             'transaction_date' => date('Y-m-d h:i:s'),
             'payment_method' => $paymentMethod
         ]);
         
-        if($paymentMethod == 'e_wallet') {
-            $member->purchased += $price;
-            $member->total_amt -= $price;
-            $member->save();
+        if($transaction) {
+            if($paymentMethod == 'e_wallet') {
+                if(empty($source)) {
+                    throw new \Exception('Unable to retrieve the payment source. Please refresh the page.');
+                }
+                $member->$source -= $totalAmount;
+                $member->purchased += $totalAmount;
+                $member->total_amt -= $totalAmount;
+                $member->save();
+            }
         }
+        
+        return $transaction;
     }
     
     public static function saveDirectReferralBonus(Member $member)
@@ -92,7 +102,7 @@ class TransactionLibrary {
         }
     }
     
-    private static function ComputeMemberBonus($price, $bonusType)
+    private static function ComputeMemberBonus(int $price, string $bonusType)
     {
         $bonus = SettingLibrary::retrieve($bonusType);
         
