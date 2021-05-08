@@ -43,7 +43,7 @@ class TransactionLibrary {
         ]);
         
         if($transaction) {
-            if($paymentMethod == 'e_wallet') {
+            if($paymentMethod == 'ewallet') {
                 if(empty($source)) {
                     throw new \Exception('Unable to retrieve the payment source. Please refresh the page.');
                 }
