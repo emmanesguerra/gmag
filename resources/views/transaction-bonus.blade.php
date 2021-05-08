@@ -41,7 +41,7 @@
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table class="table table-hover table-bordered text-center">
+                <table class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -80,7 +80,7 @@
                             @else
                             <td>0</td>
                             @endif
-                            <td>{{ $tran->created_at }}</td>
+                            <td>{{ $tran->created_at->format('M d, Y h:i A') }}</td>
                         </tr>
                         @endforeach 
                     </tbody>
