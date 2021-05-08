@@ -60,7 +60,7 @@
                 {"data": "id"},
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.created_at).format('MMMM DD, YYYY h:m A');
+                        return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "req_type"},
