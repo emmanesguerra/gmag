@@ -121,6 +121,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::put('/members/{id}', 'Admin\MembersController@update')->name('admin.member.update');
 
     Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
+    Route::get('/transactions-data', 'Admin\TransactionsController@data')->name('admin.transactions.data');
     Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
     
     Route::get('/encashment-requests', 'Admin\EncashmentController@index')->name('admin.encashment.index');

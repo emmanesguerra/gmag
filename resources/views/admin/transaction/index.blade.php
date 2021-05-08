@@ -6,37 +6,10 @@
 
 @section('module-content')
 
-<div class="row my-3">
-    <div class="col-sm-6">
-        <form class="form-inline"  method="GET" action="{{ route('admin.transactions.index') }}">
-            <div class="col-sm-3">
-                <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-4 col-form-label">Show</label>
-                    <div class="col-sm-6">
-                        <select class="form-control" name='show' onChange="this.form.submit()">
-                            @foreach([10,15,20,25] as $ctr)
-                            @if(Request::get('show') == $ctr)
-                            <option selected>{{ $ctr }}</option>
-                            @else 
-                            <option>{{ $ctr }}</option>
-                            @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-9">
-                <div class="form-group row">
-                    <input class="form-control col-12" type="search" name="search" value='{{ Request::get('search') }}' placeholder="Search" aria-label="Search" onChange="this.form.submit()">
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 @include('common.serverresponse')
 <div class="row">
-    <div class="col-12">
-        <table class="table table-hover table-striped text-center">
+    <div class="col-12 py-3">
+        <table id="transaction-table" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -44,30 +17,74 @@
                     <th>Email</th>
                     <th>Product Code</th>
                     <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
                     <th>Transaction Date</th>
+                    <th>Transaction Type</th>
                     <th>Package Claimed</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($trans as $tran)
-                <tr>
-                    <th>{{ $tran->id }}</th>
-                    <td style="text-align: left">{{ $tran->firstname }} {{ $tran->lastname }}</td>
-                    <td style="text-align: left">{{ $tran->email }}</td>
-                    <td >{{ $tran->product_code }}</td>
-                    @if($tran->product_price > 0)
-                    <td>{{ number_format($tran->product_price, 2) }}</td>
-                    @else
-                    <td>0</td>
-                    @endif
-                    <td>{{$tran->transaction_date}}</td>
-                    <td>{{ ($tran->package_claimed) ? "YES" : "NO" }}</td>
-                </tr>
-                @endforeach 
-            </tbody>
         </table>
-
-        {{ $trans->withQueryString()->links() }}
     </div>
 </div>
+@endsection
+
+@section('css')
+    <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
+    <script>
+        $('#transaction-table').DataTable({
+            "ajax": {
+                "url": "{{ route('admin.transactions.data') }}"
+            },
+            serverSide: true,
+            responsive: true,
+            processing: true,
+            "columns": [
+                {"data": "id"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.firstname + ' ' + row.lastname;
+                    }
+                },
+                {"data": "email"},
+                {"data": "product_code"},
+                {
+                    data: function ( row, type, set ) {
+                        return Number(row.product_price).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+                {"data": "quantity"},
+                {
+                    data: function ( row, type, set ) {
+                        return Number(row.total_amount).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.transaction_date).format('MMMM DD, YYYY hh:mm A');
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        if(row.payment_method == 'ewallet') {
+                            return row.payment_method + ': ' + row.payment_source.replace('_', ' ');
+                        } else {
+                            return row.payment_method;
+                        }
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        return (row.package_claimed) ? 'Yes' : 'No';
+                    }
+                }
+            ],
+            "order": [[ 0, "desc" ]]
+        });
+    </script>
 @endsection

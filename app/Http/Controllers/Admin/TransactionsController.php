@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Transaction;
 use App\Models\TransactionBonus;
+use App\Library\DataTables;
 
 class TransactionsController extends Controller
 {
@@ -25,6 +27,48 @@ class TransactionsController extends Controller
         
         return view('admin.transaction.index', ['trans' => $trans])->withQuery($search);
     }
+    
+    public function data(Request $request)
+    {
+        $tablecols = [
+            0 => 'id',
+            1 => 'firstname',
+            2 => 'email',
+            3 => 'product_code',
+            4 => 'product_price',
+            5 => 'quantity',
+            6 => 'total_amount',
+            7 => 'transaction_date',
+            8 => 'transaction_type',
+            9 => 'package_claimed'
+        ];
+        
+        $filteredmodel = DB::table('transactions')
+                                ->select(DB::raw("id, 
+                                                firstname, 
+                                                lastname,
+                                                email,
+                                                product_code,
+                                                product_price,
+                                                transaction_date,
+                                                transaction_type,
+                                                package_claimed,
+                                                quantity,
+                                                total_amount,
+                                                payment_method,
+                                                payment_source")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
     /**
      * Display a listing of the resource.
      *
