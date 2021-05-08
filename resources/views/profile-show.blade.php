@@ -169,6 +169,7 @@
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
+                                <th>Transaction Type</th>
                                 <th>Product</th>
                                 <th>Amount</th>
                                 <th>Payment Method</th>
@@ -289,13 +290,22 @@
                         return moment(row.transaction_date).format('MMMM DD, YYYY');
                     }
                 },
+                {"data": "transaction_type"},
                 {"data": "product_code"},
                 {
                     data: function ( row, type, set ) {
                         return Number(row.product_price).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 },
-                {"data": "payment_method"},
+                {
+                    data: function ( row, type, set ) {
+                        if(row.payment_method == 'ewallet') {
+                            return row.payment_method + ': ' + row.payment_source.replace('_', ' ');
+                        } else {
+                            return row.payment_method;
+                        }
+                    }
+                }
             ]
         });
     </script>

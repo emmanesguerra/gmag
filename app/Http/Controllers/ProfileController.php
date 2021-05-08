@@ -169,17 +169,20 @@ class ProfileController extends Controller
     {
         $tablecols = [
             0 => 'transaction_date',
-            1 => 'product_code',
-            2 => 'product_price',
-            3 => 'payment_method'
+            1 => 'transaction_type',
+            2 => 'product_code',
+            3 => 'product_price',
+            4 => 'payment_method'
         ];
         
         $filteredmodel = DB::table('transactions')
                                 ->where('member_id', $id)
-                                ->select(DB::raw("transaction_date, 
+                                ->select(DB::raw("transaction_date,  
+                                                transaction_type, 
                                                 product_code, 
                                                 product_price,
-                                                payment_method")
+                                                payment_method,
+                                                payment_source")
                             );
 
         $modelcnt = $filteredmodel->count();
