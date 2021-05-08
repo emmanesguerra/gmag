@@ -14,21 +14,31 @@
             </li>
             <li>
                 <a href="{{ route('admin.member.index') }}">
-                    <span><i class="fas fa-tachometer-alt"></i></span>
+                    <span><i class="fas fa-address-book"></i></span>
                     <span>MEMBERS MENU</span>
                 </a>
                 <ul>
                     <li><a href="{{ route('admin.member.index') }}"><i class="fa fa-ellipsis-h"></i> Dashboard</a></li>
                     <li><a href="{{ route('admin.transactions.index') }}"><i class="fa fa-ellipsis-h"></i> Transactions</a></li>
                     <li><a href="{{ route('admin.transactions.bonus') }}"><i class="fa fa-ellipsis-h"></i> Transaction Bonuses</a></li>
-                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> Entry Codes</a></li>
                     <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i> Encashment Requests</a></li>
                     <li><a href="{{ route('admin.memberusername.index') }}"><i class="fa fa-ellipsis-h"></i> Change Username</a></li>
                 </ul>
             </li>
             <li>
+                <a href="{{ route('admin.entrycodes.index') }}">
+                    <span><i class="fa fa-folder-open"></i></span>
+                    <span>Registration Codes</span>
+                </a>
+                <ul>
+                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> Entry Codes</a></li>
+                    <li><a href="{{ route('admin.entrycodes.create') }}"><i class="fa fa-ellipsis-h"></i> Create Codes</a></li>
+
+                </ul> 
+            </li>
+            <li>
                 <a href="{{ route('admin.products.index') }}">
-                    <span><i class="fa fa-shopping-bag"></i></span>
+                    <span><i class="fa fa-shopping-cart"></i></span>
                     <span>Products</span>
                 </a>
                 <ul>
@@ -39,7 +49,7 @@
             </li>
             <li>
                 <a href="{{ route('admin.course.index') }}">
-                    <span><i class="fa fa-certificate"></i></span>
+                    <span><i class="fa fa-star"></i></span>
                     <span>Courses</span>
                 </a>
                 <ul>
@@ -50,7 +60,7 @@
             </li>
             <li>
                 <a href="{{ route('admin.controlpanel.index') }}">
-                    <span><i class="fas fa-wallet"></i></span>
+                    <span><i class="fas fa-cogs"></i></span>
                     <span>ADMIN MENU</span>
                 </a>
                 <ul>
