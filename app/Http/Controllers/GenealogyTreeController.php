@@ -239,11 +239,47 @@ class GenealogyTreeController extends Controller
         return view('gtree-pairing-list', ['pairs' => $pairs, 'member' => $member]);
     }
     
+    public function pairingdata(Request $request, $id)
+    {
+        $tablecols = [
+            0 => 'a.created_at',
+            1 => 'b.username',
+            2 => 'c.username',
+            3 => 'd.username',
+            4 => 'e.name',
+            5 => 'a.type'
+        ];
+        
+        $filteredmodel = DB::table('members_pairings as a')
+                                ->join('members as b', 'b.id', '=', 'a.member_id')
+                                ->join('members as c', 'c.id', '=', 'a.lft_mid')
+                                ->join('members as d', 'd.id', '=', 'a.rgt_mid')
+                                ->join('products as e', 'e.id', '=', 'a.product_id')
+                                ->where('a.member_id', $id)
+                                ->select(DB::raw("a.created_at,
+                                                b.username as parentname,
+                                                c.username as leftname,
+                                                d.username as rightname,
+                                                e.name,
+                                                a.type
+                                                ")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
     public function genealogy(Request $request)
     {
         $member = Auth::user();
         
-        return view('gtree-genealogy-list', ['member' => $member]);
+        return view('gtree-genealogy-list', ['member' => $member, 'lvl' => $member->placement->lvl]);
     }
     
     public function genealogydata(Request $request, $id)
