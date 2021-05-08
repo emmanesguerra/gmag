@@ -143,7 +143,7 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
@@ -165,7 +165,7 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
@@ -244,7 +244,19 @@
                         return Number(row.acquired_amt).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 },
-                {"data": "type"},
+                {
+                    data: function ( row, type, set ) {
+                        switch(row.type)
+                        {
+                            case "MP":
+                                return 'Matching Pair';
+                                break;
+                            case "FP":
+                                return 'Flush Pair';
+                                break;
+                        }
+                    }
+                },
             ]
         });
         
