@@ -97,7 +97,7 @@ class RegisterController extends Controller
     {
         $sponsor = Member::select('id')->where('username', $request->sponsor)->first();
 
-        $registrationCode = RegistrationCode::select('id', 'is_used', 'product_id')->where([
+        $registrationCode = RegistrationCode::select('id', 'is_used', 'product_id', 'remarks')->where([
             'pincode1' => $request->pincode1, 
             'pincode2' => $request->pincode2,
         ])->first();

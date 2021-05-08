@@ -90,7 +90,11 @@ class MembersLibrary {
         $registrationCode->is_used = 1;
         $registrationCode->used_by_member_id = $member->id;
         $registrationCode->date_used = \Carbon\Carbon::now();
-        $registrationCode->remarks = 'Used by: ' . $member->username;
+        if(!empty($registrationCode->remarks)) {
+            $registrationCode->remarks .= ' \n Used by: ' . $member->username;
+        } else {
+            $registrationCode->remarks .= 'Used by: ' . $member->username;
+        }
         $registrationCode->save();
         
         return;

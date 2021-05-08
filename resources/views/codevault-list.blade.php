@@ -19,7 +19,7 @@
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table id='encashtable' class="table table-hover table-bordered text-center">
+                <table id='encashtable' class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -77,7 +77,13 @@
                         return (row.is_used) ? 'Used' : 'Available';
                     }
                 },
-                {"data": "remarks"},
+                {
+                    data: "remarks",
+                    render: function ( data, type, set ) {
+                        console.log(data);
+                        return data.split("\\n").join("<br/>");
+                    }
+                },
             ],
             "order": [[ 0, "desc" ]]
         });
