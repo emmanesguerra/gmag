@@ -19,7 +19,7 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="leftTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -39,7 +39,7 @@
         <div class='col-12 content-container py-3' style='position: relative'>
             <div class="row">
                 <div class="col-12">
-                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center">
+                    <table id="rightTable" class=" datatables table table-hover table-bordered text-center small">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -55,8 +55,12 @@
 </div>
 @endsection
 
-@section('javascripts')
+@section('css')
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         $('#leftTable').DataTable({
@@ -67,11 +71,15 @@
             responsive: true,
             processing: true,
             "columns": [
-                {"data": "created_at"},
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.created_at).format('MMMM DD, YYYY h:m A');
+                    }
+                },
                 {"data": "username"},
                 {
                     data: function ( row, type, set ) {
-                        return row.code + " | " + row.price;
+                        return row.code + " | " + Number(row.price).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 }
             ]
@@ -85,11 +93,15 @@
             responsive: true,
             processing: true,
             "columns": [
-                {"data": "created_at"},
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.created_at).format('MMMM DD, YYYY h:m A');
+                    }
+                },
                 {"data": "username"},
                 {
                     data: function ( row, type, set ) {
-                        return row.code + " | " + row.price;
+                        return row.code + " | " + Number(row.price).toLocaleString("en", {minimumFractionDigits: 2});
                     }
                 }
             ]
