@@ -11,7 +11,8 @@ class Transaction extends Model implements Auditable
 
     protected $fillable = [
         'member_id', 'product_id', 'firstname', 'lastname', 'email',
-        'product_code', 'product_price', 'transaction_date', 'payment_method'
+        'product_code', 'product_price', 'quantity', 'total_amount',
+        'transaction_date', 'payment_method'
     ];
     
     /*

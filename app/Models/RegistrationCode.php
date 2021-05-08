@@ -10,7 +10,7 @@ class RegistrationCode extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'assigned_to_member_id', 'product_id', 'is_used', 'remarks', 'created_by', 'pincode1', 'pincode2'
+        'assigned_to_member_id', 'product_id', 'transaction_id', 'is_used', 'remarks', 'created_by', 'pincode1', 'pincode2'
     ];
     
     /*
