@@ -24,7 +24,7 @@ use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
     //put your code here    
-    public static function saveProductPurchase(Member $member, Product $product, int $quantity, string $paymentMethod, string $source = null)
+    public static function saveProductPurchase(Member $member, Product $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null)
     {
         $totalAmount = $product->price * $quantity;
         
@@ -38,8 +38,10 @@ class TransactionLibrary {
             'product_price' => $product->price,
             'quantity' => $quantity,
             'total_amount' => $totalAmount,
+            'transaction_type' => $transactionType,
             'transaction_date' => date('Y-m-d h:i:s'),
-            'payment_method' => $paymentMethod
+            'payment_method' => $paymentMethod,
+            'payment_source' => $source
         ]);
         
         if($transaction) {

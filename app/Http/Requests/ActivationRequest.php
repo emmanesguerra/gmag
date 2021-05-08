@@ -28,8 +28,11 @@ class ActivationRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => ['required', 'numeric', 'exists:products,id'],
-            'payment_method' => ['required', 'in:ewallet,paynamics']
+            "product_id" => "required",
+            "total_amount" => "required",
+            "payment_method" => "required",
+            "source" => "required_if:payment_method,ewallet",
+            "source_amount" => 'required_if:payment_method,ewallet'
         ];
     }
 }

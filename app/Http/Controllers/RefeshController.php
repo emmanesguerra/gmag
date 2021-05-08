@@ -46,19 +46,29 @@ class RefeshController extends Controller
     {       
         try
         {
+            if($request->payment_method == 'ewallet' && $request->total_amount > $request->source_amount) {
+                throw new \Exception("You don't have enough balance to purchase this request. Please choose other wallet source or use different payment method");
+            }
+            
             DB::beginTransaction();
             
-            $member = Member::find(Auth::id());
+            $paid = true;
+            if($request->payment_method == 'paynamics') {
+                $paid = PaynamicsLibrary::makeTransaction();
+            }
             
-            switch ($request->payment_method)
-            {
-                case "ewallet":
-                    $this->processActivation($member, $request);
-                    break;
-                
-                case "paynamics":
-                    throw new \Exception('Paynamics is currently unavailable');
-                    break;
+            if(!$paid) {
+                throw new \Exception("We recieved an error when processing your payment");
+            } 
+            
+            $member = Auth::user();
+            $product = Product::find($request->product_id);
+            $trans = TransactionLibrary::saveProductPurchase($member, $product, 1, 'Activation', $request->payment_method, $request->source);
+
+            if($trans) {
+                MembersLibrary::updateMemberPlacementProduct($member, $product);
+
+                MembersLibrary::registerMemberPairingCycle($member);
             }
             
             DB::commit();
@@ -70,21 +80,6 @@ class RefeshController extends Controller
                     ->with('status-failed', $ex->getMessage())
                     ->withInput($request->input());
         }
-    }
-    
-    private function processActivation(Member $member, $request)
-    {
-        $product = Product::find($request->product_id);
-
-        if($member->total_amt < $product->price) {
-            throw new \Exception('Your current balance is not enough to make transaction');
-        }
-                    
-        MembersLibrary::updateMemberPlacementProduct($member, $product);
-                    
-        MembersLibrary::registerMemberPairingCycle($member);
-        
-        TransactionLibrary::saveProductPurchase($member, 'e_wallet');
     }
 
     /**

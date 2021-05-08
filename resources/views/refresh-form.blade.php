@@ -34,25 +34,49 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Select a Package:</label>
                 <div class="col-sm-4">
-                    <select name="product_id" class="form-control form-control-sm col-7 ">
+                    <select id="product_id" name="product_id" class="form-control form-control-sm col-7 " onchange="updateTotalAmount(this)">
                         <option value="0">Please select a package</option>
                         @foreach($products as $product)
-                        <option value="{{ $product->id }}">{{ $product->name }} ({{ number_format($product->price) }})</option>
+                        <option {{ (old('product_id') == $product->id) ? 'selected': '' }}  value="{{ $product->id }}">{{ $product->name }} ({{ number_format($product->price) }})</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">Total Amount: </label>
+                <div class="col-sm-4">
+                    <span class="form-control form-control-sm" id='total_amount_s'>{{ old('total_amount') }}</span>
+                    <input type="hidden" class="form-control form-control-sm "  name="total_amount" id='total_amount' value="{{ old('total_amount') }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Select a Payment Method:</label>
                 <div class="col-sm-4">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio1" value="ewallet" style='cursor: pointer'>
+                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio1" value="ewallet" style='cursor: pointer' {{ (old('payment_method') == 'ewallet') ? 'checked': '' }}>
                         <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio1" style='cursor: pointer'><small>Via E-Wallet</small></label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio2" value="paynamics" style='cursor: pointer'>
+                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio2" value="paynamics" style='cursor: pointer' {{ (old('payment_method') == 'paynamics') ? 'checked': '' }}>
                         <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio2" style='cursor: pointer'><small>Via Paynamics</small></label>
                     </div>
+                </div>
+            </div>
+            <div class="form-group row field" id="wallter-cont" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
+                <label  class="col-sm-3 col-form-label">Select a Wallet:</label>
+                <div class="col-sm-4">
+                    <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
+                        <option {{ (old('source') == 'direct_referral') ? 'selected': '' }} value='direct_referral'>Direct Referral</option>
+                        <option {{ (old('source') == 'encoding_bonus') ? 'selected': '' }} value='encoding_bonus'>Encoding Bonus</option>
+                        <option {{ (old('source') == 'matching_pairs') ? 'selected': '' }} value='matching_pairs'>Matching Pair</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row field" id="wallter-cont2" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
+                <label  class="col-sm-3 col-form-label">Source Amount: </label>
+                <div class="col-sm-4">
+                    <span class="form-control form-control-sm" id='source_amount_s'>{{ old('source_amount', $member->direct_referral) }}</span>
+                    <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
                 </div>
             </div>
 
@@ -67,4 +91,50 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('javascripts')
+    <script>
+        
+        function updatesource (el) {
+            var value = '';
+            switch($(el).val()) {
+                case "direct_referral":
+                    value = '{{ ($member->direct_referral) ? $member->direct_referral: 0 }}';
+                    break;
+                case "encoding_bonus":
+                    value = '{{ ($member->encoding_bonus) ? $member->encoding_bonus: 0 }}';
+                    break;
+                case "matching_pairs":
+                    value = '{{ ($member->matching_pairs) ? $member->matching_pairs: 0 }}';
+                    break;
+            }
+            $('#source_amount').val(value);
+            $('#source_amount_s').html(value);
+        }
+        
+        function updateTotalAmount() {
+            var packageAmt = 0;
+            switch($('#product_id').val()) {
+                @foreach ($products as $product)
+                case '{{$product->id}}':
+                    packageAmt = {{$product->price}};
+                    break;
+                @endforeach
+            }
+            $('#total_amount').val(packageAmt);
+            $('#total_amount_s').html(packageAmt);
+        }
+        
+        $('input[type=radio][name=payment_method]').change(function() {
+            if (this.value == 'ewallet') {
+                $('#wallter-cont').css('visibility', 'visible');
+                $('#wallter-cont2').css('visibility', 'visible');
+            }
+            else if (this.value == 'paynamics') {
+                $('#wallter-cont').css('visibility', 'hidden');
+                $('#wallter-cont2').css('visibility', 'hidden');
+            }
+        });
+    </script>
 @endsection

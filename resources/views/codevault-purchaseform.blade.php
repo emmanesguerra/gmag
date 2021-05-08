@@ -110,7 +110,7 @@
             <div class="form-group row field" id="wallter-cont2" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
                 <label  class="col-sm-3 col-form-label">Source Amount: </label>
                 <div class="col-sm-4">
-                    <span class="form-control form-control-sm" id='source_amount_s'>{{ old('source_amount') }}</span>
+                    <span class="form-control form-control-sm" id='source_amount_s'>{{ old('source_amount', $member->direct_referral) }}</span>
                     <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
                 </div>
             </div>
