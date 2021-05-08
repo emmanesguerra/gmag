@@ -14,34 +14,11 @@
     <div class='col-12 contentheader100'>
         All Account List
     </div>
-    <div class='col-12 content-container' style='position: relative'>
-        
-        <div class="row my-3">
-            <div class="col-sm-6">
-                <form class="form-inline"  method="GET" action="{{ route('switch.index') }}">
-                    <div class="col-sm-3">
-                        <div class="form-group row">
-                            <label for="staticEmail" class="col-sm-4 col-form-label">Show</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name='show' onChange="this.form.submit()">
-                                    @foreach([10,15,20,25] as $ctr)
-                                    @if(Request::get('show') == $ctr)
-                                    <option selected>{{ $ctr }}</option>
-                                    @else 
-                                    <option>{{ $ctr }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class='col-12 content-container py-3' style='position: relative'>
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table class="table table-hover table-bordered text-center">
+                <table id="switch-table" class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
                             <th>Date Registered</th>
@@ -52,24 +29,54 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($members as $member)
-                        <tr>
-                            <th>{{ $member->created_at }}</th>
-                            <td>{{ $member->id }}</td>
-                            <td>{{ $member->username }}</td>
-                            <td>{{ $member->firstname }} {{ $member->middlename }} {{ $member->lastname }}</td>
-                            <td>{{ number_format($member->total_amt, 2) }}</td>
-                            <td><a href="{{ route('switch.account', $member->id) }}">Switch</a></td>
-                        </tr>
-                        @endforeach 
-                    </tbody>
                 </table>
-
-                {{ $members->withQueryString()->links() }}
             </div>
         </div>
         
     </div>
 </div>
+@endsection
+
+@section('css')
+    <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
+    <script>
+        $('#switch-table').DataTable({
+            "ajax": {
+                "url": "{{ route('switch.data') }}"
+            },
+            serverSide: true,
+            responsive: true,
+            processing: true,
+            "columns": [
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.created_at).format('MMMM DD, YYYY h:m A');
+                    }
+                },
+                {"data": "id"},
+                {"data": "username"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.firstname + " " + row.lastname;
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        return Number(row.total_amt).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+                {
+                    data: function (row, type, set) {
+                        return '<a href="/switch-acount/'+row.id+'">Switch</a>';
+                    }
+                }
+            ],
+            "order": [[ 1, "desc" ]]
+        });
+    </script>
 @endsection
