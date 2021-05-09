@@ -23,20 +23,56 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+    <style>
+        div.dataTables_length,
+        div.dataTables_info,
+        div.paging_simple_numbers,
+        div.dataTables_filter {
+            float: right;
+        }
+        div.dataTables_info,
+        div.paging_simple_numbers {
+            width: 50%;
+        }
+        div.dataTables_length {
+            float: left;
+            width: 20%;
+        }
+        div.toolbar.dataTables_filter {
+            width: 55%;
+            float: left;
+        }
+        div.toolbar select {
+            width: auto;
+            display: inline-block;
+        }
+    </style>
 @endsection
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/daterange.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
-        $('#visit-table').DataTable({
+        
+        var start = moment('{{ env('GO_LIVE') }}');
+        var end = moment();
+        
+        var table = $('#visit-table').DataTable({
             "ajax": {
-                "url": "{{ route('admin.member.visitdata') }}"
+                "url": "{{ route('admin.member.visitdata') }}",
+                data: function ( d ) {
+                    d.start_date = start.format('Y-MM-DD');
+                    d.end_date = end.format('Y-MM-DD');
+                }
             },
             serverSide: true,
             responsive: true,
             processing: true,
+            "dom": 'l<"toolbar dataTables_filter">frtpi',
             "columns": [
                 {"data": "id"},
                 {
@@ -49,5 +85,16 @@
             ],
             "order": [[ 0, "desc" ]]
         });
+        
+        $("div.toolbar").html(
+            '<div id="reportrange" class="btn" style="margin-top: -4px">'+
+                '<i class="fa fa-calendar"></i>&nbsp;'+
+                '<span></span> <i class="fa fa-caret-down"></i>'+
+            '</div>'
+        );
+    
+        function drawTable() {
+            table.ajax.reload();
+        }
     </script>
 @endsection
