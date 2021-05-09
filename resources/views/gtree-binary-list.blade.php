@@ -10,6 +10,12 @@
 
 @section('module-content')
 
+<div class="row pt-3 px-3">
+    <div id="reportrange" class='float-right btn btn-sm btn-dark small' style='margin-top: -4px'>
+        <i class="fa fa-calendar"></i>&nbsp; 
+        <span></span> <i class="fa fa-caret-down"></i>
+    </div>
+</div>
 
 <div class="row p-3">
     <div class='col-6 pl-0'>
@@ -56,16 +62,26 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
 @endsection
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
-        $('#leftTable').DataTable({
+        
+        var start = moment('{{ env('GO_LIVE') }}');
+        var end = moment();
+        
+        var lefttable = $('#leftTable').DataTable({
             "ajax": {
-                "url": "{{ route('gtree.binary.left') }}"
+                "url": "{{ route('gtree.binary.left') }}",
+                data: function ( d ) {
+                    d.start_date = start.format('Y-MM-DD');
+                    d.end_date = end.format('Y-MM-DD');
+                }
             },
             serverSide: true,
             responsive: true,
@@ -85,9 +101,13 @@
             ]
         });
         
-        $('#rightTable').DataTable({
+        var righttable = $('#rightTable').DataTable({
             "ajax": {
-                "url": "{{ route('gtree.binary.right') }}"
+                "url": "{{ route('gtree.binary.right') }}",
+                data: function ( d ) {
+                    d.start_date = start.format('Y-MM-DD');
+                    d.end_date = end.format('Y-MM-DD');
+                }
             },
             serverSide: true,
             responsive: true,
@@ -105,6 +125,44 @@
                     }
                 }
             ]
+        });
+        
+        $(function() {
+
+            function cb(start, end) {
+                if(start.format('MMMM D, YYYY') == end.format('MMMM D, YYYY')) {
+                    $('#reportrange span').html('Display records: ' + start.format('MMMM D, YYYY'));
+                }else {
+                    $('#reportrange span').html( 'Display records from ' + start.format('MMMM D, YYYY') + ' to ' + end.format('MMMM D, YYYY'));
+                }
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                autoApply: false,
+                linkedCalendars: false,
+                minDate: start,
+                ranges: {
+                   'Lifetime': [start, moment()],
+                   'Today': [moment(), moment()],
+                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                start = picker.startDate;
+                end = picker.endDate;
+
+                lefttable.ajax.reload();
+                righttable.ajax.reload();
+            });
+
+            cb(start, end);
         });
     </script>
 @endsection
