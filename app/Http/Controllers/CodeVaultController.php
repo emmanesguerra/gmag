@@ -47,6 +47,18 @@ class CodeVaultController extends Controller
                                                 a.is_used,
                                                 a.remarks")
                             );
+        
+        if($request->has('status') && is_numeric($request->status) ) {
+            $filteredmodel->where('a.is_used', $request->status);
+        }
+        
+        if($request->has('start_date') && !empty($request->start_date)) {        
+            if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                $filteredmodel->whereBetween('a.created_at', [$request->start_date, $request->end_date]);
+            } else {
+                $filteredmodel->whereDate('a.created_at', $request->start_date);
+            }
+        }
 
         $modelcnt = $filteredmodel->count();
 
