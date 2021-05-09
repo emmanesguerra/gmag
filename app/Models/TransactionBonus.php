@@ -9,7 +9,7 @@ class TransactionBonus extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     
-    protected $fillable = ['member_id', 'class_id', 'class_type', 'type', 'acquired_amt'];
+    protected $fillable = ['member_id', 'class_id', 'class_type', 'type', 'acquired_amt', 'field1', 'field2'];
     
     /*
      * For audit tags

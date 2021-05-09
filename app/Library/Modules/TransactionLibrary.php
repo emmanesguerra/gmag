@@ -69,6 +69,7 @@ class TransactionLibrary {
             'member_id' => $member->sponsor_id,
             'class_id' => $member->id,
             'class_type' => 'App\Models\Member',
+            'field1' => $member->username,
             'type' => 'DR',
             'acquired_amt' => $acquiredAmt
         ]);
@@ -92,6 +93,7 @@ class TransactionLibrary {
                 'member_id' => $member->entry_code->assigned_to_member_id,
                 'class_id' => $member->id,
                 'class_type' => 'App\Models\Member',
+                'field1' => $member->username,
                 'type' => 'EB',
                 'acquired_amt' => $acquiredAmt
             ]);

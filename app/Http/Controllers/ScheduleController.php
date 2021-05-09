@@ -78,6 +78,8 @@ class ScheduleController extends Controller
                     'member_id' => $member->id,
                     'class_id' => $pair->id,
                     'class_type' => 'App\Models\MemberPairing',
+                    'field1' => $pair->lmember->username,
+                    'field2' => $pair->rmember->username,
                     'type' => $type,
                     'acquired_amt' => $acquiredAmt
                 ]);
