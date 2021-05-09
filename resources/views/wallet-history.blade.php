@@ -41,21 +41,56 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+    <style>
+        div.dataTables_length,
+        div.dataTables_info,
+        div.paging_simple_numbers,
+        div.dataTables_filter {
+            float: right;
+        }
+        div.dataTables_info,
+        div.paging_simple_numbers {
+            width: 50%;
+        }
+        div.dataTables_length {
+            float: left;
+            width: 20%;
+        }
+        div.toolbar.dataTables_filter {
+            width: 55%;
+            float: left;
+        }
+        div.toolbar select {
+            width: auto;
+            display: inline-block;
+        }
+    </style>
 @endsection
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         
-        $('#encashtable').DataTable({
+        var start = moment('{{ env('GO_LIVE') }}');
+        var end = moment();
+        
+        var table = $('#encashtable').DataTable({
             "ajax": {
-                "url": "{{ route('wallet.history.data', $member->id) }}"
+                "url": "{{ route('wallet.history.data', $member->id) }}",
+                data: function ( d ) {
+                    d.status = $('#status').val();
+                    d.start_date = start.format('Y-MM-DD');
+                    d.end_date = end.format('Y-MM-DD');
+                }
             },
             serverSide: true,
             responsive: true,
             processing: true,
+            "dom": 'l<"toolbar dataTables_filter">frtpi',
             "columns": [
                 {"data": "id"},
                 {
@@ -86,6 +121,60 @@
                     }
                 }
             ]
+        });
+        
+        $("div.toolbar").html(
+            '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" onChange="drawTable()">'+
+                '<option value="">All</option>'+
+                '<option value="C">Confirmed</option>'+
+                '<option value="WA">Waiting</option>'+
+                '<option value="X">Cancelled</option>'+
+            '</select>  status</label>' +
+            '<div id="reportrange" class="btn" style="margin-top: -4px">'+
+                '<i class="fa fa-calendar"></i>&nbsp;'+
+                '<span></span> <i class="fa fa-caret-down"></i>'+
+            '</div>'
+        );
+    
+        function drawTable() {
+            table.ajax.reload();
+        }
+        
+        $(function() {
+
+            function cb(start, end) {
+                if(start.format('MMMM D, YYYY') == end.format('MMMM D, YYYY')) {
+                    $('#reportrange span').html('Display records: ' + start.format('MMMM D, YYYY'));
+                }else {
+                    $('#reportrange span').html( 'Display records from ' + start.format('MMMM D, YYYY') + ' to ' + end.format('MMMM D, YYYY'));
+                }
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                alwaysShowCalendars: true,
+                autoApply: false,
+                linkedCalendars: false,
+                minDate: moment('{{ env('GO_LIVE') }}'),
+                ranges: {
+                   'Lifetime': [moment('{{ env('GO_LIVE') }}'), moment()],
+                   'Today': [moment(), moment()],
+                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+            $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                start = picker.startDate;
+                end = picker.endDate;
+                
+                table.ajax.reload();
+            });
+
+            cb(start, end);
         });
     </script>
 @endsection

@@ -53,7 +53,7 @@ class WalletController extends Controller
     }
     
     public function historydata(Request $request, $id)
-    {
+    {        
         $tablecols = [
             0 => 'id',
             1 => 'created_at',
@@ -76,6 +76,18 @@ class WalletController extends Controller
                                                 created_at,
                                                 id")
                             );
+        
+        if($request->has('status') && !empty($request->status)) {
+            $filteredmodel->where('status', $request->status);
+        }
+        
+        if($request->has('start_date') && !empty($request->start_date)) {        
+            if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                $filteredmodel->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            } else {
+                $filteredmodel->whereDate('created_at', $request->start_date);
+            }
+        }
 
         $modelcnt = $filteredmodel->count();
 
