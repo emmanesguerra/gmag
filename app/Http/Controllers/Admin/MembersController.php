@@ -151,16 +151,35 @@ class MembersController extends Controller
         //
     }
     
-    public function visit(Request $request)
+    public function visit()
     {
-        $search = $request->search;
-        $show = (isset($request->show)) ? $request->show: 10;
+        return view('admin.members.visit');
+    }
+    
+    public function visitdata(Request $request)
+    {
+        $tablecols = [
+            0 => 'id',
+            1 => 'log_in',
+            2 => 'ip_address',
+            3 => 'username',
+        ];
         
-        $members = MemberLog::select(['id', 'username', 'log_in', 'ip_address'])
-                ->search($search)->orderBy('id', 'desc')
-                ->paginate($show);
-        
-        return view('admin.members.visit', ['members' => $members])->withQuery($search);
+        $filteredmodel = DB::table('member_logs')
+                                ->select(DB::raw("id, 
+                                                username, 
+                                                log_in,
+                                                ip_address")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
     
     public function cycle(Request $request, $id)

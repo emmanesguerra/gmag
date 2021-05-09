@@ -120,6 +120,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('/members/{id}', 'Admin\MembersController@show')->name('admin.member.show');
     Route::get('/members/{id}/edit', 'Admin\MembersController@edit')->name('admin.member.edit');
     Route::get('/members-visit', 'Admin\MembersController@visit')->name('admin.member.visit');
+    Route::get('/members-visit-data', 'Admin\MembersController@visitdata')->name('admin.member.visitdata');
     Route::get('/members/{id}/cycle', 'Admin\MembersController@cycle')->name('admin.member.cycle');
     Route::get('/members/{id}/purchased', 'Admin\MembersController@purchased')->name('admin.member.purchased');
     Route::put('/members/{id}', 'Admin\MembersController@update')->name('admin.member.update');
