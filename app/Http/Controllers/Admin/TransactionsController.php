@@ -88,6 +88,40 @@ class TransactionsController extends Controller
         
         return view('admin.transaction.bonus', ['trans' => $trans])->withQuery($search);
     }
+    
+    public function bonusdata(Request $request)
+    {
+        $tablecols = [
+            0 => 'a.created_at',
+            1 => 'b.username',
+            2 => 'b.firstname|b.lastname',
+            3 => 'a.field1|a.field2',
+            4 => 'a.type',
+            5 => 'a.acquired_amt'
+        ];
+        
+        $filteredmodel = DB::table('transaction_bonuses as a')
+                                ->join('members as b', 'b.id', '=', 'a.member_id')
+                                ->select(DB::raw("a.id,  
+                                                a.field1, 
+                                                a.field2, 
+                                                a.type,
+                                                a.acquired_amt,
+                                                a.created_at,
+                                                b.username,
+                                                b.firstname,
+                                                b.lastname")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
 
     /**
      * Show the form for creating a new resource.

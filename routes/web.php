@@ -129,6 +129,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');
     Route::get('/transactions-data', 'Admin\TransactionsController@data')->name('admin.transactions.data');
     Route::get('/transaction-bonus', 'Admin\TransactionsController@bonus')->name('admin.transactions.bonus');
+    Route::get('/transaction-bonus-data', 'Admin\TransactionsController@bonusdata')->name('admin.transactions.bonusdata');
     
     Route::get('/encashment-requests', 'Admin\EncashmentController@index')->name('admin.encashment.index');
     Route::get('/encashment-data', 'Admin\EncashmentController@data')->name('admin.encashment.data');
