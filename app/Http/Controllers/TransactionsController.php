@@ -36,6 +36,18 @@ class TransactionsController extends Controller
                                                 acquired_amt,
                                                 created_at")
                             );
+        
+        if($request->has('status') && !empty($request->status)) {
+            $filteredmodel->where('type', $request->status);
+        }
+        
+        if($request->has('start_date') && !empty($request->start_date)) {        
+            if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                $filteredmodel->whereBetween('created_at', [$request->start_date, $request->end_date . ' 23:59:00']);
+            } else {
+                $filteredmodel->whereDate('created_at', $request->start_date);
+            }
+        }
 
         $modelcnt = $filteredmodel->count();
 
