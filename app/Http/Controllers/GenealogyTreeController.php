@@ -329,6 +329,14 @@ class GenealogyTreeController extends Controller
                                                     d.username as sponsor
                                                     ")
                                 );
+        
+            if($request->has('start_date') && !empty($request->start_date)) {        
+                if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                    $filteredmodel->whereBetween('a.created_at', [$request->start_date, $request->end_date . ' 23:59:00']);
+                } else {
+                    $filteredmodel->whereDate('a.created_at', $request->start_date);
+                }
+            }
 
             $modelcnt = $filteredmodel->count();
 
