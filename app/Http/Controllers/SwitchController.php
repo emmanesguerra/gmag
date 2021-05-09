@@ -22,7 +22,7 @@ class SwitchController extends Controller
             0 => 'created_at',
             1 => 'id',
             2 => 'username',
-            3 => 'firstname',
+            3 => 'firstname|lastname',
             4 => 'total_amt'
         ];
         

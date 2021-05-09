@@ -28,7 +28,7 @@ class MembersController extends Controller
         $tablecols = [
             0 => 'a.id',
             1 => 'a.username',
-            2 => 'a.firstname',
+            2 => 'a.firstname|a.lastname',
             3 => 'b.username',
             4 => 'a.matching_pairs',
             5 => 'a.direct_referral',

@@ -287,9 +287,9 @@ class GenealogyTreeController extends Controller
         $tablecols = [
             0 => 'a.created_at',
             1 => 'b.username',
-            2 => 'b.firstname',
+            2 => 'b.firstname|b.lastname',
             3 => 'a.lvl',
-            4 => 'c.name',
+            4 => 'c.name|c.price',
             5 => 'd.username'
         ];
         
@@ -340,8 +340,7 @@ class GenealogyTreeController extends Controller
         $tablecols = [
             0 => 'members.created_at',
             1 => 'members.username',
-            2 => 'products.code',
-            3 => 'products.price'
+            2 => 'products.code|products.price'
         ];
         
         $member = MembersPlacement::where('member_id', Auth::id())->first();
@@ -380,8 +379,7 @@ class GenealogyTreeController extends Controller
         $tablecols = [
             0 => 'members.created_at',
             1 => 'members.username',
-            2 => 'products.code',
-            3 => 'products.price'
+            2 => 'products.code|products.price'
         ];
         
         $member = MembersPlacement::where('member_id', Auth::id())->first();
