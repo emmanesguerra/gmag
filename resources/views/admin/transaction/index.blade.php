@@ -14,13 +14,13 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Product Code</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total Amount</th>
                     <th>Transaction Date</th>
                     <th>Transaction Type</th>
+                    <th>Payment Method</th>
                     <th>Package Claimed</th>
                 </tr>
             </thead>
@@ -51,7 +51,6 @@
                         return row.firstname + ' ' + row.lastname;
                     }
                 },
-                {"data": "email"},
                 {"data": "product_code"},
                 {
                     data: function ( row, type, set ) {
@@ -69,6 +68,7 @@
                         return moment(row.transaction_date).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
+                {"data": "transaction_type"},
                 {
                     data: function ( row, type, set ) {
                         if(row.payment_method == 'ewallet') {

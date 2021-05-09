@@ -32,14 +32,14 @@ class TransactionsController extends Controller
     {
         $tablecols = [
             0 => 'id',
-            1 => 'firstname',
-            2 => 'email',
-            3 => 'product_code',
-            4 => 'product_price',
-            5 => 'quantity',
-            6 => 'total_amount',
-            7 => 'transaction_date',
-            8 => 'transaction_type',
+            1 => 'firstname|lastname',
+            2 => 'product_code',
+            3 => 'product_price',
+            4 => 'quantity',
+            5 => 'total_amount',
+            6 => 'transaction_date',
+            7 => 'transaction_type',
+            8 => 'payment_method|payment_source',
             9 => 'package_claimed'
         ];
         
