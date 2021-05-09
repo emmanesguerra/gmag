@@ -97,6 +97,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::post('/change-members-username', 'Admin\ChangeMemberUsername@store')->name('admin.memberusername.store');
 
     Route::get('/products', 'Admin\ProductsController@index')->name('admin.products.index');
+    Route::get('/products-data', 'Admin\ProductsController@data')->name('admin.products.data');
     Route::get('/products/create', 'Admin\ProductsController@create')->name('admin.products.create');
     Route::post('/products', 'Admin\ProductsController@store')->name('admin.products.store');
     Route::get('/products/{slug}', 'Admin\ProductsController@show')->name('admin.products.show');

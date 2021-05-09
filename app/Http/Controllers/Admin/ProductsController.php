@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Library\DataTables;
 use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -16,16 +17,40 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->search;
-        $show = (isset($request->show)) ? $request->show: 10;
+        return view('admin.products.index');
+    }
+    
+    public function data(Request $request)
+    {
+        $tablecols = [
+            0 => 'id',
+            1 => 'code',
+            2 => 'name',
+            3 => 'price',
+            4 => 'product_value',
+            5 => 'flush_bonus'
+        ];
         
-        $products = Product::select(['id', 'name', 'code', 'slug', 'product_value', 'price', 'type', 'flush_bonus', 'display_icon'])
-                ->search($search)->orderBy('id', 'desc')
-                ->paginate($show);
-        
-        return view('admin.products.index', ['products' => $products])->withQuery($search);
+        $filteredmodel = DB::table('products')
+                                ->select(DB::raw(" id, 
+                                                 name, 
+                                                 code,
+                                                 slug,
+                                                 product_value,
+                                                 price,
+                                                 flush_bonus")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
 
     /**
