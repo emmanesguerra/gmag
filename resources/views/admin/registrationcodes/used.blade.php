@@ -12,7 +12,6 @@
         <table id="entrycodes-table" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
-                    <th>No</th>
                     <th>Date Created</th>
                     <th>Assigned To</th>
                     <th>Pincode 1</th>
@@ -21,7 +20,6 @@
                     <th>Package Type</th>
                     <th>Price</th>
                     <th>Remarks</th>
-                    <th>Action</th>
                 </tr>
             </thead>
         </table>
@@ -40,13 +38,12 @@
     <script>
         $('#entrycodes-table').DataTable({
             "ajax": {
-                "url": "{{ route('admin.entrycodes.data') }}"
+                "url": "{{ route('admin.entrycodes.useddata') }}"
             },
             serverSide: true,
             responsive: true,
             processing: true,
             "columns": [
-                {"data": "id"},
                 {
                     data: function ( row, type, set ) {
                         return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
@@ -66,13 +63,6 @@
                     data: "remarks",
                     render: function ( data, type, set ) {
                         return data.split("\\n").join("<br/>");
-                    }
-                },
-                {
-                    searchable: false,
-                    orderable: false,
-                    data: function ( row, type, set ) {
-                        return '<a href="#" onclick="showdeletemodal(\''+row.id+'\', \'\', \'/admin/entry-codes/'+row.id+'\')" >Delete</a>';
                     }
                 }
             ],

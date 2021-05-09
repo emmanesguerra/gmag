@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\RegistrationCode;
 use App\Models\Product;
 use App\Library\Modules\EntryCodesLibrary;
+use App\Library\DataTables;
 use App\Http\Requests\GenerateEntryCodeRequest;
 
 class RegistrationCodesController extends Controller
@@ -20,22 +21,90 @@ class RegistrationCodesController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search;
-        $status = (isset($request->status)) ? $request->status: 0;
-        $show = (isset($request->show)) ? $request->show: 10;
+        return view('admin.registrationcodes.index');
+    }
+    
+    public function data(Request $request)
+    {
+        $tablecols = [
+            0 => 'a.created_at',
+            1 => 'b.username',
+            2 => 'a.pincode1',
+            3 => 'a.pincode2',
+            4 => 'c.username',
+            5 => 'd.name',
+            6 => 'd.price',
+            7 => 'a.remarks'
+        ];
         
-        $entrycodes = RegistrationCode::select(['id', 'assigned_to_member_id', 'pincode1', 'pincode2', 'product_id', 'is_used', 'remarks', 'created_at', 'created_by'])
-                ->with(['product' => function ($query) {
-                    $query->select('name', 'price', 'id');
-                }, 'creator' => function ($query) {
-                    $query->select('name', 'id');
-                }, 'member' => function ($query) {
-                    $query->select('username', 'id');
-                }])
-                ->search(['search' => $search, 'status' => $status])->orderBy('id', 'desc')
-                ->paginate($show);
+        $filteredmodel = DB::table('registration_codes as a')
+                                ->leftjoin('members as b', 'b.id', '=', 'a.assigned_to_member_id')
+                                ->join('members as c', 'c.id', '=', 'a.created_by')
+                                ->join('products as d', 'd.id', '=', 'a.product_id')
+                                ->where('is_used', 0)
+                                ->select(DB::raw("a.id, 
+                                                b.username as assignto, 
+                                                a.pincode1,
+                                                a.pincode2,
+                                                d.name,
+                                                c.username as creator,
+                                                d.price,
+                                                a.remarks,
+                                                a.created_at")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
+    public function used()
+    {
+        return view('admin.registrationcodes.used');
+    }
+    
+    public function useddata(Request $request)
+    {
+        $tablecols = [
+            0 => 'a.created_at',
+            1 => 'b.username',
+            2 => 'a.pincode1',
+            3 => 'a.pincode2',
+            4 => 'c.username',
+            5 => 'd.name',
+            6 => 'd.price',
+            7 => 'a.remarks'
+        ];
         
-        return view('admin.registrationcodes.index', ['entrycodes' => $entrycodes])->withQuery($search);
+        $filteredmodel = DB::table('registration_codes as a')
+                                ->leftjoin('members as b', 'b.id', '=', 'a.assigned_to_member_id')
+                                ->join('members as c', 'c.id', '=', 'a.created_by')
+                                ->join('products as d', 'd.id', '=', 'a.product_id')
+                                ->where('is_used', 1)
+                                ->select(DB::raw("a.id, 
+                                                b.username as assignto, 
+                                                a.pincode1,
+                                                a.pincode2,
+                                                d.name,
+                                                c.username as creator,
+                                                d.price,
+                                                a.remarks,
+                                                a.created_at")
+                            );
+
+        $modelcnt = $filteredmodel->count();
+
+        $data = DataTables::DataTableFiltersNormalSearch($filteredmodel, $request, $tablecols, $hasValue, $totalFiltered);
+
+        return response(['data'=> $data,
+            'draw' => $request->draw,
+            'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
+            'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
 
     /**

@@ -31,7 +31,8 @@
                     <span>Registration Codes</span>
                 </a>
                 <ul>
-                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> Entry Codes</a></li>
+                    <li><a href="{{ route('admin.entrycodes.index') }}"><i class="fa fa-ellipsis-h"></i> Available Entry Codes</a></li>
+                    <li><a href="{{ route('admin.entrycodes.used') }}"><i class="fa fa-ellipsis-h"></i> Used Entry Codes</a></li>
                     <li><a href="{{ route('admin.entrycodes.create') }}"><i class="fa fa-ellipsis-h"></i> Create Codes</a></li>
 
                 </ul> 

@@ -104,6 +104,9 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::put('/products/{id}', 'Admin\ProductsController@update')->name('admin.products.update');
 
     Route::get('/entry-codes', 'Admin\RegistrationCodesController@index')->name('admin.entrycodes.index');
+    Route::get('/entry-codes/data', 'Admin\RegistrationCodesController@data')->name('admin.entrycodes.data');
+    Route::get('/entry-codes-used', 'Admin\RegistrationCodesController@used')->name('admin.entrycodes.used');
+    Route::get('/entry-codes-used/data', 'Admin\RegistrationCodesController@useddata')->name('admin.entrycodes.useddata');
     Route::get('/entry-codes/create', 'Admin\RegistrationCodesController@create')->name('admin.entrycodes.create');
     Route::post('/entry-codes', 'Admin\RegistrationCodesController@store')->name('admin.entrycodes.store');
     Route::get('/entry-codes/{id}', 'Admin\RegistrationCodesController@show')->name('admin.entrycodes.show');
