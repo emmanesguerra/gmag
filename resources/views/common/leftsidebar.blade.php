@@ -14,7 +14,7 @@
             </li>
             <li>
                 <a href="{{ route('home') }}">
-                    <span><i class="fas fa-tachometer-alt"></i></span>
+                    <span><i class="fas fa-user-circle"></i></span>
                     <span>Dashboard</span>
                 </a>
                 <ul>
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('codevault.index') }}">
                     <span><i class="fa fa-folder-open "></i></span>
                     <span>Entry Codes</span>
                 </a>
@@ -64,6 +64,12 @@
 
                 </ul>  
             </li>
+            <li> 
+                <a href="{{ route('course.index') }}">
+                    <span><i class="fa fa-star"></i></span>
+                    <span>COURSES</span>
+                </a>
+            </li>
             <li>
                 <a href="#">
                     <span><i class="fas fa-cogs"></i></span>
@@ -74,12 +80,6 @@
                     <li><a href="{{ route('changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
 
                 </ul>  
-            </li>
-            <li> 
-                <a href="{{ route('course.index') }}">
-                    <span><i class="fa fa-certificate"></i></span>
-                    <span>COURSES</span>
-                </a>
             </li>
             <li>
                 <a href="#" onclick="event.preventDefault();

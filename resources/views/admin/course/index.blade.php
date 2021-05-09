@@ -63,7 +63,7 @@
                     searchable: false,
                     orderable: false,
                     data: function ( row, type, set ) {
-                        return '<a href="{{ route('admin.course.index') }}/'+row.id+'/edit">Edit</a> | <a href="#" onclick="showdeletemodal(\''+row.id+'\',\''+row.title+'\',\'{{ route('admin.course.index') }}/'+row.id+'\')"  class="text-danger">Delete</a>';
+                        return '<a href="{{ route('admin.course.index') }}/'+row.id+'/edit">Edit</a> | <a href="#" onclick="showdeletemodal(\''+row.id+'\',\''+row.title+'\',\'{{ route('admin.course.index') }}/'+row.id+'\')"  class="">Delete</a>';
                     }
                 }
             ]

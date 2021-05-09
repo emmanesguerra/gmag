@@ -1,7 +1,7 @@
 @extends('layouts.admin.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - CONTROL PANEL</title>
+<title>GOLDEN MAG - Product Info</title>
 @endsection
 
 @section('module-content')

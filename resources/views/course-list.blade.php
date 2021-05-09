@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-<i class="fa fa-certificate"></i>  COURSES
+<i class="fa fa-star"></i>  COURSES
 @endsection
 
 @section('module-content')

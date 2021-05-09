@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-    <i class="fa fa-area-chart"></i>  TRANSACTIONS HISTORY
+    <i class="fa fa-credit-card"></i>  TRANSACTIONS HISTORY
 @endsection
 
 @section('module-content')

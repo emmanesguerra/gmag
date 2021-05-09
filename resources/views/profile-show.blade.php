@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-    <i class="fa fa-credit-card"></i>  ACCOUNT INFORMATION
+    <i class="fa fa-user-circle"></i>  ACCOUNT INFORMATION
 @endsection
 
 @section('module-content')

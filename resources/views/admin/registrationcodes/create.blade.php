@@ -1,7 +1,7 @@
 @extends('layouts.admin.dashboard')
 
 @section('title')
-<title>GOLDEN MAG - ENTRY CODES</title>
+<title>GOLDEN MAG - Entry Codes</title>
 @endsection
 
 @section('module-content')

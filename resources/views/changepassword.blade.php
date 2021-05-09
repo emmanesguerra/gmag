@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-    <i class="fa fa-credit-card"></i>  PASSWORD SETTINGS
+    <i class="fa fa-cog"></i>  PASSWORD SETTINGS
 @endsection
 
 @section('module-content')

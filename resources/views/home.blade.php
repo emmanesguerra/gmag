@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagetitle')
-<i class="fas fa-tachometer-alt"></i>  Dashboard
+<i class="fas fa-user-circle"></i>  Dashboard
 @endsection
 
 @section('module-content')
