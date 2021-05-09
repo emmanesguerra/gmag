@@ -14,79 +14,21 @@
     <div class='col-12 contentheader100'>
         Incentives List
     </div>
-    <div class='col-12 content-container' style='position: relative'>
+    <div class='col-12 content-container py-3' style='position: relative'>
         
-        <div class="row my-3">
-            <div class="col-sm-6">
-                <form class="form-inline"  method="GET" action="{{ route('transactions.bonus') }}">
-                    <div class="col-sm-3">
-                        <div class="form-group row">
-                            <label for="staticEmail" class="col-sm-4 col-form-label">Show</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name='show' onChange="this.form.submit()">
-                                    @foreach([10,15,20,25] as $ctr)
-                                    @if(Request::get('show') == $ctr)
-                                    <option selected>{{ $ctr }}</option>
-                                    @else 
-                                    <option>{{ $ctr }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
         @include('common.serverresponse')
         <div class="row">
             <div class="col-12">
-                <table class="table table-hover table-bordered text-center small">
+                <table id="bonus-table" class="table table-hover table-bordered text-center small">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th colspan="2">Bonus From</th>
-                            <th>Type</th>
-                            <th>Amount</th>
                             <th>Transaction Date</th>
+                            <th>Bonus From</th>
+                            <th>Bonus Type</th>
+                            <th>Acquired Amount</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($trans as $tran)
-                        <tr>
-                            <th>{{ $tran->id }}</th>
-                            @if (in_array($tran->type, ['MP', 'FP']))
-                                <td>{{ $tran->membertype->lmember->username }}</td>
-                                <td >{{ $tran->membertype->rmember->username }}</td>
-                            @else
-                                <td  colspan="2">{{ $tran->membertype->username }}</td>
-                            @endif
-                            @switch ($tran->type)
-                                @case('MP')
-                                    <td >Matching Pair</td>
-                                    @break
-                                @case('FP')
-                                    <td >Flush Pair</td>
-                                    @break
-                                @case('EB')
-                                    <td >Encoding Bonus</td>
-                                    @break
-                                @case('DR')
-                                    <td >Direct Referral</td>
-                                    @break
-                            @endswitch
-                            @if($tran->acquired_amt > 0)
-                            <td>{{ number_format($tran->acquired_amt, 2) }}</td>
-                            @else
-                            <td>0</td>
-                            @endif
-                            <td>{{ $tran->created_at->format('M d, Y h:i A') }}</td>
-                        </tr>
-                        @endforeach 
-                    </tbody>
                 </table>
-
-                {{ $trans->withQueryString()->links() }}
             </div>
         </div>
         
@@ -94,7 +36,63 @@
 </div>
 @endsection
 
+@section('css')
+    <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
+@endsection
+
 @section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
+        
+        $('#bonus-table').DataTable({
+            "ajax": {
+                "url": "{{ route('transactions.bonusdata', $memberId) }}"
+            },
+            serverSide: true,
+            responsive: true,
+            processing: true,
+            "columns": [
+                {
+                    data: function ( row, type, set ) {
+                        return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        if(row.type == 'MP' || row.type == 'FP') {
+                            return row.field1 +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ row.field2 ;
+                        } else {
+                            return row.field1;
+                        }
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        switch(row.type)
+                        {
+                            case "MP":
+                                return 'Matching Pair';
+                                break;
+                            case "FP":
+                                return 'Flush Pair';
+                                break;
+                            case "EB":
+                                return 'Encoding Bonus';
+                                break;
+                            case "DR":
+                                return 'Direct Referral';
+                                break;
+                        }
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        return Number(row.acquired_amt).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+            ],
+            "order": [[ 0, "desc" ]]
+        });
     </script>
 @endsection

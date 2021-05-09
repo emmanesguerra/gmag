@@ -65,6 +65,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/profile/{id}/purchased', 'ProfileController@purchased')->name('profile.purchased');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
+        Route::get('/transaction-bonus/{id}/data', 'TransactionsController@bonusdata')->name('transactions.bonusdata');
         
         Route::get('/switch', 'SwitchController@index')->name('switch.index');
         Route::get('/switch/data', 'SwitchController@data')->name('switch.data');

@@ -59,7 +59,14 @@ class DataTables {
         if(isset($request->search)) {
             $model->where(function ($query) use ($columns, $request, &$hasValue) {
                 foreach($columns as $field) {
-                    $query->orWhere($field, 'like' ,'%'.$request->search['value'].'%');
+                    if(strpos($field, '|') !== false) {
+                        $fields = explode("|", $field);
+                        foreach($fields as $field) {
+                            $query->orWhere($field, 'like' ,'%'.$request->search['value'].'%');
+                        }
+                    } else {
+                        $query->orWhere($field, 'like' ,'%'.$request->search['value'].'%');
+                    }
                 }
                 $hasValue = 1;
             });
