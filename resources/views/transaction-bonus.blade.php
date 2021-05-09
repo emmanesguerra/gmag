@@ -137,7 +137,7 @@
                 '<option value="EB">Encoding Bonus</option>'+
                 '<option value="MP">Matching Pair</option>'+
                 '<option value="FP">Flush Pair</option>'+
-            '</select>  type</label>' +
+            '</select></label>' +
             '<div id="reportrange" class="btn" style="margin-top: -4px">'+
                 '<i class="fa fa-calendar"></i>&nbsp;'+
                 '<span></span> <i class="fa fa-caret-down"></i>'+

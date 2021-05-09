@@ -129,7 +129,7 @@
                 '<option value="C">Confirmed</option>'+
                 '<option value="WA">Waiting</option>'+
                 '<option value="X">Cancelled</option>'+
-            '</select>  status</label>' +
+            '</select></label>' +
             '<div id="reportrange" class="btn" style="margin-top: -4px">'+
                 '<i class="fa fa-calendar"></i>&nbsp;'+
                 '<span></span> <i class="fa fa-caret-down"></i>'+

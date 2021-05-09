@@ -128,7 +128,7 @@
                 '<option value="">All</option>'+
                 '<option value="0">Available</option>'+
                 '<option value="1">Used</option>'+
-            '</select>  status</label>' +
+            '</select></label>' +
             '<div id="reportrange" class="btn" style="margin-top: -4px">'+
                 '<i class="fa fa-calendar"></i>&nbsp;'+
                 '<span></span> <i class="fa fa-caret-down"></i>'+
