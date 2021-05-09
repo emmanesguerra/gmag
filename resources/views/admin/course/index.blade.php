@@ -9,7 +9,7 @@
 @include('common.serverresponse')
 <div class="row py-3">
     <div class="col-12">
-        <table id="coursetable" class="table table-hover table-striped text-center">
+        <table id="coursetable" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
                     <th>Date Created</th>
