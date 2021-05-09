@@ -38,6 +38,14 @@ class SwitchController extends Controller
                                                 total_amt
                                                 ")
                             );
+        
+        if($request->has('start_date') && !empty($request->start_date)) {        
+            if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                $filteredmodel->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            } else {
+                $filteredmodel->whereDate('created_at', $request->start_date);
+            }
+        }
 
         $modelcnt = $filteredmodel->count();
 
