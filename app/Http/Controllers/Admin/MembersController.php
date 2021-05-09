@@ -26,7 +26,7 @@ class MembersController extends Controller
     public function data(Request $request)
     {
         $tablecols = [
-            0 => 'a.id',
+            0 => 'a.created_at',
             1 => 'a.username',
             2 => 'a.firstname|a.lastname',
             3 => 'b.username',
@@ -48,8 +48,17 @@ class MembersController extends Controller
                                                 a.encoding_bonus,
                                                 a.total_amt,
                                                 a.flush_pts,
+                                                a.created_at,
                                                 b.username as sponsor")
                             );
+        
+        if($request->has('start_date') && !empty($request->start_date)) {        
+            if($request->has('end_date') && !empty($request->end_date && $request->start_date != $request->end_date)) {
+                $filteredmodel->whereBetween('a.created_at', [$request->start_date, $request->end_date . ' 23:59:00']);
+            } else {
+                $filteredmodel->whereDate('a.created_at', $request->start_date);
+            }
+        }
 
         $modelcnt = $filteredmodel->count();
 
