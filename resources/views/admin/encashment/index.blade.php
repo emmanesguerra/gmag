@@ -74,12 +74,38 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        div.dataTables_length,
+        div.dataTables_info,
+        div.paging_simple_numbers,
+        div.dataTables_filter {
+            float: right;
+        }
+        div.dataTables_info,
+        div.paging_simple_numbers {
+            width: 50%;
+        }
+        div.dataTables_length {
+            float: left;
+            width: 20%;
+        }
+        div.toolbar.dataTables_filter {
+            width: 55%;
+            float: left;
+        }
+        div.toolbar select {
+            width: auto;
+            display: inline-block;
+        }
+    </style>
 @endsection
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/daterange.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         
@@ -109,7 +135,7 @@
                 }
             }).done(function(response) {
                 $('#approve-modal').modal('hide');
-                encashtable.ajax.reload();
+                table.ajax.reload();
             }).fail(function(XHR) {
                 var error = getAjaxErrorMessage(XHR);
                 $('#approve_resp').html(error);
@@ -127,7 +153,7 @@
                 }
             }).done(function(response) {
                 $('#reject-modal').modal('hide');
-                encashtable.ajax.reload();
+                table.ajax.reload();
             }).fail(function(XHR) {
                 var error = getAjaxErrorMessage(XHR);
                 $('#reject_resp').html(error);
@@ -135,12 +161,21 @@
             });;
         });
         
-        var encashtable = $('#encashtable').DataTable({
+        var start = moment('{{ env('GO_LIVE') }}');
+        var end = moment();
+        
+        var table = $('#encashtable').DataTable({
             "ajax": {
-                "url": "{{ route('admin.encashment.data') }}"
+                "url": "{{ route('admin.encashment.data') }}",
+                data: function ( d ) {
+                    d.status = $('#status').val();
+                    d.start_date = start.format('Y-MM-DD');
+                    d.end_date = end.format('Y-MM-DD');
+                }
             },
             serverSide: true,
             processing: true,
+            "dom": 'l<"toolbar dataTables_filter">frtpi',
             "columns": [
                 {
                     data: function ( row, type, set ) {
@@ -185,5 +220,22 @@
                 }
             ]
         });
+        
+        $("div.toolbar").html(
+            '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" onChange="drawTable()">'+
+                '<option value="">All</option>'+
+                '<option value="WA">Waiting</option>'+
+                '<option value="C">Confirmed</option>'+
+                '<option value="X">Cancelled</option>'+
+            '</select></label>' +
+            '<div id="reportrange" class="btn" style="margin-top: -4px">'+
+                '<i class="fa fa-calendar"></i>&nbsp;'+
+                '<span></span> <i class="fa fa-caret-down"></i>'+
+            '</div>'
+        );
+    
+        function drawTable() {
+            table.ajax.reload();
+        }
     </script>
 @endsection
