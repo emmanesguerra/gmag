@@ -183,7 +183,7 @@
         
         $(function() {
         
-            var start = moment();
+            var start = moment('{{ env('GO_LIVE') }}');
             var end = moment();
 
             function cb(start, end) {
@@ -200,8 +200,10 @@
                 alwaysShowCalendars: true,
                 autoApply: false,
                 linkedCalendars: false,
+                minDate: start,
                 ranges: {
-                   'Today': [moment(), moment()],
+                    'Lifetime': [start, moment()],
+                    'Today': [moment(), moment()],
                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
