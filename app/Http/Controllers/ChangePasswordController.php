@@ -51,7 +51,7 @@ class ChangePasswordController extends Controller
     /**
      * Display change password form inside the system
      * 
-     * - Link can be found on the left side menu under Settings
+     * - Link can be found on the left side menu of Member page under Settings
      */
     public function indexIn()
     {

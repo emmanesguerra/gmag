@@ -43,7 +43,6 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/refresh-account', 'RefeshController@store')->name('refresh.store');
 
         Route::get('/gtree', 'GenealogyTreeController@index')->name('gtree.index');
-        Route::post('/gtree/member-data', 'GenealogyTreeController@member_data')->name('gtree.member.data');
         Route::get('/gtree-pairing', 'GenealogyTreeController@pairing')->name('gtree.pairing');
         Route::get('/gtree-pairing/{id}/data', 'GenealogyTreeController@pairingdata')->name('gtree.pairing.data');
         Route::get('/register-member', 'RegisterMemberController@create')->name('register.member.create');
