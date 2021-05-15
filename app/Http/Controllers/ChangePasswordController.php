@@ -34,7 +34,7 @@ class ChangePasswordController extends Controller
      * @bodyParam password_confirmation string required
      * Confirmation for the new password.
      * 
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\NewUserChangePasswordRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(NewUserChangePasswordRequest $request)
@@ -70,7 +70,7 @@ class ChangePasswordController extends Controller
      * @bodyParam confirm_password string required
      * Confirmation for the new password.
      * 
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ChangePasswordRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function storeIn(ChangePasswordRequest $request)
