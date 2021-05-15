@@ -26,7 +26,7 @@ class ChangePasswordController extends Controller
     }
     
     /**
-     * Store password for New Members
+     * Change password for New Members
      *
      * @bodyParam password string required
      * New password.
@@ -59,7 +59,7 @@ class ChangePasswordController extends Controller
     }
     
     /**
-     * Store password for Existing Member
+     * Change password for Existing Member
      * 
      * @bodyParam current_password string required
      * Current password.
