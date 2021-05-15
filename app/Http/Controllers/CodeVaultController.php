@@ -103,23 +103,23 @@ class CodeVaultController extends Controller
     /**
      * Store product purchase
      *
-     * @bodyParam package integer required
+     * @queryParam package integer required
      * Product id
      *
-     * @bodyParam quantity integer required
+     * @queryParam quantity integer required
      * Quantity of product to be purchased
      *
-     * @bodyParam total_amount float required
-     * Product price * Quantity
+     * @queryParam total_amount float required
+     * Product price * Quantity. Example: 1999.99
      *
-     * @bodyParam payment_method integer required
-     * Either E-wallet or Paynamics
+     * @queryParam payment_method string required
+     * Either E-wallet or Paynamics. Example: ewallet,paynamics
      *
-     * @bodyParam source integer required
+     * @queryParam source string required
      * Required if payment_method = E-wallet
      *
-     * @bodyParam source_amount float required
-     * Current wallet amount
+     * @queryParam source_amount float required
+     * Current wallet amount. Example: 1999.99
      * 
      * @param  \App\Http\Requests\NewUserChangePasswordRequest  $request
      * 

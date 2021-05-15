@@ -12,6 +12,10 @@ use App\Models\Member;
 use App\Models\RegistrationCode;
 
 
+/**
+ * @group Genealogy List
+ *
+ */
 class RegisterMemberController extends Controller
 {
     /**
@@ -25,7 +29,10 @@ class RegisterMemberController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the Member's registration form for new member
+     * 
+     * - Once an account is registered, he/she will be place depends on which location the SignUp link is clicked.
+     * - New member's created in this form will be forced to change their password on their initial login.
      *
      * @return \Illuminate\Http\Response
      */
@@ -41,7 +48,43 @@ class RegisterMemberController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Register the newly created member.
+     * 
+     * @queryParam username string required
+     * Member's username. Example:jonsnow
+     * 
+     * @queryParam sponsor string required
+     * Username of the sponsor. Example:goldenmagtop
+     * 
+     * @queryParam placement string required
+     * Username of the member he/she will be under to. Example:goldenmagtop
+     * 
+     * @queryParam position string required
+     * Position of the member.  Example:L,R
+     * 
+     * @queryParam firstname string required
+     * Member's first name. Example:Jon
+     * 
+     * @queryParam middlename string required
+     * Member's middlename. Example:M
+     * 
+     * @queryParam lastname string required
+     * Member's lastname. Example:Snow
+     * 
+     * @queryParam address string required
+     * Member's address. Example:South Park Ave.
+     * 
+     * @queryParam email email required
+     * Member's email address. Example: jon@example.com
+     * 
+     * @queryParam mobile number required
+     * Member's contact info. Example:09091234567
+     * 
+     * @queryParam pincode1 string required
+     * 8 Char Registracode #1. Example:SL25SD8D
+     * 
+     * @queryParam pincode2 string required
+     * 8 Char Registracode #2. Example:63WER8F$
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

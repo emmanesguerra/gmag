@@ -11,10 +11,16 @@ use App\Library\Modules\MembersLibrary;
 use App\Library\Modules\TransactionLibrary;
 use App\Http\Requests\ActivationRequest;
 
+/**
+ * @group Member's Profile Management
+ *
+ */
 class RefeshController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the re-activation form of the pairing cycle.
+     * 
+     * - Once pairing cycle is reactivated, registration of Match Pairs and Flush Pairs continues.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,9 +43,24 @@ class RefeshController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Process activation of the pairing cycle of a member
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @queryParam product_id integer required
+     * Product id
+     *
+     * @queryParam total_amount float required
+     * Product price * Quantity. Example: 1999.99
+     *
+     * @queryParam payment_method string required
+     * Either E-wallet or Paynamics. Example: ewallet,paynamics
+     *
+     * @queryParam source string required
+     * Required if payment_method = E-wallet
+     *
+     * @queryParam source_amount float required
+     * Current wallet amount. Example: 1999.99
+     * 
+     * @param  \App\Http\Requests\ActivationRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(ActivationRequest $request)
