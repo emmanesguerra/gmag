@@ -12,6 +12,10 @@ use App\Library\Modules\EntryCodesLibrary;
 use App\Library\Modules\PaynamicsLibrary;
 use App\Http\Requests\CodePurchaseRequest;
 
+/**
+ * @group Entry codes management
+ *
+ */
 class CodeVaultController extends Controller
 {
     //

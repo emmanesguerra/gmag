@@ -9,14 +9,34 @@ use App\Http\Requests\NewUserChangePasswordRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Models\Member;
 
+/**
+ * @group Change Password for Members
+ */
 class ChangePasswordController extends Controller
 {
-    //
+    /**
+     * Display change password form for new members
+     * 
+     * - Displayed to new members
+     * - Forcing a member to change his/her default password
+     */
     public function index(Request $request)
     {
         return view('auth.changepassword');
     }
     
+    /**
+     * Store password for New Members
+     *
+     * @bodyParam password string required
+     * New password.
+     *
+     * @bodyParam password_confirmation string required
+     * Confirmation for the new password.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(NewUserChangePasswordRequest $request)
     {
         $user = Member::find(Auth::id());
@@ -28,11 +48,31 @@ class ChangePasswordController extends Controller
         return redirect('home');
     }
     
+    /**
+     * Display change password form inside the system
+     * 
+     * - Link can be found on the left side menu under Settings
+     */
     public function indexIn()
     {
         return view('changepassword');
     }
     
+    /**
+     * Store password for Existing Member
+     * 
+     * @bodyParam current_password string required
+     * Current password.
+     *
+     * @bodyParam password string required
+     * New password.
+     *
+     * @bodyParam confirm_password string required
+     * Confirmation for the new password.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function storeIn(ChangePasswordRequest $request)
     {
         $user = Member::find(Auth::id());
