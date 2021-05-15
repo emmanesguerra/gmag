@@ -38,7 +38,9 @@ class LogSuccessfulLogin
 
                 $member = $event->user;
 
-                $userlog = MemberLog::create(['log_in' => \Carbon\Carbon::now(), 'ip_address' => $this->request->ip(), 'username' => $member->username]);
+                $userlog = MemberLog::create(['log_in' => \Carbon\Carbon::now(), 
+                                            'ip_address' => $this->request->ip(), 
+                                            'member_id' => $member->id]);
 
                 if($userlog) {
                     $member->disableAuditing();

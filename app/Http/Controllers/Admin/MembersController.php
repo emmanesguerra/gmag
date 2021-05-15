@@ -168,17 +168,18 @@ class MembersController extends Controller
     public function visitdata(Request $request)
     {
         $tablecols = [
-            0 => 'id',
-            1 => 'log_in',
-            2 => 'ip_address',
-            3 => 'username',
+            0 => 'a.id',
+            1 => 'a.log_in',
+            2 => 'a.ip_address',
+            3 => 'b.username',
         ];
         
-        $filteredmodel = DB::table('member_logs')
-                                ->select(DB::raw("id, 
-                                                username, 
-                                                log_in,
-                                                ip_address")
+        $filteredmodel = DB::table('member_logs as a')
+                                ->join('members as b', 'b.id', '=', 'a.member_id')
+                                ->select(DB::raw("a.id, 
+                                                b.username, 
+                                                a.log_in,
+                                                a.ip_address")
                             );
         
         if($request->has('start_date') && !empty($request->start_date)) {        

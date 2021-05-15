@@ -69,7 +69,7 @@ Route::middleware('auth:web')->group(function () {
         
         Route::get('/switch', 'SwitchController@index')->name('switch.index');
         Route::get('/switch/data', 'SwitchController@data')->name('switch.data');
-        Route::get('/switch-acount/{id}', 'SwitchController@switchaccount')->name('switch.account');
+        Route::get('/switch-acount/{id?}', 'SwitchController@switchaccount')->name('switch.account');
         
         Route::get('/ewallet', 'WalletController@index')->name('wallet.index');
         Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');

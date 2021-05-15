@@ -108,7 +108,7 @@
                 },
                 {
                     data: function (row, type, set) {
-                        return '<a href="/switch-acount/'+row.id+'">Switch</a>';
+                        return '<a href="{{ route('switch.account') }}/'+row.id+'">Switch</a>';
                     }
                 }
             ],

@@ -15,10 +15,12 @@ class CreateMemberLogsTable extends Migration
     {
         Schema::create('member_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
+            $table->unsignedBigInteger('member_id');
             $table->dateTime('log_in');
             $table->dateTime('log_out')->nullable();
             $table->string('ip_address', 45)->nullable();
+            
+            $table->foreign('member_id')->references('id')->on('members');
         });
         
         Schema::table('members', function (Blueprint $table) {
