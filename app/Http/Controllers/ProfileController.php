@@ -80,22 +80,23 @@ class ProfileController extends Controller
 
     /**
      * Process updating of profile
-     *
-     * @bodyParam birthdate date required
-     * Member's birthdate. Example=1989-08-25
-     *
-     * @bodyParam email string required
-     * Member's email address. Example=your-email@example.com
-     *
-     * @bodyParam mobile string required
-     * Member's contact info. Example=09091234567
-     *
-     * @bodyParam address string required
-     * Member's address. Example=Don Geronimo St.
      * 
-     * @queryParam id integer required
+     * @pathParam  id integer required
      * Member's ID
+     *
+     * @queryParam birthdate date required
+     * Member's birthdate. Example: 1989-08-25
+     *
+     * @queryParam email email required
+     * Member's email address. Example: your-email@example.com
+     *
+     * @queryParam mobile numeric required
+     * Member's contact info. Example: 09091234567
+     *
+     * @queryParam address text required
+     * Member's address. Example: "Don Geronimo St."
      * 
+     * @param  \App\Http\Requests\ProfileUpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
