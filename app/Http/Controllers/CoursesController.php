@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 
 /**
- * @group Course List
+ * @group Members/Courses
  *
  */
 class CoursesController extends Controller

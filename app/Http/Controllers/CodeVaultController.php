@@ -13,7 +13,7 @@ use App\Library\Modules\PaynamicsLibrary;
 use App\Http\Requests\CodePurchaseRequest;
 
 /**
- * @group Member's entry codes management
+ * @group Members/Entry Codes
  *
  */
 class CodeVaultController extends Controller

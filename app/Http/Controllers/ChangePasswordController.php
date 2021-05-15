@@ -10,7 +10,7 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Models\Member;
 
 /**
- * @group Change Password for Members
+ * @group Members/Settings
  */
 class ChangePasswordController extends Controller
 {

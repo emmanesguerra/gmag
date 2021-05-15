@@ -11,7 +11,7 @@ use App\Models\MembersPlacement;
 use App\Library\DataTables;
 
 /**
- * @group Genealogy List
+ * @group Members/Network
  *
  */
 class GenealogyTreeController extends Controller

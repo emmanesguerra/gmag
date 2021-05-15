@@ -12,7 +12,7 @@ use App\Library\Modules\TransactionLibrary;
 use App\Http\Requests\ActivationRequest;
 
 /**
- * @group Member's Profile Management
+ * @group Members/Dashboard
  *
  */
 class RefeshController extends Controller
