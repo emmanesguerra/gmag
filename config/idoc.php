@@ -254,7 +254,8 @@ return [
                 'codevault.index',
                 'gtree.pairing',
                 'gtree.genealogy',
-                'gtree.binary'
+                'gtree.binary',
+                'idoc.*'
             ],
 
             /*
