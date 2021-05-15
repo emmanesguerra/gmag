@@ -13,7 +13,7 @@ use App\Models\RegistrationCode;
 
 
 /**
- * @group Genealogy List
+ * @group Members/Network
  *
  */
 class RegisterMemberController extends Controller

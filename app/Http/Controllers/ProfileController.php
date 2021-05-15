@@ -10,7 +10,7 @@ use App\Library\DataTables;
 use App\Http\Requests\ProfileUpdateRequest;
 
 /**
- * @group Member's Profile Management
+ * @group Members/Dashboard
  *
  */
 class ProfileController extends Controller

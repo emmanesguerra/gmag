@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
 
 /**
- * @group Member's Dashboard
+ * @group Members/Dashboard
  *
  */
 class HomeController extends Controller

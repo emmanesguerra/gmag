@@ -255,7 +255,10 @@ return [
                 'gtree.pairing',
                 'gtree.genealogy',
                 'gtree.binary',
-                'idoc.*'
+                'idoc.*',
+                'switch.index',
+                'transactions.bonus',
+                'wallet.history'
             ],
 
             /*
