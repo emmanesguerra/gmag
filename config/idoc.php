@@ -251,7 +251,10 @@ return [
              * Note that the route must be referenced by name here (wildcards are supported).
              */
             'exclude' => [
-                'codevault.index'
+                'codevault.index',
+                'gtree.pairing',
+                'gtree.genealogy',
+                'gtree.binary'
             ],
 
             /*
