@@ -46,10 +46,10 @@ class HomeController extends Controller
     /**
      * Updates the dashboard earnings depends on the selected date range.
      *
-     * @queryParam start timestamp required
+     * @queryParam start date required
      * Starting date. Example: 2021-05-01
      *
-     * @queryParam end timestamp required
+     * @queryParam end date required
      * Ending date. Example: 2021-05-30
      * 
      * @return \Illuminate\Contracts\Support\Renderable
