@@ -93,7 +93,7 @@ class RegisterMemberController extends Controller
     {
         $sponsor = Member::select('id')->where('username', $request->sponsor)->first();
 
-        $registrationCode = RegistrationCode::select('id', 'is_used', 'product_id', 'remarks')->where([
+        $registrationCode = RegistrationCode::select('id', 'is_used', 'product_id', 'remarks', 'transaction_id')->where([
             'pincode1' => $request->pincode1, 
             'pincode2' => $request->pincode2,
         ])->first();
@@ -103,10 +103,16 @@ class RegisterMemberController extends Controller
             if($registrationCode) {
                 if(!$registrationCode->is_used) {
                     DB::beginTransaction();
+                    
+                    $isHonoraryMember = (empty($registrationCode->transaction_id)) ? true: false;
 
-                    $member = MembersLibrary::insertMember($registrationCode, $request, 'gmag12345678', $sponsor);
+                    $member = MembersLibrary::insertMember($registrationCode, $request, 'gmag12345678', $sponsor, true, $isHonoraryMember);
                     
                     $placement = MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
+                    
+                    if($isHonoraryMember) {
+                        MembersLibrary::createHonoraryRecord($member, $placement);
+                    }
                     
                     MembersLibrary::registerMemberPairingCycle($member);
                     

@@ -13,6 +13,7 @@ use App\Models\MembersPlacement;
 use App\Models\RegistrationCode;
 use App\Models\MembersPairing;
 use App\Models\MembersPairCycle;
+use App\Models\HonoraryMember;
 use App\Library\HierarchicalDB;
 use App\Library\Modules\SettingLibrary;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ use Carbon\Carbon;
 class MembersLibrary {
     //put your code here
     
-    public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor, $shouldChangePassword = true)
+    public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor, $shouldChangePassword = true, $isHonoraryMember = false)
     {
         return Member::create([
             'username' => $request->username,
@@ -40,7 +41,16 @@ class MembersLibrary {
             'email' => $request->email,
             'mobile' => $request->mobile,
             'registration_code_id' => $registrationCode->id,
-            'must_change_password' => ($shouldChangePassword) ? 1 : 0 
+            'must_change_password' => ($shouldChangePassword) ? 1 : 0,
+            'has_credits' => ($isHonoraryMember) ? 1: 0
+        ]);
+    }
+    
+    public static function createHonoraryRecord(Member $member, MembersPlacement $placement)
+    {
+        return HonoraryMember::create([
+            'member_id' => $member->id,
+            'credit_amount' => $placement->product->price
         ]);
     }
     
