@@ -59,6 +59,10 @@ class WalletController extends Controller
         {
             DB::beginTransaction();
             
+            if(Auth::user()->has_credits) {
+                throw new \Exception('You still have credit balance to settle. Please settle the amount thru your pofile page.');
+            }
+            
             $data = $request->only('source', 'amount', 'req_type', 'name', 'mobile');
             $data['member_id'] = Auth::id();
             
