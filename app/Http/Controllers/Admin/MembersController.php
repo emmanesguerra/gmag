@@ -11,6 +11,10 @@ use App\Models\MembersPairCycle;
 use App\Library\DataTables;
 use App\Http\Requests\ProfileUpdateRequest;
 
+/**
+ * @group Admin/Members Menu
+ *
+ */
 class MembersController extends Controller
 {
     /**
