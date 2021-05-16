@@ -112,6 +112,16 @@
                     <span class="form-control form-control-lg border-0" style="margin-top: -8px;"><strong>PHP {{ number_format($member->total_amt, 2) }}</strong></span>
                 </div>
             </div>
+            @if($member->has_credits)
+            <div class="form-group row field">
+                <label  class="col-sm-6 col-form-label">Credit Balance:</label>
+                <div class="col-sm-6">
+                    <span class="form-control form-control-sm border-0 text-danger"><strong>PHP {{ number_format($member->honorary->credit_amount, 2) }}</strong>
+                        <a href="{{ route('settle.form') }}" class="btn btn-sm btn-success" style="margin-top: -3px; margin-left: 20px;">Settle Amount</a>
+                    </span>
+                </div>
+            </div>
+            @endif
             <div class="form-group row field">
                 <label  class="col-sm-6 col-form-label">Current Cycle:</label>
                 <div class="col-sm-6">

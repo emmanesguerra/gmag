@@ -92,4 +92,9 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasMany(TransactionBonus::class, 'member_id', 'id');
     }
+    
+    public function honorary()
+    {
+        return $this->hasOne(HonoraryMember::class, 'member_id', 'id')->latest();
+    }
 }
