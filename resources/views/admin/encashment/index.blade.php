@@ -74,6 +74,7 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/bootstrap.min.css') }}"  rel="stylesheet">
     <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
     <style>
