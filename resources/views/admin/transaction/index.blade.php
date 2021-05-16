@@ -12,7 +12,7 @@
         <table id="transaction-table" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Transaction No</th>
                     <th>Name</th>
                     <th>Product Code</th>
                     <th>Price</th>
@@ -81,7 +81,7 @@
             processing: true,
             "dom": 'l<"toolbar dataTables_filter">frtpi',
             "columns": [
-                {"data": "id"},
+                {"data": "transaction_no"},
                 {
                     data: function ( row, type, set ) {
                         return row.firstname + ' ' + row.lastname;

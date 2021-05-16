@@ -9,10 +9,11 @@
 @include('common.serverresponse')
 <div class="row">
     <div class="col-12 py-3">
-        <table id="transaction-table" class="table table-hover table-bordered text-center small">
+        <table id="transaction-table" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
-                    <th>Date Created</th>
+                    <th>Transaction Date</th>
+                    <th>Transaction No</th>
                     <th>Username</th>
                     <th>Member Name</th>
                     <th>Bonus From</th>
@@ -83,6 +84,7 @@
                         return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
+                { data: "transaction_no" },
                 { data: "username" },
                 {
                     data: function ( row, type, set ) {

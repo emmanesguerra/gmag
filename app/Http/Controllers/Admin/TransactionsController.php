@@ -31,7 +31,7 @@ class TransactionsController extends Controller
     public function data(Request $request)
     {
         $tablecols = [
-            0 => 'id',
+            0 => 'transaction_no',
             1 => 'firstname|lastname',
             2 => 'product_code',
             3 => 'product_price',
@@ -45,6 +45,7 @@ class TransactionsController extends Controller
         
         $filteredmodel = DB::table('transactions')
                                 ->select(DB::raw("id, 
+                                                transaction_no,
                                                 firstname, 
                                                 lastname,
                                                 email,
@@ -101,16 +102,18 @@ class TransactionsController extends Controller
     {
         $tablecols = [
             0 => 'a.created_at',
-            1 => 'b.username',
-            2 => 'b.firstname|b.lastname',
-            3 => 'a.field1|a.field2',
-            4 => 'a.type',
-            5 => 'a.acquired_amt'
+            1 => 'a.transaction_no',
+            2 => 'b.username',
+            3 => 'b.firstname|b.lastname',
+            4 => 'a.field1|a.field2',
+            5 => 'a.type',
+            6 => 'a.acquired_amt'
         ];
         
         $filteredmodel = DB::table('transaction_bonuses as a')
                                 ->join('members as b', 'b.id', '=', 'a.member_id')
                                 ->select(DB::raw("a.id,  
+                                                a.transaction_no,
                                                 a.field1, 
                                                 a.field2, 
                                                 a.type,
