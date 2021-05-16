@@ -24,24 +24,22 @@ use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
     //put your code here    
-    public static function saveProductPurchase(Member $member, Product $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null)
+    public static function saveProductPurchase(Member $member, $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null, $totalAmount = 0)
     {
-        $totalAmount = $product->price * $quantity;
-        
         $transaction = Transaction::create([
             'member_id' => $member->id,
-            'product_id' => $product->id,
+            'product_id' => ($product) ? $product->id: null,
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'email' => $member->email,
-            'product_code' => $product->code,
-            'product_price' => $product->price,
+            'product_code' => ($product) ? $product->code: null,
+            'product_price' => ($product) ? $product->price: null,
             'quantity' => $quantity,
             'total_amount' => $totalAmount,
             'transaction_type' => $transactionType,
             'transaction_date' => date('Y-m-d h:i:s'),
             'payment_method' => $paymentMethod,
-            'payment_source' => $source
+            'payment_source' => ($paymentMethod == 'ewallet') ? $source : null
         ]);
         
         if($transaction) {

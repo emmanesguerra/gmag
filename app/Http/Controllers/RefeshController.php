@@ -84,7 +84,7 @@ class RefeshController extends Controller
             
             $member = Auth::user();
             $product = Product::find($request->product_id);
-            $trans = TransactionLibrary::saveProductPurchase($member, $product, 1, 'Activation', $request->payment_method, $request->source);
+            $trans = TransactionLibrary::saveProductPurchase($member, $product, 1, 'Activation', $request->payment_method, $request->source, $request->total_amount);
 
             if($trans) {
                 MembersLibrary::updateMemberPlacementProduct($member, $product);

@@ -147,7 +147,7 @@ class CodeVaultController extends Controller
             
             $member = Auth::user();
             $product = Product::find($request->package);
-            $trans = TransactionLibrary::saveProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source);
+            $trans = TransactionLibrary::saveProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
 
             if($trans) {
                 EntryCodesLibrary::createEntryCodes($product, $member->id, $request->quantity, 'Purchased by ' . $member->username, $trans->id);
