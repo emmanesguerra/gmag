@@ -223,7 +223,7 @@
         });
         
         $("div.toolbar").html(
-            '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" onChange="drawTable()">'+
+            '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" style="font-size: 13px;" onChange="drawTable()">'+
                 '<option value="">All</option>'+
                 '<option value="WA">Waiting</option>'+
                 '<option value="C">Confirmed</option>'+
