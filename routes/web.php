@@ -62,6 +62,7 @@ Route::middleware('auth:web')->group(function () {
         Route::put('/profile/{id}', 'ProfileController@update')->name('profile.update');
         Route::get('/profile/{id}/cycle', 'ProfileController@cycle')->name('profile.cycle');
         Route::get('/profile/{id}/purchased', 'ProfileController@purchased')->name('profile.purchased');
+        Route::get('/profile/{id}/credits', 'ProfileController@credits')->name('profile.credits');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
         Route::get('/transaction-bonus/{id}/data', 'TransactionsController@bonusdata')->name('transactions.bonusdata');
