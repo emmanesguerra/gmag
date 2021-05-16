@@ -115,7 +115,7 @@ class RegisterController extends Controller
                     $placement = MembersLibrary::processMemberPlacement($member, $registrationCode, $request);
                     
                     if($isHonoraryMember) {
-                        MembersLibrary::createHonoraryRecord($member, $placement);
+                        MembersLibrary::createHonoraryRecord($member, $placement->product->price);
                     }
                     
                     $this->guard()->login($member);

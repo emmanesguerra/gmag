@@ -46,11 +46,11 @@ class MembersLibrary {
         ]);
     }
     
-    public static function createHonoraryRecord(Member $member, MembersPlacement $placement)
+    public static function createHonoraryRecord(Member $member, $amount)
     {
         return HonoraryMember::create([
             'member_id' => $member->id,
-            'credit_amount' => $placement->product->price
+            'credit_amount' => $amount
         ]);
     }
     
