@@ -127,6 +127,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('/members-visit-data', 'Admin\MembersController@visitdata')->name('admin.member.visitdata');
     Route::get('/members/{id}/cycle', 'Admin\MembersController@cycle')->name('admin.member.cycle');
     Route::get('/members/{id}/purchased', 'Admin\MembersController@purchased')->name('admin.member.purchased');
+    Route::get('/members/{id}/credits', 'Admin\MembersController@credits')->name('admin.member.credits');
     Route::put('/members/{id}', 'Admin\MembersController@update')->name('admin.member.update');
 
     Route::get('/transactions', 'Admin\TransactionsController@index')->name('admin.transactions.index');

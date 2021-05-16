@@ -108,6 +108,14 @@
                     <span class="form-control form-control-lg border-0" style="margin-top: -8px;"><strong>PHP {{ number_format($member->total_amt, 2) }}</strong></span>
                 </div>
             </div>
+            @if($member->has_credits)
+            <div class="form-group row field">
+                <label  class="col-sm-6 col-form-label">Credit Balance:</label>
+                <div class="col-sm-6">
+                    <span class="form-control form-control-sm border-0 text-danger"><strong>PHP {{ number_format($member->honorary->credit_amount, 2) }}</strong></span>
+                </div>
+            </div>
+            @endif
             <div class="form-group row field">
                 <label  class="col-sm-6 col-form-label">Current Cycle:</label>
                 <div class="col-sm-6">
@@ -141,6 +149,7 @@
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
+                                <th>Transaction No</th>
                                 <th>Left</th>
                                 <th>Right</th>
                                 <th>Amount</th>
@@ -163,6 +172,7 @@
                         <thead>
                             <tr>
                                 <th>Transaction Date</th>
+                                <th>Transaction No</th>
                                 <th>Transaction Type</th>
                                 <th>Product</th>
                                 <th>Amount</th>
@@ -174,6 +184,30 @@
             </div>
         </div>
     </div>
+    @if($member->honorary)
+    <div class='col-12 pl-0 pr-0 py-3'>
+        <div class="col-12 contentheader100">
+            Credit Balance
+        </div>
+        <div class='col-12 content-container py-3' style='position: relative'>
+            <div class="row">
+                <div class="col-12">
+                    <table id="creditTable" class=" datatables table table-hover table-bordered text-center small">
+                        <thead>
+                            <tr>
+                                <th>Transaction Date</th>
+                                <th>Transaction No</th>
+                                <th>Credit Balance</th>
+                                <th>Amount Paid</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 @endsection
 
@@ -233,6 +267,7 @@
                         return moment(row.transaction_date).format('MMMM DD, YYYY, h:mm:ss a');
                     }
                 },
+                {"data": "transaction_no"},
                 {"data": "lusername"},
                 {"data": "rusername"},
                 {
@@ -285,6 +320,7 @@
                         return moment(row.transaction_date).format('MMMM DD, YYYY');
                     }
                 },
+                {"data": "transaction_no"},
                 {"data": "transaction_type"},
                 {"data": "product_code"},
                 {
@@ -303,5 +339,35 @@
                 }
             ]
         });
+        
+        @if($member->honorary)
+            $('#creditTable').DataTable({
+                "ajax": {
+                    "url": "{{ route('admin.member.credits', $member->id) }}"
+                },
+                serverSide: true,
+                responsive: true,
+                processing: true,
+                "columns": [
+                    {
+                        data: function ( row, type, set ) {
+                            return moment(row.created_at).format('MMMM DD, YYYY');
+                        }
+                    },
+                    {"data": "transaction_no"},
+                    {
+                        data: function ( row, type, set ) {
+                            return Number(row.credit_amount).toLocaleString("en", {minimumFractionDigits: 2});
+                        }
+                    },
+                    {
+                        data: function ( row, type, set ) {
+                            return Number(row.amount_paid).toLocaleString("en", {minimumFractionDigits: 2});
+                        }
+                    },
+                    {"data": "status"},
+                ]
+            });
+        @endif
     </script>
 @endsection
