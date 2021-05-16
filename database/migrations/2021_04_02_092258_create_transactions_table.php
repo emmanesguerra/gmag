@@ -20,12 +20,12 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('firstname', 50);
             $table->string('lastname', 50);
             $table->string('email');
-            $table->string('product_code', 50);
-            $table->float('product_price');
+            $table->string('product_code', 50)->nullable();
+            $table->float('product_price')->nullable();
             $table->date('transaction_date');
             $table->boolean('package_claimed')->default(0);
             $table->unsignedBigInteger('created_by');

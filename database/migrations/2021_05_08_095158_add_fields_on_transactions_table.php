@@ -15,7 +15,7 @@ class AddFieldsOnTransactionsTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->float('total_amount')->after('product_price');
-            $table->unsignedSmallInteger('quantity')->after('product_price');
+            $table->unsignedSmallInteger('quantity')->after('product_price')->nullable();
         });
         
         Schema::table('registration_codes', function (Blueprint $table) {

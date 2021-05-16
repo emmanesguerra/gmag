@@ -14,7 +14,7 @@ class AddPaymentMethodFieldOnTransactionsTable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('payment_method', 9)->after('transaction_date')->nullable()->comment('site_reg = website registration; e_wallet = Ewallet; paynamics = Paynamics');
+            $table->string('payment_method', 9)->after('transaction_date')->comment('site_reg = website registration; e_wallet = Ewallet; paynamics = Paynamics');
         });
     }
 
