@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\TransactionEncashment;
+use App\Library\Modules\TransactionLibrary;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionEncashmentObserver
@@ -17,6 +18,7 @@ class TransactionEncashmentObserver
     public function creating(TransactionEncashment $args)
     {
         $args->created_by = Auth::id();
+        $args->transaction_no = TransactionLibrary::getNextSequence('ER');
     }
     
     /**

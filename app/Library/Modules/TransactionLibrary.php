@@ -20,6 +20,7 @@ use App\Models\MembersEncashmentRequest;
 use App\Models\Transaction;
 use App\Models\TransactionBonus;
 use App\Models\TransactionEncashment;
+use App\Models\TransactionSeq;
 use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
@@ -138,5 +139,23 @@ class TransactionLibrary {
             $member->total_amt -= $deductedAmount;
             $member->save();
         }
+    }
+    
+    public static function getNextSequence($code)
+    {
+        $seq = TransactionSeq::where(['code' => $code, 'current_date' => date('Y-m-d')])->first();
+        if(!$seq) {
+            $seq = TransactionSeq::create(['code' => $code, 
+                    'current_date' => date('Y-m-d'),
+                    'sequence' => 1
+                ]);
+        }
+        
+        $newcode = $code.date('ymd').str_pad($seq->sequence, 4, '0', STR_PAD_LEFT);
+        
+        $seq->sequence += 1;
+        $seq->save();
+        
+        return $newcode;
     }
 }

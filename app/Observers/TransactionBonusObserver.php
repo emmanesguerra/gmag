@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\TransactionBonus;
+use App\Library\Modules\TransactionLibrary;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionBonusObserver
@@ -17,6 +18,7 @@ class TransactionBonusObserver
     public function creating(TransactionBonus $args)
     {
         $args->created_by = Auth::id();
+        $args->transaction_no = TransactionLibrary::getNextSequence('BN');
     }
     
     /**
