@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>Transaction Date</th>
+                            <th>Transaction No</th>
                             <th>Bonus From</th>
                             <th>Bonus Type</th>
                             <th>Acquired Amount</th>
@@ -94,6 +95,7 @@
                         return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
+                { data: "transaction_no"},
                 {
                     data: function ( row, type, set ) {
                         if(row.type == 'MP' || row.type == 'FP') {

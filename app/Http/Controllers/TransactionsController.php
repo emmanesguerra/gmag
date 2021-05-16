@@ -41,14 +41,16 @@ class TransactionsController extends Controller
     {
         $tablecols = [
             0 => 'created_at',
-            1 => 'field1|field2',
-            2 => 'type',
-            3 => 'acquired_amt'
+            1 => 'transaction_no',
+            2 => 'field1|field2',
+            3 => 'type',
+            4 => 'acquired_amt'
         ];
         
         $filteredmodel = DB::table('transaction_bonuses')
                                 ->where('member_id', $id)
                                 ->select(DB::raw("id,  
+                                                transaction_no, 
                                                 field1, 
                                                 field2, 
                                                 type,
