@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Library\Modules\MembersLibrary;
 use App\Library\Modules\TransactionLibrary;
 use App\Http\Requests\ActivationRequest;
+use App\Library\Modules\PaynamicsLibrary;
 
 /**
  * @group Members/Dashboard
