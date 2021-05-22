@@ -13,6 +13,8 @@ namespace App\Library\Modules;
  *
  * @author alvin
  */
+use App\Models\PaynamicsTransaction;
+
 class PaynamicsLibrary {
     //put your code here
     protected $dGateDisbursementServiceUrl;
@@ -55,8 +57,15 @@ class PaynamicsLibrary {
         }
     }
     
-    public static function makeTransaction($request = null, string $type = '')
+    public static function makeTransaction($request = null, PaynamicsTransaction $trans)
     {
-        return true;
+        $paynamicsData = [
+            'merchantid' => env('PYNMCS_MERCH_ID'),
+            'merchant_ip' => $_SERVER['SERVER_ADDR'],
+            'request_id' => $trans->id,
+            'notification_url' => route(''),
+            'response_url' => route(''),
+            'disbursement_info' => 'Payment ',
+        ];
     }
 }

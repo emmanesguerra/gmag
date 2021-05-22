@@ -143,7 +143,7 @@ class CodeVaultController extends Controller
             if($request->payment_method == 'paynamics') {
                 $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
                 
-                $resp = PaynamicsLibrary::makeTransaction($request, 'Purchase');
+                $resp = PaynamicsLibrary::makeTransaction($request, $trans);
 //                '#paynamicsTable'
                 $route = 'profile.show';
                 $ref = ['id' => $member->id . '#paynamics'];
