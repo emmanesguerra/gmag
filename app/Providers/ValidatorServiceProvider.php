@@ -17,6 +17,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Rules\VerifyPassword;
 use App\Rules\VerifyAvailablePosition;
+use App\Rules\VerifyTotalAmount;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,6 +34,13 @@ class ValidatorServiceProvider  extends ServiceProvider {
         Validator::extend('verifyavailableposition', function ($attribute, $value, $parameters, $validator) {
             $placementUser = Arr::get($validator->getData(), $parameters[0], null);
             $vap= new VerifyAvailablePosition($placementUser);
+            return $vap->passes($attribute, $value);
+        });
+        
+        Validator::extend('verifytotalamount ', function ($attribute, $value, $parameters, $validator) {
+            $quantity = Arr::get($validator->getData(), $parameters[0], null);
+            $productId = Arr::get($validator->getData(), $parameters[1], null);
+            $vap= new VerifyTotalAmount($quantity, $productId);
             return $vap->passes($attribute, $value);
         });
     }

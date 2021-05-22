@@ -31,10 +31,22 @@ class CodePurchaseRequest extends FormRequest
         return [
             "package" => "required",
             "quantity" => "required",
-            "total_amount" => "required",
+            "total_amount" => "required|verifytotalamount:quantity,package",
             "payment_method" => "required",
             "source" => "required_if:payment_method,ewallet",
             "source_amount" => 'required_if:payment_method,ewallet'
+        ];
+    }
+    
+    /**
+    * Get the error messages for the defined validation rules.
+    *
+    * @return array
+    */
+    public function messages()
+    {
+        return [
+            'total_amount.verifytotalamount' => "The total amount doesn't match with the system's computation. Please refresh your browser and resend the request",
         ];
     }
 }
