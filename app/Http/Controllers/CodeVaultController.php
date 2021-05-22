@@ -136,21 +136,16 @@ class CodeVaultController extends Controller
             
             DB::beginTransaction();
             
-            $paid = true;
-            if($request->payment_method == 'paynamics') {
-                $paid = PaynamicsLibrary::makeTransaction();
-            }
-            
-            if(!$paid) {
-                throw new \Exception("We recieved an error when processing your payment");
-            } 
-            
             $member = Auth::user();
             $product = Product::find($request->package);
-            $trans = TransactionLibrary::saveProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
-
-            if($trans) {
-                EntryCodesLibrary::createEntryCodes($product, $member->id, $request->quantity, 'Purchased by ' . $member->username, $trans->id);
+                
+            if($request->payment_method == 'paynamics') {
+                $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
+                
+                $resp = PaynamicsLibrary::makeTransaction($request, 'Purchase');
+                
+            } else {
+                $this->processProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
             }
             
             DB::commit();
@@ -162,5 +157,16 @@ class CodeVaultController extends Controller
                     ->with('status-failed', $ex->getMessage())
                     ->withInput($request->input());
         }
+    }
+    
+    private function processProductPurchase(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount)
+    {
+        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount);
+
+        if($trans) {
+            EntryCodesLibrary::createEntryCodes($product, $member->id, $request->quantity, 'Purchased by ' . $member->username, $trans->id);
+        }
+        
+        return;
     }
 }

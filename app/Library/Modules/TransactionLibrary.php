@@ -20,11 +20,23 @@ use App\Models\MembersEncashmentRequest;
 use App\Models\Transaction;
 use App\Models\TransactionBonus;
 use App\Models\TransactionEncashment;
+use App\Models\PaynamicsTransaction;
 use App\Models\TransactionSeq;
 use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
     //put your code here    
+    public static function savePaynamicsTransaction(Member $member, Product $product, int $quantity, $totalAmount = 0) 
+    {
+        return PaynamicsTransaction::create([
+            'member_id' => $member->id, 
+            'product_id' => $product->id, 
+            'quantity' => $quantity, 
+            'total_amount' => $totalAmount, 
+            'transaction_date' => date('Y-m-d H:i:s')
+        ]);
+    }
+    
     public static function saveProductPurchase(Member $member, $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null, $totalAmount = 0)
     {
         $transaction = Transaction::create([
