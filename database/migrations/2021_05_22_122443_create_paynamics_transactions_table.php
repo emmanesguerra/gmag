@@ -24,7 +24,8 @@ class CreatePaynamicsTransactionsTable extends Migration
             $table->timestamp('transaction_date');
             $table->string('payment_method', 9)->default('paynamics');
             $table->string('payment_source', 20)->nullable();
-            $table->string('status', 2)->default('WC')->comment('WC - Waiting for Dgate Confirmation, S - Success, X - Failed');
+            $table->string('status', 2)->default('WR')->comment('WR - Waiting for Dgate Response, S - Success, F - Failed');
+            $table->text('remarks')->nullable()->comment('Paynamics Remarks');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

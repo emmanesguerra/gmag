@@ -143,13 +143,20 @@ class CodeVaultController extends Controller
                 $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
                 
                 $resp = PaynamicsLibrary::makeTransaction($request, 'Purchase');
+//                '#paynamicsTable'
+                $route = 'profile.show';
+                $ref = ['id' => $member->id . '#paynamics'];
+                $msg = 'Your request has been forwarded to paynamics. Please wait for a moment for their feedback.';
                 
             } else {
                 $this->processProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
+                $route = 'codevault.index';
+                $ref = null;
+                $msg = 'Thank you for your purchase. Please use these entry codes below when registering new accounts';
             }
             
             DB::commit();
-            return redirect()->route('codevault.index')->with('status-success', 'Thank you for your purchase. Please use these entry codes below when registering new accounts');
+            return redirect()->route($route, $ref)->with('status-success', $msg);
             
         } catch (\Exception $ex) {
             DB::rollback();

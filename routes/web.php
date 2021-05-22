@@ -63,6 +63,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/profile/{id}/cycle', 'ProfileController@cycle')->name('profile.cycle');
         Route::get('/profile/{id}/purchased', 'ProfileController@purchased')->name('profile.purchased');
         Route::get('/profile/{id}/credits', 'ProfileController@credits')->name('profile.credits');
+        Route::get('/profile/{id}/paynamics', 'ProfileController@paynamics')->name('profile.paynamics');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
         Route::get('/transaction-bonus/{id}/data', 'TransactionsController@bonusdata')->name('transactions.bonusdata');

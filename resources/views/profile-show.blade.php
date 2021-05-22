@@ -42,7 +42,11 @@
             <div class="form-group row field">
                 <label  class="col-sm-4 col-form-label">Date Joined:</label>
                 <div class="col-sm-6">
-                    <span class="form-control form-control-sm border-0">{{ date('F d, Y H:i:s A', strtotime($member->created_at)) }}</span>
+                    <?php 
+                    $date2 = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $member->created_at); 
+                    $date2->setTimezone($member->timezone);
+                    ?>
+                    <span class="form-control form-control-sm border-0">{{ $date2->format('F d, Y h:i A') }}</span>
                 </div>
             </div>
             <div class="form-group row field">
@@ -192,6 +196,30 @@
             </div>
         </div>
     </div>
+    <div id="paynamicsCont" class='col-12 pl-0 pr-0 py-3'>
+        <div class="col-12 contentheader100">
+            Paynamics Transaction List
+        </div>
+        <div class='col-12 content-container py-3' style='position: relative'>
+            <div class="row">
+                <div class="col-12">
+                    <table id="paynamicsTable" class=" datatables table table-hover table-bordered text-center small">
+                        <thead>
+                            <tr>
+                                <th>Transaction Date</th>
+                                <th>Transaction No</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total Amount</th>
+                                <th>Response</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <span id="paynamics"></span>
+    </div>
     @if($member->honorary)
     <div class='col-12 pl-0 pr-0 py-3'>
         <div class="col-12 contentheader100">
@@ -231,6 +259,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/moment-timezone.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
@@ -271,7 +300,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.transaction_date).format('MMMM DD, YYYY, h:mm:ss a');
+                        return moment.utc(row.transaction_date).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "transaction_no"},
@@ -293,6 +322,7 @@
                                 return 'Flush Pair';
                                 break;
                         }
+                        return '';
                     }
                 },
             ]
@@ -324,7 +354,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.transaction_date).format('MMMM DD, YYYY');
+                        return moment.utc(row.transaction_date).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "transaction_no"},
@@ -347,6 +377,47 @@
             ]
         });
         
+        $('#paynamicsTable').DataTable({
+            "ajax": {
+                "url": "{{ route('profile.paynamics', $member->id) }}"
+            },
+            serverSide: true,
+            responsive: true,
+            processing: true,
+            "columns": [
+                {
+                    data: function ( row, type, set ) {
+                        return moment.utc(row.transaction_date).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
+                    }
+                },
+                {"data": "transaction_no"},
+                {"data": "name"},
+                {"data": "quantity"},
+                {
+                    data: function ( row, type, set ) {
+                        return Number(row.total_amount).toLocaleString("en", {minimumFractionDigits: 2});
+                    }
+                },
+                {
+                    data: function ( row, type, set ) {
+                        switch(row.status)
+                        {
+                            case "WR":
+                                return 'Waiting';
+                                break;
+                            case "S":
+                                return 'Status';
+                                break;
+                            case "F":
+                                return 'Failed';
+                                break;
+                        }
+                        return '';
+                    }
+                },
+            ]
+        });
+        
         @if($member->honorary)
             $('#creditTable').DataTable({
                 "ajax": {
@@ -358,7 +429,7 @@
                 "columns": [
                     {
                         data: function ( row, type, set ) {
-                            return moment(row.created_at).format('MMMM DD, YYYY');
+                            return moment.utc(row.created_at).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
                         }
                     },
                     {"data": "transaction_no"},
