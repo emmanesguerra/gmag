@@ -157,10 +157,11 @@ class TransactionLibrary {
     {
         $seq = TransactionSeq::where(['code' => $code, 'current_date' => date('Y-m-d')])->first();
         if(!$seq) {
-            $seq = TransactionSeq::create(['code' => $code, 
-                    'current_date' => date('Y-m-d'),
-                    'sequence' => 1
-                ]);
+            $seq = TransactionSeq::createOrUpdate(['code' => $code, 
+                            ], [
+                                'current_date' => date('Y-m-d'),
+                                'sequence' => 1
+                            ]);
         }
         
         $newcode = $code.date('ymd').str_pad($seq->sequence, 4, '0', STR_PAD_LEFT);

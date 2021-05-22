@@ -26,7 +26,7 @@ class CreateTransactionsTable extends Migration
             $table->string('email');
             $table->string('product_code', 50)->nullable();
             $table->float('product_price')->nullable();
-            $table->date('transaction_date');
+            $table->timestamp('transaction_date');
             $table->boolean('package_claimed')->default(0);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();

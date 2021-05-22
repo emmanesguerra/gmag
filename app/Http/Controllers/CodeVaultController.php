@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Models\Member;
 use App\Library\DataTables;
 use App\Library\Modules\TransactionLibrary;
 use App\Library\Modules\EntryCodesLibrary;
@@ -171,7 +172,7 @@ class CodeVaultController extends Controller
         $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount);
 
         if($trans) {
-            EntryCodesLibrary::createEntryCodes($product, $member->id, $request->quantity, 'Purchased by ' . $member->username, $trans->id);
+            EntryCodesLibrary::createEntryCodes($product, $member->id, $quantity, 'Purchased by ' . $member->username, $trans->id);
         }
         
         return;
