@@ -97,8 +97,15 @@ class CodeVaultController extends Controller
     {
         $member = Auth::user();
         $products = DB::table('products')->select('name', 'price', 'id')->get();
+        $walletTypes = DB::table('wallet_types')->select('method', 'name')->orderBy('sequence')->get();
+        $paymentMethods = DB::table('payment_methods')->select('method', 'name')->orderBy('sequence')->get();
+        $disbursementMethods = DB::table('paynamics_disbursement_methods')->select('method', 'name')->orderBy('sequence')->get();
         
-        return view('codevault-purchaseform', ['member' => $member, 'products' => $products]);
+        return view('codevault-purchaseform', ['member' => $member, 
+            'products' => $products, 
+            'walletTypes' => $walletTypes,
+            'paymentMethods' => $paymentMethods,
+            'disbursementMethods' => $disbursementMethods]);
     }
     
     /**

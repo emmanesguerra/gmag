@@ -3,52 +3,54 @@
         <div class="form-group row field">
             <label class="col-sm-3 col-form-label">Select a package:</label>
             <div class="col-sm-4">
-                <select class="form-control form-control-sm "  name="package" id='package' onchange="updateTotalAmount(this)">
-                    <option >test</option>
+                <select v-model="model.product" name="product" class="form-control form-control-sm" @change="setTotalAmount">
+                    <option v-for="product in products" v-bind:value="product.id" > {{ product.name }} </option>
                 </select>
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Quantity: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm "  name="quantity" id='quantity' value="" onchange="updateTotalAmount(this)">
+                <input type="text" v-model="model.quantity" name="quantity" class="form-control form-control-sm" @change="setTotalAmount"/>
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Total Amount: </label>
             <div class="col-sm-4">
-                <span class="form-control form-control-sm" id='total_amount_s'></span>
-                <input type="hidden" class="form-control form-control-sm "  name="total_amount" id='total_amount' value="">
+                <span class="form-control form-control-sm">{{ model.total_amount }}</span>
+                <input type="hidden" v-model="model.total_amount" name="total_amount" class="form-control form-control-sm" />
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Select a Payment Method:</label>
             <div class="col-sm-4">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio1" value="ewallet" style='cursor: pointer'>
-                    <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio1" style='cursor: pointer'><small>Via E-Wallet</small></label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio2" value="paynamics" style='cursor: pointer'>
-                    <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio2" style='cursor: pointer'><small>Via Paynamics</small></label>
+                <div class="form-check form-check-inline" v-for="pm in paymentmethods" >
+                    <input type="radio" v-model="model.payment_method" name="payment_method" v-bind:id="pm.method" v-bind:value="pm.method" class="form-check-input" role="button">
+                    <label v-bind:for="pm.method" class="form-control form-control-sm form-check-label border-0" role="button"><small>Via {{ pm.name }}</small></label>
                 </div>
             </div>
         </div>
-        <div class="form-group row field" id="wallter-cont" style="">
-            <label  class="col-sm-3 col-form-label">Select a Wallet:</label>
+        <div v-if="model.payment_method=='ewallet'" class="form-group row field">
+            <label class="col-sm-3 col-form-label">Select a Wallet:</label>
             <div class="col-sm-4">
-                <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
-                    <option value='direct_referral'>Direct Referral</option>
-                    <option value='encoding_bonus'>Encoding Bonus</option>
-                    <option value='matching_pairs'>Matching Pair</option>
+                <select v-model="model.source" name="source" class="form-control form-control-sm" @change="setSourceAmount">
+                    <option v-for="wt in wallettypes" v-bind:value="wt.method" >{{ wt.name }}</option>
                 </select>
             </div>
         </div>
-        <div class="form-group row field" id="wallter-cont2" style="">
+        <div v-if="model.payment_method=='ewallet'" class="form-group row field">
             <label  class="col-sm-3 col-form-label">Source Amount: </label>
             <div class="col-sm-4">
-                <span class="form-control form-control-sm" id='source_amount_s'></span>
-                <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value=''>
+                <span class="form-control form-control-sm">{{ model.source_amount }}</span>
+                <input type="hidden" v-model="model.source_amount" name="source_amount" class="form-control form-control-sm"/>
+            </div>
+        </div>
+        <div v-if="model.payment_method=='paynamics'" class="form-group row field">
+            <label class="col-sm-3 col-form-label">Select a Disbursement Method:</label>
+            <div class="col-sm-4">
+                <select v-model="model.disbursementmethods" name="disbursementmethods" class="form-control form-control-sm">
+                    <option v-for="prm in disbursementmethods" v-bind:value="prm.method" >{{ prm.name }}</option>
+                </select>
             </div>
         </div>
 
@@ -64,9 +66,15 @@
 
 <script>
     export default {
-        props: ['model'],
-        mounted() {
-            console.log('Component mounted.')
+        props: ['member', 'model', 'products', 'wallettypes', 'paymentmethods', 'disbursementmethods'],
+        methods: {
+            setSourceAmount() {
+                this.model.source_amount = this.member[this.model.source];
+            },
+            setTotalAmount () {
+                var price = _.find(this.products, { 'id': this.model.product });
+                this.model.total_amount = price.price * this.model.quantity;
+            }
         }
     }
 </script>

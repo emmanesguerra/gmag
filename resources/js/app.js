@@ -32,6 +32,11 @@ Vue.component('payment-form', require('./components/Payments/Form.vue').default)
 const app = new Vue({
     el: '#app',
     data: {
-        posts: postvalue
+        memberdata: memberData,
+        postdata: postvalue,
+        products: products,
+        wallettypes: walletTypes,
+        paymentmethods: paymentMethods,
+        disbursementmethods: disbursementMethods
     }
 });

@@ -29,9 +29,9 @@ class CodePurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            "package" => "required",
+            "product" => "required",
             "quantity" => "required",
-            "total_amount" => "required|verifytotalamount:quantity,package",
+            "total_amount" => "required|verifytotalamount:quantity,product",
             "payment_method" => "required",
             "source" => "required_if:payment_method,ewallet",
             "source_amount" => 'required_if:payment_method,ewallet'
