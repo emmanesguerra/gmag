@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             MemberSeeder::class,
             PaymentMethodSeeder::class,
-            WalletTypeSeeder::class
+            WalletTypeSeeder::class,
+            PaynamicsDisbursementMethodSeeder::class
         ]);
     }
 }
