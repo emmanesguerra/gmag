@@ -58,9 +58,13 @@
         Purchase Form
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form method="POST" action="{{ route('codevault.purchase') }}"  class='no-edit p-2' >
+        <form id="app" method="POST" action="{{ route('codevault.purchase') }}"  class='no-edit p-2' >
             @csrf
             @include('common.serverresponse')
+            <payment-form 
+                v-bind:model="posts"
+                >
+            </payment-form>
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">Select a package:</label>
                 <div class="col-sm-4">
@@ -129,6 +133,17 @@
 @endsection
 
 @section('javascripts')
+    <script>
+        var postvalue = {
+            'product': '{{ json_encode( old('product')) }}',
+            'quantity': '{{ json_encode( old('quantity')) }}',
+            'total_amount': '{{ json_encode( old('total_amount')) }}',
+            'payment_method': '{{ json_encode( old('payment_method')) }}',
+            'source': '{{ json_encode( old('source')) }}',
+            'source_amount': '{{ json_encode( old('source_amount')) }}'
+        };
+    </script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         
         function updatesource (el) {
