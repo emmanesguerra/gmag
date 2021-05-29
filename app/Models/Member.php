@@ -97,4 +97,9 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasOne(HonoraryMember::class, 'member_id', 'id')->latest();
     }
+    
+    public function disbursementDetails()
+    {
+        return $this->hasMany(MembersDisbursementDetail::class, 'member_id', 'id');
+    }
 }
