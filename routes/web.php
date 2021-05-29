@@ -86,6 +86,9 @@ Route::middleware('auth:web')->group(function () {
         
         Route::get('/settlement-form', 'HonoraryController@settleform')->name('settle.form');
         Route::post('/settle-amount', 'HonoraryController@settleamount')->name('settle.amount');
+        
+        Route::get('/disbursement-form', 'DisbursementController@index')->name('disbursement.form');
+        Route::post('/disbursement-form', 'DisbursementController@store')->name('disbursement.post');
     });
 });
 

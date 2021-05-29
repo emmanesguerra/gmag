@@ -58,7 +58,7 @@
         Purchase Form
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form id="app" method="POST" action="{{ route('codevault.purchase') }}"  class='no-edit p-2' >
+        <form id="app" class='no-edit p-2' onsubmit = "event.preventDefault();">
             @csrf
             @include('common.serverresponse')
             <payment-form 
@@ -68,6 +68,7 @@
                 v-bind:wallettypes="wallettypes"
                 v-bind:paymentmethods="paymentmethods"
                 v-bind:disbursementmethods="disbursementmethods"
+                v-bind:disbursementformurl="disbursementformurl"
                 >
             </payment-form>
             
@@ -92,6 +93,7 @@
         var walletTypes = {!! json_encode($walletTypes) !!};
         var paymentMethods = {!! json_encode($paymentMethods) !!};
         var disbursementMethods = {!! json_encode($disbursementMethods) !!};
+        var disbursementFormUrl = '{{ route("disbursement.form") }}';
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

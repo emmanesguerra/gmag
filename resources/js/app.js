@@ -22,6 +22,7 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component('payment-form', require('./components/Payments/Form.vue').default);
+Vue.component('payment-table', require('./components/Payments/Table.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,6 +38,7 @@ const app = new Vue({
         products: products,
         wallettypes: walletTypes,
         paymentmethods: paymentMethods,
-        disbursementmethods: disbursementMethods
+        disbursementmethods: disbursementMethods,
+        disbursementformurl: disbursementFormUrl
     }
 });
