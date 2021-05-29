@@ -17,7 +17,6 @@ class CreateMembersDisbursementDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('member_id');
             $table->string('disbursement_method', 20);
-            $table->float('disbursement_amount');
             $table->string('sender_fname', 35);
             $table->string('sender_lname', 50);
             $table->string('sender_mname', 35)->nullable();
@@ -58,7 +57,6 @@ class CreateMembersDisbursementDetailsTable extends Migration
             $table->string('ben_phone', 25);
             $table->string('currency', 3);
             $table->string('fund_source', 30);
-            $table->string('reason_for_transfer', 255);
             $table->unsignedTinyInteger('gcash_account_no')->nullable();
             $table->string('wallet_id', 30)->nullable();
             $table->string('wallet_account_no', 150)->nullable();
