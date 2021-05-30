@@ -20,8 +20,8 @@ class CreateMembersTable extends Migration
             $table->string('referral_code', 16)->nullable();
             $table->unsignedBigInteger('sponsor_id');
             $table->string('firstname', 35);
-            $table->string('middlename', 50);
-            $table->string('lastname', 35);
+            $table->string('middlename', 35);
+            $table->string('lastname', 50);
             $table->string('address1', 50);
             $table->string('address2', 50)->nullable();
             $table->string('address3', 50)->nullable();
