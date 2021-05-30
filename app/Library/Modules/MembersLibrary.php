@@ -14,6 +14,7 @@ use App\Models\RegistrationCode;
 use App\Models\MembersPairing;
 use App\Models\MembersPairCycle;
 use App\Models\HonoraryMember;
+use App\Library\Common;
 use App\Library\HierarchicalDB;
 use App\Library\Modules\SettingLibrary;
 use Illuminate\Http\Request;
@@ -27,9 +28,13 @@ use Carbon\Carbon;
  */
 class MembersLibrary {
     //put your code here
+    const MAX_ADDRESS_LENGTH = 50;
+    const ADDRESS_FIELD_COUNT = 3;
     
     public static function insertMember(RegistrationCode $registrationCode, Request $request,  $password = '', Member $sponsor, $shouldChangePassword = true, $isHonoraryMember = false)
     {
+        $addresses = Common::splitWord($request->address, self::MAX_ADDRESS_LENGTH, self::ADDRESS_FIELD_COUNT);
+        
         return Member::create([
             'username' => $request->username,
             'password' => Hash::make($password),
@@ -37,7 +42,9 @@ class MembersLibrary {
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'lastname' => $request->lastname,
-            'address' => $request->address,
+            'address1' => $addresses[0],
+            'address2' => isset($addresses[1]) ? $addresses[1]: null,
+            'address3' => isset($addresses[2]) ? $addresses[2]: null,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'registration_code_id' => $registrationCode->id,
