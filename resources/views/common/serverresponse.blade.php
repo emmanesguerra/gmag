@@ -2,7 +2,7 @@
 @if (session('status-success'))
 <div class="card-body">
     <div class="alert alert-success text-left">
-        {{ session('status-success') }}
+        {!! session('status-success') !!}
     </div>
 </div>
 @endif
@@ -10,7 +10,7 @@
 @if (session('status-failed'))
 <div class="card-body">
     <div class="alert alert-danger text-left">
-        {{ session('status-failed') }}
+        {!! session('status-failed') !!}
     </div>
 </div>
 @endif

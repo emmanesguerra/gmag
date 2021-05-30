@@ -15,7 +15,7 @@
         Edit Profile
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form method="POST" action="{{ route('profile.update', $member->id) }}" class='p-2' autocomplete="off" >
+        <form method="POST" action="{{ route('profile.update', $member->id) }}" class='p-2' autocomplete="off"  enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -72,13 +72,13 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address 1 *:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address" id='address1' value="{{ old('address1', $member->address1) }}">
+                    <input type="text" class="form-control form-control-sm "  name="address1" id='address1' value="{{ old('address1', $member->address1) }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address 2:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address" id='address2' value="{{ old('address2', $member->address2) }}">
+                    <input type="text" class="form-control form-control-sm "  name="address2" id='address2' value="{{ old('address2', $member->address2) }}">
                 </div>
             </div>
             <div class="form-group row field">
@@ -103,13 +103,13 @@
             <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">Nationality *:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm text-primary" name="nationality" value="{{ old('nationality', $member->nationality) }}" />
+                    <input type="text" class="form-control form-control-sm" name="nationality" value="{{ old('nationality', $member->nationality) }}" />
                 </div>
             </div>
             <div class="form-group row field border-0">
                 <label class="col-sm-3 col-form-label">Nature Of Work *:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm text-primary" name="nature_of_work" value="{{ old('nature_of_work', $member->nature_of_work) }}" />
+                    <input type="text" class="form-control form-control-sm" name="nature_of_work" value="{{ old('nature_of_work', $member->nature_of_work) }}" />
                 </div>
             </div>
             
@@ -123,10 +123,10 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Document Type:</label>
                                 <div class="col-sm-12">
-                                    <select class="form-control form-control-sm "  name="primary_kyc_doc">
+                                    <select class="form-control form-control-sm "  name="document[0][doc]">
                                         <option value="">Select a document type</option>
                                         @foreach($pdocumentTypes as $docs) 
-                                        <option value="{{ $docs->code }}" {{ old('primary_kyc_doc', ($member->primaryDocument) ? $member->primaryDocument->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
+                                        <option value="{{ $docs->code }}" {{ old("document.0.doc", ($member->primaryDocument) ? $member->primaryDocument->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -134,16 +134,22 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Document ID/ Expiry Date:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="text" class="form-control form-control-sm "  name="primary_kyc_id" value="{{ old('primary_kyc_id', ($member->primaryDocument) ? $member->primaryDocument->doc_id: '') }}" placeholder="Document ID">
-                                    <input type="text" class="form-control form-control-sm col-5"  name="primary_kyc_expiry" value="{{ old('primary_kyc_expiry', ($member->primaryDocument) ? $member->primaryDocument->expiry_date: '') }}" placeholder="Expiry Date">
+                                    <input type="text" class="form-control form-control-sm "  name="document[0][idnum]" value="{{ old("document.0.idnum", ($member->primaryDocument) ? $member->primaryDocument->doc_id: '') }}" placeholder="Document ID">
+                                    <input type="text" class="form-control form-control-sm col-5" id="primary_kyc_expiry"  name="document[0][exp]" value="{{ old("document.0.exp", ($member->primaryDocument) ? $member->primaryDocument->expiry_date: '') }}" placeholder="Expiry Date">
                                 </div>
                             </div>
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Proof of document:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="file" class=""  name="primary_kyc_proof" />
+                                    <input type="file" class=""  name="doc_proof_0" />
                                 </div>
                             </div>
+                            @if(($member->primaryDocument) && ($member->primaryDocument->proof))
+                            <div class="form-group row border-0">
+                                <label class="col-sm-12 col-form-label" style="font-size: 14px;">Current File: <a href="{{ asset('public/storage/members/proof/'.$member->id.'/'.$member->primaryDocument->proof) }}">{{ $member->primaryDocument->proof }}</a></label>
+                                <input type="hidden" name="document[0][proof]" value="{{ $member->primaryDocument->proof }}" />
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -155,10 +161,10 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Document Type:</label>
                                 <div class="col-sm-12">
-                                    <select class="form-control form-control-sm "  name="secondary_kyc_doc1">
+                                    <select class="form-control form-control-sm "  name="document[1][doc]">
                                         <option value="">Select a document type</option>
                                         @foreach($sdocumentTypes as $docs) 
-                                        <option value="{{ $docs->code }}" {{ old('secondary_kyc_doc1', ($member->secondaryDocument1) ? $member->secondaryDocument1->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
+                                        <option value="{{ $docs->code }}" {{ old("document.1.doc", ($member->secondaryDocument1) ? $member->secondaryDocument1->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -166,16 +172,22 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">ID Number/ Expiry Date:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="text" class="form-control form-control-sm "  name="secondary_kyc_id1" value="{{ old('secondary_kyc_id1', ($member->secondaryDocument1) ? $member->secondaryDocument1->doc_id: '') }}" placeholder="Document ID">
-                                    <input type="text" class="form-control form-control-sm col-5"  name="secondary_kyc_expiry1" value="{{ old('secondary_kyc_expiry1', ($member->secondaryDocument1) ? $member->secondaryDocument1->expiry_date: '') }}" placeholder="Expiry Date">
+                                    <input type="text" class="form-control form-control-sm "  name="document[1][idnum]" value="{{ old("document.1.idnum", ($member->secondaryDocument1) ? $member->secondaryDocument1->doc_id: '') }}" placeholder="Document ID">
+                                    <input type="text" class="form-control form-control-sm col-5" id="secondary_kyc_expiry1"  name="document[1][exp]" value="{{ old("document.1.exp", ($member->secondaryDocument1) ? $member->secondaryDocument1->expiry_date: '') }}" placeholder="Expiry Date">
                                 </div>
                             </div>
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Proof of document:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="file" class=""  name="secondary_kyc_proof1" />
+                                    <input type="file" class=""  name="doc_proof_1" />
                                 </div>
                             </div>
+                            @if(($member->secondaryDocument1) && ($member->secondaryDocument1->proof))
+                            <div class="form-group row border-0">
+                                <label class="col-sm-12 col-form-label" style="font-size: 14px;">Current File: <a href="{{ asset('public/storage/members/proof/'.$member->id.'/'.$member->secondaryDocument1->proof) }}">{{ $member->secondaryDocument1->proof }}</a></label>
+                                <input type="hidden" name="document[1][proof]" value="{{ $member->secondaryDocument1->proof }}" />
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -187,10 +199,10 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Document Type:</label>
                                 <div class="col-sm-12">
-                                    <select class="form-control form-control-sm "  name="secondary_kyc_doc2">
+                                    <select class="form-control form-control-sm "  name="document[2][doc]">
                                         <option value="">Select a document type</option>
                                         @foreach($sdocumentTypes as $docs) 
-                                        <option value="{{ $docs->code }}" {{ old('secondary_kyc_doc2', ($member->secondaryDocument2) ? $member->secondaryDocument2->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
+                                        <option value="{{ $docs->code }}" {{ old("document.2.doc", ($member->secondaryDocument2) ? $member->secondaryDocument2->doc_type: '') == $docs->code ? "selected": "" }}>{{ $docs->description }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -198,16 +210,22 @@
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Document ID/ Expiry Date:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="text" class="form-control form-control-sm "  name="secondary_kyc_id2" value="{{ old('secondary_kyc_id2', ($member->secondaryDocument2) ? $member->secondaryDocument2->doc_id: '') }}" placeholder="Document ID">
-                                    <input type="text" class="form-control form-control-sm col-5"  name="secondary_kyc_expiry2" value="{{ old('secondary_kyc_expiry2', ($member->secondaryDocument2) ? $member->secondaryDocument2->expiry_date: '') }}" placeholder="Expiry Date">
+                                    <input type="text" class="form-control form-control-sm "  name="document[2][idnum]" value="{{ old("document.2.idnum", ($member->secondaryDocument2) ? $member->secondaryDocument2->doc_id: '') }}" placeholder="Document ID">
+                                    <input type="text" class="form-control form-control-sm col-5" id="secondary_kyc_expiry2"  name="document[2][exp]" value="{{ old("document.2.exp", ($member->secondaryDocument2) ? $member->secondaryDocument2->expiry_date: '') }}" placeholder="Expiry Date">
                                 </div>
                             </div>
                             <div class="form-group row border-0">
                                 <label class="col-sm-12 col-form-label">Proof of document:</label>
                                 <div class="input-group col-sm-12">
-                                    <input type="file" class=""  name="secondary_kyc_proof2" />
+                                    <input type="file" class=""  name="doc_proof_2" />
                                 </div>
                             </div>
+                            @if(($member->secondaryDocument2) && ($member->secondaryDocument2->proof))
+                            <div class="form-group row border-0">
+                                <label class="col-sm-12 col-form-label" style="font-size: 14px;">Current File: <a href="{{ asset('public/storage/members/proof/'.$member->id.'/'.$member->secondaryDocument2->proof) }}">{{ $member->secondaryDocument2->proof }}</a></label>
+                                <input type="hidden" name="document[2][proof]" value="{{ $member->secondaryDocument2->proof }}" />
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -247,6 +265,45 @@
                 }
             }, function(start, end, label) {
                 $('#birthdate').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#primary_kyc_expiry").daterangepicker({
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#primary_kyc_expiry').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#secondary_kyc_expiry1").daterangepicker({
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#secondary_kyc_expiry1').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#secondary_kyc_expiry2").daterangepicker({
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#secondary_kyc_expiry2').val(start.format('YYYY-MM-DD'));
             });
         });
         

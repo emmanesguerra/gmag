@@ -19,7 +19,9 @@ class Member extends Authenticatable implements Auditable
         'username', 'password', 'sponsor_id', 'firstname',
         'middlename', 'lastname', 'address1', 'address2', 'address3', 'email',  
         'mobile',  'registration_code_id', 
-        'must_change_password', 'birthdate', 'has_credits'
+        'must_change_password', 'birthdate', 'has_credits',
+        'city', 'state', 'country', 'zip',
+        'nature_of_work', 'nationality'
     ];
 
     protected $hidden = [

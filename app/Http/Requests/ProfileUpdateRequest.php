@@ -33,10 +33,42 @@ class ProfileUpdateRequest extends FormRequest
         $memberid = $this->route()->id;
         
         return [
+            'firstname' => 'required|string|max:35',
+            'middlename' => 'required|string|max:35',
+            'lastname' => 'required|string|max:50',
             'birthdate' => 'required|date',
             'email' => 'required|string|email|max:191|unique:members,email,'.$memberid,
             'mobile' => 'required|numeric',
-            'address' => 'required|string|max:150',
+            'address1' => 'required|string|max:50',
+            'address2' => 'nullable|string|max:50',
+            'address3' => 'nullable|string|max:50',
+            'city' => 'required|string|max:20',
+            'state' => 'nullable|string|max:20',
+            'country' => 'required|string|max:2',
+            'zip' => 'nullable|string|max:10',
+            'nationality' => 'required|string|max:50',
+            'nature_of_work' => 'required|string|max:50',
+            'document.*.doc' => 'nullable|string|max:7|exists:document_options,code',
+            'document.*.idnum' => 'required_with:document.*.doc|max:100',
+            'document.*.exp' => 'required_with:document.*.doc',
         ];
+    }
+    
+    /**
+    * Get the error messages for the defined validation rules.
+    *
+    * @return array
+    */
+    public function messages()
+    {
+        
+        $messages = [];
+        foreach ($this->request->get('document') as $line => $requestData) {
+            foreach ($requestData as $input => $value) {
+                $messages['document.' . $line . '.idnum.required_with'] = 'Document ID Number on box ' . ($line + 1)  . '  is required';
+                $messages['document.' . $line . '.exp.required_with'] = 'Document Expiry Date on box ' . ($line + 1)  . '  is required';
+            }
+        }
+        return $messages;
     }
 }
