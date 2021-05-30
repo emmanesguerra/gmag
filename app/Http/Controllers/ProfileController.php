@@ -75,7 +75,12 @@ class ProfileController extends Controller
     {
         $member = Member::find($id);
         
-        return view('profile-edit', ['member' => $member]);
+        $pdocumentTypes = DB::table('document_options')->whereNull('deleted_at')->where('is_primary', 1)->get();
+        $sdocumentTypes = DB::table('document_options')->whereNull('deleted_at')->where('is_primary', 0)->get();
+        
+        return view('profile-edit', ['member' => $member, 
+            'pdocumentTypes' => $pdocumentTypes, 
+            'sdocumentTypes' => $sdocumentTypes]);
     }
 
     /**

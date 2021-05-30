@@ -98,14 +98,47 @@
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Full Name:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="name" id='name' value="{{ old('name', $member->firstname . ' ' . $member->middlename . ' ' . $member->lastname) }}">
+                <div class="input-group col-sm-9">
+                    <input type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname', $member->firstname) }}">
+                    <input type="text" class="form-control form-control-sm "  name="lastname" id='lastname' value="{{ old('lastname',$member->lastname) }}">
+                    <input type="text" class="form-control form-control-sm "  name="middlename" id='middlename' value="{{ old('middlename', $member->middlename) }}">
                 </div>
             </div>
             <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Mobile Number:</label>
+                <label  class="col-sm-3 col-form-label">Address 1:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="mobile" id='mobile' value="{{ old('mobile', $member->mobile) }}">
+                    <input type="text" class="form-control form-control-sm "  name="address1" id='address1' value="{{ old('address1', $member->address1) }}">
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">Address 2:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control form-control-sm "  name="address2" id='address2' value="{{ old('address2', $member->address2) }}">
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">City*/ State/ Country*/ Zip:</label>
+                <div class="input-group col-sm-9">
+                    <input type="text" class="form-control form-control-sm "  name="city" id='city' value="{{ old('city', $member->city) }}">
+                    <input type="text" class="form-control form-control-sm "  name="state" id='state' value="{{ old('state', $member->state) }}">
+                    <select class="form-control form-control-sm "  name="country" id='country'>
+                        <option value="">Select a country</option>
+                        <option value="PH" {{ old('country', $member->country) == 'PH' ? "selected": "" }}>Philipines</option>
+                        <option value="US" {{ old('country', $member->country) == 'US' ? "selected": "" }}>United States America</option>
+                    </select>
+                    <input type="text" class="form-control form-control-sm "  name="zip " id='zip ' value="{{ old('zip ', $member->zip ) }}">
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">Email:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control form-control-sm "  name="email " id='email ' value="{{ old('email ', $member->email ) }}">
+                </div>
+            </div>
+            <div class="form-group row field">
+                <label  class="col-sm-3 col-form-label">Mobile:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control form-control-sm "  name="mobile " id='mobile ' value="{{ old('mobile ', $member->mobile ) }}">
                 </div>
             </div>
             <div class="form-group row field">

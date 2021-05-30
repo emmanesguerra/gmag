@@ -104,4 +104,24 @@ class Member extends Authenticatable implements Auditable
     {
         return $this->hasMany(MembersDisbursementDetail::class, 'member_id', 'id');
     }
+    
+    public function documents()
+    {
+        return $this->hasMany(MemberDocument::class, 'member_id', 'id');
+    }
+    
+    public function primaryDocument()
+    {
+        return $this->hasOne(MemberDocument::class, 'member_id', 'id')->where('type', 1);
+    }
+    
+    public function secondaryDocument1()
+    {
+        return $this->hasOne(MemberDocument::class, 'member_id', 'id')->where('type', 2);
+    }
+    
+    public function secondaryDocument2()
+    {
+        return $this->hasOne(MemberDocument::class, 'member_id', 'id')->where('type', 3);
+    }
 }

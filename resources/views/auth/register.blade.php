@@ -27,7 +27,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >USERNAME:</label>
-                            <input type="text" class="mt-0 @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required >
+                            <input maxlength="50" type="text" class="mt-0 @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required >
 
                             @error('username')
                             <span class="invalid-feedback" role="alert">
@@ -114,7 +114,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >FIRSTNAME:</label>
-                            <input type="text" class="mt-0 @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required >
+                            <input maxlength="35" type="text" class="mt-0 @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required >
 
                             @error('firstname')
                             <span class="invalid-feedback" role="alert">
@@ -125,7 +125,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >MIDDLENAME:</label>
-                            <input type="text" class="mt-0 @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" required >
+                            <input maxlength="35" type="text" class="mt-0 @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" required >
 
                             @error('middlename')
                             <span class="invalid-feedback" role="alert">
@@ -136,7 +136,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >LASTNAME:</label>
-                            <input type="text" class="mt-0 @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
+                            <input maxlength="50" type="text" class="mt-0 @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
 
                             @error('lastname')
                             <span class="invalid-feedback" role="alert">
@@ -147,7 +147,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >ADDRESS:</label>
-                            <input type="text" class="mt-0 @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required >
+                            <input maxlength="150" type="text" class="mt-0 @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required >
 
                             @error('address')
                             <span class="invalid-feedback" role="alert">
@@ -169,7 +169,7 @@
 
                         <div class="txtb" style='margin-top: 5px'>
                             <label class='mb-0' >MOBILE:</label>
-                            <input type="text" class="mt-0 @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required >
+                            <input maxlength="25" type="text" class="mt-0 @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required >
 
                             @error('mobile')
                             <span class="invalid-feedback" role="alert">
