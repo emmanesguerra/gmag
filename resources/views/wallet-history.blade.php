@@ -24,7 +24,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Date Requested</th>
-                            <th>Request Type</th>
+                            <th>Pickup Center</th>
                             <th>Amount</th>
                             <th>Fullname</th>
                             <th>Mobile</th>
@@ -99,9 +99,13 @@
                         return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
-                {"data": "req_type"},
+                {"data": "pickup_center"},
                 {"data": "amount"},
-                {"data": "name"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.firstname + ' ' + row.lastname;
+                    }
+                },
                 {"data": "mobile"},
                 {"data": "tracking_no"},
                 {

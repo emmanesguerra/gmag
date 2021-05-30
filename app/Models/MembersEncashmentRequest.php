@@ -10,7 +10,9 @@ class MembersEncashmentRequest extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable, SoftDeletes;
     
-    protected $fillable = ['member_id', 'source', 'amount', 'req_type', 'name', 'mobile'];
+    protected $fillable = ['member_id', 'source', 'amount', 
+        'pickup_center', 'firstname', 'middlename', 'lastname', 'address1', 'address2',
+        'city', 'state', 'country', 'zip', 'mobile', 'email'];
     
     /*
      * For audit tags

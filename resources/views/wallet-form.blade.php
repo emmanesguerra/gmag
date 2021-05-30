@@ -86,13 +86,12 @@
                 </div>
             </div>
             <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Request Type</label>
+                <label  class="col-sm-3 col-form-label">Pickup Center</label>
                 <div class="col-sm-4">
-                    <select class="form-control form-control-sm "  name="req_type">
-                        <option {{ (old('req_type') == 'Cheque') ? 'selected': '' }}>Cheque</option>
-                        <option {{ (old('req_type') == 'Palawan Express') ? 'selected': '' }}>Palawan Express</option>
-                        <option {{ (old('req_type') == 'Cebuana Lhuiller') ? 'selected': '' }}>Cebuana Lhuiller</option>
-                        <option {{ (old('req_type') == 'Western Union') ? 'selected': '' }}>Western Union</option>
+                    <select class="form-control form-control-sm "  name="pickup_center">
+                        @foreach($pickupcenters as $pc)
+                        <option value="{{ $pc->code }}" {{ (old('pickup_center') == $pc->code) ? 'selected': '' }}>{{ $pc->description }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -126,19 +125,19 @@
                         <option value="PH" {{ old('country', $member->country) == 'PH' ? "selected": "" }}>Philipines</option>
                         <option value="US" {{ old('country', $member->country) == 'US' ? "selected": "" }}>United States America</option>
                     </select>
-                    <input type="text" class="form-control form-control-sm "  name="zip " id='zip ' value="{{ old('zip ', $member->zip ) }}">
+                    <input type="text" class="form-control form-control-sm "  name="zip" id='zip ' value="{{ old('zip ', $member->zip ) }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Email:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="email " id='email ' value="{{ old('email ', $member->email ) }}">
+                    <input type="text" class="form-control form-control-sm "  name="email" id='email ' value="{{ old('email ', $member->email ) }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Mobile:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="mobile " id='mobile ' value="{{ old('mobile ', $member->mobile ) }}">
+                    <input type="text" class="form-control form-control-sm "  name="mobile" id='mobile ' value="{{ old('mobile ', $member->mobile ) }}">
                 </div>
             </div>
             <div class="form-group row field">

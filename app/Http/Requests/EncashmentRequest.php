@@ -30,9 +30,18 @@ class EncashmentRequest extends FormRequest
         return [
             'source' => 'required',
             'amount' => 'required|gte:minimum_req|lte:source_amount',
-            'req_type' => 'required',
-            'name' => 'required',
+            'pickup_center' => 'required',
+            'firstname' => 'required|string|max:50',
+            'middlename' => 'required|string|max:50',
+            'lastname' => 'required|string|max:50',
+            'address1' => 'required|string|max:50',
+            'address2' => 'nullable|string|max:50',
+            'city' => 'required|string|max:20',
+            'state' => 'nullable|string|max:20',
+            'country' => 'required|string|max:2',
+            'zip' => 'nullable|string|max:10',
             'mobile' => 'required|numeric',
+            'email' => 'required|email',
             'password' => 'required|verifypassword'
         ];
     }

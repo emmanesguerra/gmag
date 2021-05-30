@@ -24,8 +24,9 @@ class WalletController extends Controller
     public function index()
     {
         $member = Auth::user();
+        $pickupcenters = DB::table('pickup_centers')->select(['code', 'description'])->whereNull('deleted_at')->orderBy('sequence')->get();
         
-        return view('wallet-form', ['member' => $member, 'minimum_req' => self::MINIMUM_REQUEST_AMOUNT]);
+        return view('wallet-form', ['member' => $member, 'minimum_req' => self::MINIMUM_REQUEST_AMOUNT, 'pickupcenters' => $pickupcenters]);
     }
     
 
@@ -63,7 +64,9 @@ class WalletController extends Controller
                 throw new \Exception('You still have credit balance to settle. Please settle the amount thru your pofile page.');
             }
             
-            $data = $request->only('source', 'amount', 'req_type', 'name', 'mobile');
+            $data = $request->only('source', 'amount', 
+                'pickup_center', 'firstname', 'middlename', 'lastname', 'address1', 'address2',
+                'city', 'state', 'country', 'zip', 'mobile', 'email');
             $data['member_id'] = Auth::id();
             
             MembersEncashmentRequest::create($data);
@@ -108,9 +111,9 @@ class WalletController extends Controller
         $tablecols = [
             0 => 'id',
             1 => 'created_at',
-            2 => 'req_type',
+            2 => 'pickup_center',
             3 => 'amount',
-            4 => 'name',
+            4 => 'firstname|lastname',
             5 => 'mobile',
             6 => 'tracking_no',
             7 => 'status',
@@ -119,8 +122,9 @@ class WalletController extends Controller
         $filteredmodel = DB::table('members_encashment_requests')
                                 ->where('member_id', $id)
                                 ->select(DB::raw("amount, 
-                                                req_type, 
-                                                name,
+                                                pickup_center, 
+                                                firstname,
+                                                lastname,
                                                 mobile,
                                                 tracking_no,
                                                 status,

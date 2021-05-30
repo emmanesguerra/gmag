@@ -24,7 +24,7 @@ class MemberRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|string|max:50',
+            'username' => 'required|string|max:50|unique:members,username',
             'password' => 'required|string|min:5|confirmed',
             'sponsor' => 'required|string|exists:members,username',
             'placement' => 'required|string|exists:members,username',
@@ -33,7 +33,7 @@ class MemberRegistrationRequest extends FormRequest
             'middlename' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
             'address' => 'required|string|max:150',
-            'email' => 'required|string|email|max:191|unique:members,email',
+            'email' => 'required|string|email|max:191',
             'mobile' => 'required|numeric',
             'pincode1' => 'required|string|exists:registration_codes,pincode1',
             'pincode2' => 'required|string|exists:registration_codes,pincode2',

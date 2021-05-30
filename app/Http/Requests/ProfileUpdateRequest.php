@@ -37,7 +37,7 @@ class ProfileUpdateRequest extends FormRequest
             'middlename' => 'required|string|max:35',
             'lastname' => 'required|string|max:50',
             'birthdate' => 'required|date',
-            'email' => 'required|string|email|max:191|unique:members,email,'.$memberid,
+            'email' => 'required|string|email|max:191',
             'mobile' => 'required|numeric',
             'address1' => 'required|string|max:50',
             'address2' => 'nullable|string|max:50',

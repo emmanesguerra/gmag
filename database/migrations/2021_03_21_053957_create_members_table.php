@@ -29,7 +29,7 @@ class CreateMembersTable extends Migration
             $table->string('state', 20)->nullable();
             $table->string('country', 2)->nullable();
             $table->string('zip', 10)->nullable();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('mobile', 25);
             $table->date('birthdate')->nullable();
             $table->string('nationality', 50)->nullable();
