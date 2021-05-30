@@ -15,6 +15,7 @@ class CreateTransactionEncashmentsTable extends Migration
     {
         Schema::create('transaction_encashments', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_no', 15);
             $table->unsignedBigInteger('encashment_req_id');
             $table->string('account_name');
             $table->string('account_number');
@@ -26,6 +27,7 @@ class CreateTransactionEncashmentsTable extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
+            $table->index(['transaction_no']);
             $table->index(['encashment_req_id']);
             $table->foreign('encashment_req_id')->references('id')->on('members_encashment_requests');
         });

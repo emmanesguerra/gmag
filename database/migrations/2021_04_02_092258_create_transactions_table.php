@@ -12,13 +12,10 @@ class CreateTransactionsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::table('members_placements', function (Blueprint $table) {
-            $table->dropColumn('product_claimed');
-        });
-        
+    {        
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_no', 15);
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->string('firstname', 50);
@@ -26,15 +23,26 @@ class CreateTransactionsTable extends Migration
             $table->string('email');
             $table->string('product_code', 50)->nullable();
             $table->float('product_price')->nullable();
+            $table->unsignedSmallInteger('quantity')->nullable();
+            $table->float('total_amount');
+            $table->string('transaction_type', 12);
             $table->timestamp('transaction_date');
+            $table->string('payment_method', 9)->comment('site_reg = website registration; e_wallet = Ewallet; paynamics = Paynamics');
+            $table->string('payment_source', 20)->nullable();
             $table->boolean('package_claimed')->default(0);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
             $table->index(['member_id']);
+            $table->index(['transaction_no']);
             $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('product_id')->references('id')->on('products');
+        });
+        
+        
+        Schema::table('registration_codes', function (Blueprint $table) {
+            $table->foreign('transaction_id')->references('id')->on('transactions');
         });
     }
 
@@ -45,9 +53,10 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('members_placements', function (Blueprint $table) {
-            $table->boolean('product_claimed')->after('product_id')->default(0);
+        Schema::table('registration_codes', function (Blueprint $table) {
+            $table->dropForeign(['transaction_id']);
         });
+        
         Schema::dropIfExists('transactions');
     }
 }

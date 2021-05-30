@@ -22,7 +22,6 @@ class CreateMembersPlacementsTable extends Migration
             $table->unsignedBigInteger('lvl');
             $table->char('position', 1);
             $table->unsignedBigInteger('product_id');
-            $table->boolean('product_claimed')->default(0);
             $table->timestamps();
             
             $table->foreign('member_id')->references('id')->on('members');

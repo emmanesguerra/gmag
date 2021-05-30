@@ -19,6 +19,7 @@ class CreateRegistrationCodesTable extends Migration
             $table->string('pincode1', 8)->nullable()->comment('use to be registration code');
             $table->string('pincode2', 8)->nullable()->comment('use to be password code');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('transaction_id')->nullable();
             $table->boolean('is_used')->comment('1 = used, 0 = still available')->default(0);
             $table->unsignedBigInteger('used_by_member_id')->nullable();
             $table->date('date_used')->nullable();

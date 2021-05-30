@@ -22,11 +22,6 @@ class CreateMemberLogsTable extends Migration
             
             $table->foreign('member_id')->references('id')->on('members');
         });
-        
-        Schema::table('members', function (Blueprint $table) {
-            $table->string('ip_address', 45)->after('updated_at')->nullable();
-            $table->unsignedBigInteger('curr_login_id')->after('updated_at')->nullable();
-        });
     }
 
     /**
@@ -35,12 +30,7 @@ class CreateMemberLogsTable extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::table('members', function (Blueprint $table) {
-            $table->dropColumn('curr_login_id');
-            $table->dropColumn('ip_address');
-        });
-        
+    {        
         Schema::dropIfExists('member_logs');
     }
 }

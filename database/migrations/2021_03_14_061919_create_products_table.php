@@ -18,9 +18,10 @@ class CreateProductsTable extends Migration
             $table->string('name', 50)->unique();
             $table->string('code', 50)->unique();
             $table->string('slug', 60)->unique();
-            $table->float('pv');
-            $table->float('upv');
             $table->float('price');
+            $table->string('display_icon', 15)->nullable();
+            $table->unsignedTinyInteger('flush_bonus');
+            $table->unsignedMediumInteger('product_value');
             $table->string('type', 5);
             $table->char('registration_code_prefix', 2)->comment('used for registration codes (pincode1)');
             $table->unsignedBigInteger('created_by')->nullable();

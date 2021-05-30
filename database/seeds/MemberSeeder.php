@@ -25,7 +25,7 @@ class MemberSeeder extends Seeder
             'firstname' => 'Golden',
             'middlename' => 'Mag',
             'lastname' => 'USA',
-            'address' => 'NA',
+            'address1' => 'NA',
             'mobile' => 'NA',
             'registration_code_id' => 0,
             'must_change_password' => 0,

@@ -27,10 +27,6 @@ class CreateHonoraryMembersTable extends Migration
             $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('member_id')->references('id')->on('members');
         });
-        
-        Schema::table('members', function (Blueprint $table) {
-            $table->boolean('has_credits')->default(0);
-        });
     }
 
 
@@ -42,9 +38,5 @@ class CreateHonoraryMembersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('honorary_members');
-        
-        Schema::table('members', function (Blueprint $table) {
-            $table->dropColumn('has_credits');
-        });
     }
 }
