@@ -106,18 +106,18 @@
                     <input type="text" class="form-control form-control-sm text-primary" name="nationality" value="{{ old('nationality', $member->nationality) }}" />
                 </div>
             </div>
-            <div class="form-group row field">
+            <div class="form-group row field border-0">
                 <label class="col-sm-3 col-form-label">Nature Of Work *:</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control form-control-sm text-primary" name="nature_of_work" value="{{ old('nature_of_work', $member->nature_of_work) }}" />
                 </div>
             </div>
             
-            <h4 class="mt-5">Transaction Requirements <small><small>For Product Purchase</small></small></h4>
+            <h4 class="mt-4">Transaction Requirements <small><small>(For Product Purchase)</small></small></h4>
             
             <div class="row">
                 <div class="col-4">
-                    <div class="card mt-3">
+                    <div class="card field mt-3">
                         <div class="card-body">
                             <h5 class="card-title">Primary Document</h5>
                             <div class="form-group row border-0">
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="col-4">
-                    <div class="card mt-3">
+                    <div class="card field mt-3">
                         <div class="card-body">
                             <h5 class="card-title">Secondary Document 1</h5>
                             <div class="form-group row border-0">
@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="col-4">
-                    <div class="card mt-3">
+                    <div class="card field mt-3">
                         <div class="card-body">
                             <h5 class="card-title">Secondary Document 2</h5>
                             <div class="form-group row border-0">
