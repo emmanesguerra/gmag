@@ -268,6 +268,7 @@
             });
             
             $("#primary_kyc_expiry").daterangepicker({
+                drops: 'up',
                 autoUpdateInput: false,
                 singleDatePicker: true,
                 showDropdowns: true,
@@ -281,6 +282,7 @@
             });
             
             $("#secondary_kyc_expiry1").daterangepicker({
+                drops: 'up',
                 autoUpdateInput: false,
                 singleDatePicker: true,
                 showDropdowns: true,
@@ -294,6 +296,7 @@
             });
             
             $("#secondary_kyc_expiry2").daterangepicker({
+                drops: 'up',
                 autoUpdateInput: false,
                 singleDatePicker: true,
                 showDropdowns: true,
