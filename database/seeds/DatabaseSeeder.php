@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             WalletTypeSeeder::class,
             PaynamicsDisbursementMethodSeeder::class,
-            DocumentOptionSeeder::class
+            DocumentOptionSeeder::class,
+            PickupCenterSeeder::class
         ]);
     }
 }
