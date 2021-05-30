@@ -26,7 +26,10 @@ class CreateTransactionEncashmentsTable extends Migration
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             
+            
+            $table->index(['deleted_at']);
             $table->index(['transaction_no']);
             $table->index(['encashment_req_id']);
             $table->foreign('encashment_req_id')->references('id')->on('members_encashment_requests');

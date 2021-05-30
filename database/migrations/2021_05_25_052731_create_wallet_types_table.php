@@ -18,6 +18,10 @@ class CreateWalletTypesTable extends Migration
             $table->string('name', 50);
             $table->unsignedTinyInteger('sequence');
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index(['method']);
+            $table->index(['deleted_at']);
         });
     }
 

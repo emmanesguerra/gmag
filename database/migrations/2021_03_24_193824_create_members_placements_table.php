@@ -23,7 +23,9 @@ class CreateMembersPlacementsTable extends Migration
             $table->char('position', 1);
             $table->unsignedBigInteger('product_id');
             $table->timestamps();
+            $table->softDeletes();
             
+            $table->index(['deleted_at']);
             $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('product_id')->references('id')->on('products');
             $table->index(['lft', 'position']);

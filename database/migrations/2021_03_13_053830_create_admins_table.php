@@ -21,6 +21,9 @@ class CreateAdminsTable extends Migration
             $table->boolean('is_super')->default(false);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index(['deleted_at']);
         });
     }
 

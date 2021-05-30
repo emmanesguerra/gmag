@@ -27,7 +27,9 @@ class CreateRegistrationCodesTable extends Migration
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             
+            $table->index(['deleted_at']);
             $table->foreign('assigned_to_member_id')->references('id')->on('members');
             $table->foreign('used_by_member_id')->references('id')->on('members');
             $table->foreign('product_id')->references('id')->on('products');

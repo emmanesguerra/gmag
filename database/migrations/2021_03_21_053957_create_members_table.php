@@ -32,10 +32,13 @@ class CreateMembersTable extends Migration
             $table->string('email')->unique();
             $table->string('mobile', 25);
             $table->date('birthdate')->nullable();
+            $table->string('nationality', 50)->nullable();
+            $table->string('nature_of_work', 50)->nullable();
             $table->unsignedBigInteger('registration_code_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('curr_login_id')->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->boolean('must_change_password')->default(0);
@@ -52,6 +55,8 @@ class CreateMembersTable extends Migration
             $table->unsignedMediumInteger('flush_pts')->nullable();
             $table->boolean('has_credits')->default(0);
             $table->string('timezone', 32)->default('Asia/Manila');
+            
+            $table->index(['deleted_at']);
         });
     }
 

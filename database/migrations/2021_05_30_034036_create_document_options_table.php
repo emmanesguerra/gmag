@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaynamicsDisbursementMethodsTable extends Migration
+class CreateDocumentOptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreatePaynamicsDisbursementMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('paynamics_disbursement_methods', function (Blueprint $table) {
-            $table->string('method', 20)->primary();
-            $table->string('name', 100);
+        Schema::create('document_options', function (Blueprint $table) {
+            $table->char('code', 7)->primary();
+            $table->string('description', 150);
+            $table->boolean('is_primary');
             $table->unsignedTinyInteger('sequence');
-            $table->unsignedMediumInteger('transaction_limit');
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['method']);
+            $table->index(['code']);
             $table->index(['deleted_at']);
         });
     }
@@ -33,6 +33,6 @@ class CreatePaynamicsDisbursementMethodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paynamics_disbursement_methods');
+        Schema::dropIfExists('document_options');
     }
 }
