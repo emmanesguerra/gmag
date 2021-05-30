@@ -40,25 +40,25 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">First name:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname') }}">
+                    <input maxlength="35" type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname') }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Middle name:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm"  name="middlename" id='middlename' value="{{ old('middlename') }}">
+                    <input maxlength="35" type="text" class="form-control form-control-sm"  name="middlename" id='middlename' value="{{ old('middlename') }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Last name:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm"  name="lastname" id='lastname' value="{{ old('lastname') }}">
+                    <input maxlength="50" type="text" class="form-control form-control-sm"  name="lastname" id='lastname' value="{{ old('lastname') }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm"  name="address" id='address' value="{{ old('address') }}">
+                    <input maxlength="150" type="text" class="form-control form-control-sm"  name="address" id='address' value="{{ old('address') }}">
                 </div>
             </div>
             <div class="form-group row field">
@@ -70,7 +70,7 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Mobile:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="mobile" id='mobile' value="{{ old('mobile') }}">
+                    <input maxlength="25" type="text" class="form-control form-control-sm "  name="mobile" id='mobile' value="{{ old('mobile') }}">
                 </div>
             </div>
             <div class="form-group row field">
