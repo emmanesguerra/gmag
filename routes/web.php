@@ -34,6 +34,9 @@ Route::get('/test-search', function() {
 
 Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->name('set.yesterdays.pair.type');
 
+Route::get('/paygate-notification', 'Admin\EncashmentController@paynamicsnoti')->name('paynamics.noti');
+Route::get('/paygate-response', 'Admin\EncashmentController@paynamicsresp')->name('paynamics.resp');
+
 Route::middleware('auth:web')->group(function () {
     Route::middleware('mustchanged')->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');

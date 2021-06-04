@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Library\DataTables;
 use App\Library\Modules\TransactionLibrary;
+use App\Library\Modules\PaynamicsLibrary;
 use App\Models\MembersEncashmentRequest;
 use App\Models\TransactionEncashment;
 use App\Http\Requests\ApproveEncashmentRequest;
@@ -79,12 +80,8 @@ class EncashmentController extends Controller
             DB::beginTransaction();
             
             $trans = MembersEncashmentRequest::find($request->id);
-            $trans->tracking_no = $request->tracking_no;
-            $trans->remarks = $request->remarks;
-            $trans->status = 'C';
-            $trans->save();
             
-            TransactionLibrary::saveEncashmentTransaction($trans);
+            PaynamicsLibrary::processCashout($trans, $request->tracking_no);
             
             DB::commit();
             return response(['success' => true], 200);
@@ -119,5 +116,15 @@ class EncashmentController extends Controller
             return response(['success' => false,
                 'message' => $ex->getMessage()], 400);
         }
+    }
+    
+    public function paynamicsnoti(Request $request)
+    {
+        \Illuminate\Support\Facades\Log::info($request->all());
+    }
+    
+    public function paynamicsresp(Request $request)
+    {
+        \Illuminate\Support\Facades\Log::info($request->all());
     }
 }
