@@ -44,7 +44,19 @@
     <div class="form-group row field">
         <label for="staticEmail" class="col-sm-3 col-form-label">Maximum Pairs Per Cycle</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control form-control-sm"  name="max_pairing_ctr" value="{{ old('max_pairing_ctr', $data['model']['max_pairing_ctr']) }}">
+            <input type="numeric" class="form-control form-control-sm"  name="max_pairing_ctr" value="{{ old('max_pairing_ctr', $data['model']['max_pairing_ctr']) }}">
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-12 head">
+            Cashout
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label for="staticEmail" class="col-sm-3 col-form-label">Expiration Day Count</label>
+        <div class="col-sm-3">
+            <input type="numeric" class="form-control form-control-sm"  name="expiry_day" value="{{ old('expiry_day', $data['model']['expiry_day']) }}">
         </div>
     </div>
 

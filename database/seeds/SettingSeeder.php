@@ -27,5 +27,10 @@ class SettingSeeder extends Seeder
             'keyword' => 'max_pairing_ctr',
             'keyvalue' => '20'
         ]);
+        
+        Setting::create([
+            'keyword' => 'expiry_day',
+            'keyvalue' => '5'
+        ]);
     }
 }
