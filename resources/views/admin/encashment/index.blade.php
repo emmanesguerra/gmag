@@ -14,7 +14,7 @@
                 <tr>
                     <th>Date Request</th>
                     <th>Username</th>
-                    <th>Request Type</th>
+                    <th>Pickup Center</th>
                     <th>Fullname</th>
                     <th>Mobile</th>
                     <th>Request Amount</th>
@@ -184,8 +184,12 @@
                     }
                 },
                 {"data": "username"},
-                {"data": "req_type"},
-                {"data": "name"},
+                {"data": "description"},
+                {
+                    data: function ( row, type, set ) {
+                        return row.firstname + ' ' + row.lastname;
+                    }
+                },
                 {"data": "mobile"},
                 {
                     data: function ( row, type, set ) {

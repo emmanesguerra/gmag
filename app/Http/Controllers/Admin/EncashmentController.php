@@ -25,8 +25,8 @@ class EncashmentController extends Controller
             0 => 'a.id',
             1 => 'a.created_at',
             2 => 'b.username',
-            3 => 'a.req_type',
-            4 => 'a.name',
+            3 => 'c.description',
+            4 => 'a.firstname|a.lastname',
             5 => 'a.mobile',
             6 => 'a.amount',
             7 => 'a.tracking_no',
@@ -36,11 +36,13 @@ class EncashmentController extends Controller
         
         $filteredmodel = DB::table('members_encashment_requests as a')
                                 ->join('members as b', 'b.id', '=', 'a.member_id')
+                                ->join('pickup_centers as c', 'c.code', '=', 'a.pickup_center')
                                 ->select(DB::raw("a.id, 
                                                 a.created_at,
                                                 b.username,
-                                                a.req_type, 
-                                                a.name,
+                                                c.description, 
+                                                a.firstname,
+                                                a.lastname,
                                                 a.mobile,
                                                 a.amount,
                                                 a.remarks,
