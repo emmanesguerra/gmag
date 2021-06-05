@@ -37,6 +37,7 @@ class CreateGmagAccountsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             
+            $table->index(['should_use']);
             $table->index(['deleted_at']);
         });
         
