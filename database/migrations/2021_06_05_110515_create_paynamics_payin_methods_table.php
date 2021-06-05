@@ -16,6 +16,7 @@ class CreatePaynamicsPayinMethodsTable extends Migration
         Schema::create('paynamics_payin_methods', function (Blueprint $table) {
             $table->string('method', 11)->primary();
             $table->string('type', 20);
+            $table->string('type_name', 20);
             $table->string('description', 100);
             $table->timestamps();
             $table->softDeletes();
