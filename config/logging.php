@@ -99,6 +99,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'paynamics' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
     ],
 
 ];
