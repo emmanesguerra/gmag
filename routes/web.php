@@ -97,6 +97,14 @@ Route::middleware('auth:web')->group(function () {
 
 Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::view('/dashboard', 'admin.home');
+    
+    Route::get('/payout-accounts', 'Admin\PayoutAccountController@index')->name('payout.accounts.index');
+    Route::get('/payout-accounts/data', 'Admin\PayoutAccountController@data')->name('payout.accounts.data');
+    Route::get('/payout-accounts/create', 'Admin\PayoutAccountController@create')->name('payout.accounts.create');
+    Route::post('/payout-accounts', 'Admin\PayoutAccountController@store')->name('payout.accounts.store');
+    Route::get('/payout-accounts/{id}/edit', 'Admin\PayoutAccountController@edit')->name('payout.accounts.edit');
+    Route::put('/payout-accounts/{id}', 'Admin\PayoutAccountController@update')->name('payout.accounts.update');
+    Route::delete('/payout-accounts/{id}', 'Admin\PayoutAccountController@destroy')->name('payout.accounts.destroy');
 
     Route::get('/control-panel', 'Admin\ControlPanelController@index')->name('admin.controlpanel.index');
     Route::post('/control-panel', 'Admin\ControlPanelController@store')->name('admin.controlpanel.store');

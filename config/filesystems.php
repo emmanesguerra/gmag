@@ -84,6 +84,13 @@ return [
             'root' => storage_path('app/public/members/proof'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+        ],
+        
+        'document_proof_payout' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/admin/payout/proof'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
         ]
 
     ],

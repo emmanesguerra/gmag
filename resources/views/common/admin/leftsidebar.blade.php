@@ -65,6 +65,7 @@
                     <span>ADMIN MENU</span>
                 </a>
                 <ul>
+                    <li><a href="{{ route('payout.accounts.index') }}"><i class="fa fa-ellipsis-h"></i> Payout Accounts</a></li>
                     <li><a href="{{ route('admin.controlpanel.index') }}"><i class="fa fa-ellipsis-h"></i> Control Panel</a></li>
                     <li><a href="{{ route('admin.member.visit') }}"><i class="fa fa-ellipsis-h"></i> Access Log</a></li>
                     <li><a href="{{ route('admin.changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>
