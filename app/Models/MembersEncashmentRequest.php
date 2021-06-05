@@ -30,4 +30,9 @@ class MembersEncashmentRequest extends Model implements Auditable
     {
         return $this->hasOne(Member::class, 'id', 'member_id');
     }
+    
+    public function pcenter()
+    {
+        return $this->hasOne(PickupCenter::class, 'code', 'pickup_center');
+    }
 }
