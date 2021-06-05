@@ -13,6 +13,6 @@ class PaynamicsPayinMethod extends Model
     public $incrementing = false;
     
     protected $fillable = [
-        'method', 'type', 'description'
+        'method', 'type', 'description', 'type_name'
     ];
 }
