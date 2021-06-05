@@ -106,7 +106,7 @@ class PaynamicsLibrary {
         curl_close($curl);
 
         //Print out the response output.
-        echo $result;
+        Log::channel('paynamics')->info($result);
         
     }
     
