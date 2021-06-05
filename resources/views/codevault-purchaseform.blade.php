@@ -58,7 +58,7 @@
         Purchase Form
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form id="app" class='no-edit p-2' onsubmit = "event.preventDefault();">
+        <form id="app" class='no-edit p-2' action="{{ route('codevault.purchase') }}" method="POST">
             @csrf
             @include('common.serverresponse')
             <payment-form 
@@ -67,7 +67,7 @@
                 v-bind:products="products"
                 v-bind:wallettypes="wallettypes"
                 v-bind:paymentmethods="paymentmethods"
-                v-bind:disbursementmethods="disbursementmethods"
+                v-bind:payinmethods="payinmethods"
                 v-bind:disbursementformurl="disbursementformurl"
                 >
             </payment-form>
@@ -85,14 +85,15 @@
             'total_amount': {!! json_encode( old('total_amount')) !!},
             'payment_method': {!! json_encode( old('payment_method')) !!},
             'source': {!! json_encode( old('source')) !!},
-            'source_amount': {!! json_encode( old('source_amount')) !!}
+            'source_amount': {!! json_encode( old('source_amount')) !!},
+            'payinmethods': {!! json_encode( old('payinmethod_name')) !!}
         };
         
         var memberData = {!! json_encode($member) !!};
         var products = {!! json_encode($products) !!};
         var walletTypes = {!! json_encode($walletTypes) !!};
         var paymentMethods = {!! json_encode($paymentMethods) !!};
-        var disbursementMethods = {!! json_encode($disbursementMethods) !!};
+        var payinMethods = {!! json_encode($payinmethods) !!};
         var disbursementFormUrl = '{{ route("disbursement.form") }}';
     </script>
     <script src="{{ asset('js/app.js') }}"></script>

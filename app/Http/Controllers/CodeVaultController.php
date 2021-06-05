@@ -99,13 +99,25 @@ class CodeVaultController extends Controller
         $products = DB::table('products')->select('name', 'price', 'id')->get();
         $walletTypes = DB::table('wallet_types')->select('method', 'name')->orderBy('sequence')->get();
         $paymentMethods = DB::table('payment_methods')->select('method', 'name')->orderBy('sequence')->get();
-        $disbursementMethods = DB::table('paynamics_disbursement_methods')->select('method', 'name')->orderBy('sequence')->get();
+        $payinmethodsres = DB::table('paynamics_payin_methods')
+                            ->select('method', 'type', 'type_name', 'description')
+                            ->orderBy('type')->get();
+        
+        $payinmethods = [];
+        foreach($payinmethodsres as $values) {
+            $payinmethods[$values->type]['id'] = $values->type;
+            $payinmethods[$values->type]['label'] = $values->type_name;
+            $payinmethods[$values->type]['children'][] = [
+                                            'id' => $values->method,
+                                            'label' => $values->description
+                                        ];
+        }
         
         return view('codevault-purchaseform', ['member' => $member, 
             'products' => $products, 
             'walletTypes' => $walletTypes,
             'paymentMethods' => $paymentMethods,
-            'disbursementMethods' => $disbursementMethods]);
+            'payinmethods' => array_values($payinmethods)]);
     }
     
     /**
@@ -136,6 +148,8 @@ class CodeVaultController extends Controller
      */
     public function purchase(CodePurchaseRequest $request)
     {
+        dd($request->all());
+        
         try
         {
             if($request->payment_method == 'ewallet' && $request->total_amount > $request->source_amount) {

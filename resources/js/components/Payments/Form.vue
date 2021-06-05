@@ -46,20 +46,14 @@
             </div>
         </div>
         <div v-if="model.payment_method=='paynamics'" class="form-group row field">
-            <label class="col-sm-3 col-form-label">Select a Disbursement Method:</label>
+            <label  class="col-sm-3 col-form-label">Select a Payment Methods: </label>
             <div class="col-sm-4">
-                <select v-model="model.disbursementmethods" name="disbursementmethods" class="form-control form-control-sm">
-                    <option v-for="prm in disbursementmethods" v-bind:value="prm.method" >{{ prm.name }}</option>
-                </select>
+                <treeselect-form-multi
+                    v-bind:value="model.payinmethods"
+                    v-bind:selectoptions="payinmethods"
+                    v-bind:fieldname="payinmethodname">
+                </treeselect-form-multi>
             </div>
-            <div v-if="model.disbursementmethods" class="col-sm-4">
-                <button @click="openDisbursementForm" class="btn btn-primary btn-sm">Add new record</button>
-            </div>
-        </div>
-        
-        <div v-if="model.payment_method=='paynamics'" class="form-group row field">
-            <payment-table v-bind:lists="disbursements">
-            </payment-table>
         </div>
 
         <div class="form-group row text-center">
@@ -74,10 +68,11 @@
 
 <script>
     export default {
-        props: ['member', 'model', 'products', 'wallettypes', 'paymentmethods', 'disbursementmethods', 'disbursementformurl'],
+        props: ['member', 'model', 'products', 'wallettypes', 'paymentmethods', 'payinmethods', 'disbursementformurl'],
         data () {
             return {
-                disbursements: []
+                disbursements: [],
+                payinmethodname: 'payinmethod_name[]'
             }
         },
         methods: {
