@@ -68,7 +68,6 @@
                 v-bind:wallettypes="wallettypes"
                 v-bind:paymentmethods="paymentmethods"
                 v-bind:payinmethods="payinmethods"
-                v-bind:disbursementformurl="disbursementformurl"
                 >
             </payment-form>
             
@@ -94,7 +93,6 @@
         var walletTypes = {!! json_encode($walletTypes) !!};
         var paymentMethods = {!! json_encode($paymentMethods) !!};
         var payinMethods = {!! json_encode($payinmethods) !!};
-        var disbursementFormUrl = '{{ route("disbursement.form") }}';
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

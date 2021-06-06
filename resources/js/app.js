@@ -41,7 +41,6 @@ const app = new Vue({
         products: products,
         wallettypes: walletTypes,
         paymentmethods: paymentMethods,
-        payinmethods: payinMethods,
-        disbursementformurl: disbursementFormUrl
+        payinmethods: payinMethods
     }
 });

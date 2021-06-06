@@ -51,7 +51,8 @@
                 <treeselect-form-multi
                     v-bind:value="model.payinmethods"
                     v-bind:selectoptions="payinmethods"
-                    v-bind:fieldname="payinmethodname">
+                    v-bind:fieldname="payinmethodname"
+                    v-on:updatepayin="updatepayin">
                 </treeselect-form-multi>
             </div>
         </div>
@@ -68,7 +69,7 @@
 
 <script>
     export default {
-        props: ['member', 'model', 'products', 'wallettypes', 'paymentmethods', 'payinmethods', 'disbursementformurl'],
+        props: ['member', 'model', 'products', 'wallettypes', 'paymentmethods', 'payinmethods'],
         data () {
             return {
                 disbursements: [],
@@ -85,6 +86,9 @@
             },
             openDisbursementForm () {
                 window.open(this.disbursementformurl + '?method=' + this.model.disbursementmethods + '&member=' + this.member.id, '_blank');
+            },
+            updatepayin (data) {
+                this.model.payinmethods = data;
             }
         }
     }
