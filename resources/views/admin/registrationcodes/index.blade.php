@@ -100,7 +100,7 @@
                 {
                     data: "remarks",
                     render: function ( data, type, set ) {
-                        return data.split("\\n").join("<br/>");
+                        return ( data) ? data.split("\\n").join("<br/>"): '';
                     }
                 },
                 {

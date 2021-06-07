@@ -72,19 +72,19 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address 1 *:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address1" id='address1' value="{{ old('address1', $member->address1) }}">
+                    <input maxlength="50" type="text" class="form-control form-control-sm "  name="address1" id='address1' value="{{ old('address1', $member->address1) }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address 2:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address2" id='address2' value="{{ old('address2', $member->address2) }}">
+                    <input maxlength="50" type="text" class="form-control form-control-sm "  name="address2" id='address2' value="{{ old('address2', $member->address2) }}">
                 </div>
             </div>
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Address 3:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address3" id='address3' value="{{ old('address3', $member->address3) }}">
+                    <input maxlength="50" type="text" class="form-control form-control-sm "  name="address3" id='address3' value="{{ old('address3', $member->address3) }}">
                 </div>
             </div>
             <div class="form-group row field">
@@ -100,7 +100,7 @@
                     <input type="text" class="form-control form-control-sm col-2"  name="zip" id='zip' value="{{ old('zip', $member->zip) }}" placeholder="Zip">
                 </div>
             </div>
-            <div class="form-group row field">
+<!--            <div class="form-group row field">
                 <label class="col-sm-3 col-form-label">Nationality *:</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control form-control-sm" name="nationality" value="{{ old('nationality', $member->nationality) }}" />
@@ -111,9 +111,9 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control form-control-sm" name="nature_of_work" value="{{ old('nature_of_work', $member->nature_of_work) }}" />
                 </div>
-            </div>
+            </div>-->
             
-            <h4 class="mt-4">Transaction Requirements <small><small>(For Product Purchase)</small></small></h4>
+<!--            <h4 class="mt-4">Transaction Requirements <small><small>(For Product Purchase)</small></small></h4>
             
             <div class="row">
                 <div class="col-4">
@@ -229,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             
 
             <div class="form-group row text-center">

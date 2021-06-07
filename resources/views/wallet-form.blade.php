@@ -98,9 +98,9 @@
             <div class="form-group row field">
                 <label  class="col-sm-3 col-form-label">Full Name:</label>
                 <div class="input-group col-sm-9">
-                    <input type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname', $member->firstname) }}">
-                    <input type="text" class="form-control form-control-sm "  name="lastname" id='lastname' value="{{ old('lastname',$member->lastname) }}">
-                    <input type="text" class="form-control form-control-sm "  name="middlename" id='middlename' value="{{ old('middlename', $member->middlename) }}">
+                    <input type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname', $member->firstname) }}" placeholder="First name">
+                    <input type="text" class="form-control form-control-sm "  name="middlename" id='middlename' value="{{ old('middlename', $member->middlename) }}"  placeholder="Middle name">
+                    <input type="text" class="form-control form-control-sm "  name="lastname" id='lastname' value="{{ old('lastname',$member->lastname) }}"  placeholder="Last name">
                 </div>
             </div>
             <div class="form-group row field">
