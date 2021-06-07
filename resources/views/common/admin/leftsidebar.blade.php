@@ -60,12 +60,21 @@
                 </ul> 
             </li>
             <li>
+                <a href="{{ route('payout.accounts.index') }}">
+                    <span><i class="fas fa-cogs"></i></span>
+                    <span>Payout Accounts</span>
+                </a>
+                <ul>
+                    <li><a href="{{ route('payout.accounts.index') }}"><i class="fa fa-ellipsis-h"></i> Payout Accounts</a></li>
+                    <li><a href="{{ route('payout.accounts.create') }}"><i class="fa fa-ellipsis-h"></i> Create New</a></li>
+                </ul>  
+            </li>
+            <li>
                 <a href="{{ route('admin.controlpanel.index') }}">
                     <span><i class="fas fa-cogs"></i></span>
                     <span>ADMIN MENU</span>
                 </a>
                 <ul>
-                    <li><a href="{{ route('payout.accounts.index') }}"><i class="fa fa-ellipsis-h"></i> Payout Accounts</a></li>
                     <li><a href="{{ route('admin.controlpanel.index') }}"><i class="fa fa-ellipsis-h"></i> Control Panel</a></li>
                     <li><a href="{{ route('admin.member.visit') }}"><i class="fa fa-ellipsis-h"></i> Access Log</a></li>
                     <li><a href="{{ route('admin.changepassword.index') }}"><i class="fa fa-ellipsis-h"></i> Change Password</a></li>

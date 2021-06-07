@@ -35,6 +35,9 @@ use App\Observers\HonoraryMemberObserver;
 use App\Models\PaynamicsTransaction;
 use App\Observers\PaynamicsTransactionObserver;
 
+use App\Models\GmagAccount;
+use App\Observers\GmagAccountObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -66,5 +69,6 @@ class AppServiceProvider extends ServiceProvider
         MembersEncashmentRequest::observe(MembersEncashmentRequestObserver::class);
         HonoraryMember::observe(HonoraryMemberObserver::class);
         PaynamicsTransaction::observe(PaynamicsTransactionObserver::class);
+        GmagAccount::observe(GmagAccountObserver::class);
     }
 }

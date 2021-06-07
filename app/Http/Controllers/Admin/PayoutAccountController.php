@@ -75,7 +75,12 @@ class PayoutAccountController extends Controller
      */
     public function create()
     {
-        //
+        $pdocumentTypes = DB::table('document_options')->whereNull('deleted_at')->where('is_primary', 1)->get();
+        $sdocumentTypes = DB::table('document_options')->whereNull('deleted_at')->where('is_primary', 0)->get();
+        
+        return view('admin.payouts.create', [
+            'pdocumentTypes' => $pdocumentTypes, 
+            'sdocumentTypes' => $sdocumentTypes]);
     }
 
     /**
@@ -84,9 +89,50 @@ class PayoutAccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PayoutAccountRequest $request)
     {
-        //
+        try
+        {   
+            $validate = $this->validateFileUploads($request);
+            if(!empty($validate)) {
+                throw new \Exception(implode('<br />', $validate));
+            }
+            
+            DB::beginTransaction();
+            
+            $gmag = GmagAccount::create($request->only(['firstname', 'middlename', 'lastname', 
+                                'birthdate', 'email', 'mobile', 'address1', 'address2', 
+                                'address3', 'city', 'state', 'country', 'zip', 'birthplace',
+                                'nationality', 'nature_of_work']));      
+            
+            foreach($request->document as $key => $docs) {
+                if(!empty($docs['doc'])) {
+                    $fileName = (isset($docs['proof']) ? $docs['proof']: null);
+                    if($request->hasFile('doc_proof_' . $key)) {
+                        $proof = $request->file('doc_proof_' . $key);
+                        $fileName = 'D'.$key.'-U' . strtoupper(substr($gmag->firstname,0,7)) .'-I' . $gmag->id . '.' . $proof->getClientOriginalExtension();
+                        Storage::disk('document_proof_payout')->put($gmag->id . '/'. $fileName, file_get_contents($proof));
+                    }
+
+                    GmagAccountDocuments::updateOrCreate(['account_id' => $gmag->id, 
+                                                    'type' => $key + 1], 
+                                                   ['doc_type' => $docs['doc'],
+                                                    'doc_id' => $docs['idnum'],
+                                                    'expiry_date' => $docs['exp'],
+                                                    'proof' => $fileName ]);
+                }
+            }
+            
+            DB::commit();
+            
+            return redirect()->route('payout.accounts.index')->with('status-success', 'Account has been updated');
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()
+                    ->with('status-failed', $ex->getMessage())
+                    ->withInput($request->input());
+        }
     }
 
     /**
@@ -184,7 +230,7 @@ class PayoutAccountController extends Controller
                 }
             }
         }
-        
+
         if(!empty($errors)) {
             $response = [
                 "There's something wrong with your request:",

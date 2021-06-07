@@ -11,10 +11,8 @@ class GmagAccount extends Model implements Auditable
     use \OwenIt\Auditing\Auditable, SoftDeletes;
 
     protected $fillable = [
-        'username', 'password', 'sponsor_id', 'firstname',
-        'middlename', 'lastname', 'address1', 'address2', 'address3', 'email',  
-        'mobile',  'registration_code_id', 
-        'must_change_password', 'birthdate', 'birthplace', 'has_credits',
+        'firstname', 'middlename', 'lastname', 'address1', 'address2', 'address3', 'email',  
+        'mobile', 'birthdate', 'birthplace',
         'city', 'state', 'country', 'zip',
         'nature_of_work', 'nationality'
     ];

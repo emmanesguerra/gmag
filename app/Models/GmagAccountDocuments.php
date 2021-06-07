@@ -11,7 +11,7 @@ class GmagAccountDocuments extends Model implements Auditable
     use \OwenIt\Auditing\Auditable, SoftDeletes;
 
     protected $fillable = [
-        'member_id', 'type', 'doc_type', 'doc_id', 'expiry_date', 'proof'
+        'account_id', 'type', 'doc_type', 'doc_id', 'expiry_date', 'proof'
     ];
     
     /*

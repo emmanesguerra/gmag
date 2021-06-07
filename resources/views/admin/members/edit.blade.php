@@ -103,6 +103,7 @@
     <script>
         $(function() {
             $("#birthdate").daterangepicker({
+                autoUpdateInput: false,
                 singleDatePicker: true,
                 showDropdowns: true,
                 minYear: 1901,
@@ -111,8 +112,7 @@
                   format: 'YYYY-MM-DD'
                 }
             }, function(start, end, label) {
-                var years = moment().diff(start, 'years');
-                alert("You are " + years + " years old!");
+                $('#birthdate').val(start.format('YYYY-MM-DD'));
             });
         });
         
