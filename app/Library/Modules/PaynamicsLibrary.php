@@ -66,21 +66,129 @@ class PaynamicsLibrary {
         }
     }
     
-    public static function makeTransaction($request = null, PaynamicsTransaction $trans)
+    public static function processPayin($request = null, PaynamicsTransaction $trans)
     {
-        $paynamicsData = [
-            'merchantid' => env('PYNMCS_MERCH_ID'),
-            'merchant_ip' => $_SERVER['SERVER_ADDR'],
-            'request_id' => $trans->id,
-            'notification_url' => route(''),
-            'response_url' => route(''),
-            'disbursement_info' => 'Payment ',
+        $xmlData = self::generateXmlDataCashIn($trans, $request);
+        
+        Log::channel('paynamics')->info($xmlData);
+        
+        $pl = new PaynamicsLibrary;
+        
+        //Initiate cURL
+        $curl = curl_init('https://testpti.payserv.net/webpayment/default.aspx');
+
+        //Set the Content-Type to text/xml.
+        curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlData);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curl);
+
+        //Do some basic error checking.
+        if(curl_errno($curl)){
+            Log::channel('paynamics')->error(curl_error($curl));
+            throw new Exception(curl_error($curl));
+        }
+
+        //Close the cURL handle.
+        curl_close($curl);
+
+        //Print out the response output.
+        Log::channel('paynamics')->info($result);
+        
+        echo $result;
+    }
+    
+    private static function generateXmlDataCashIn($trans, $request)
+    {
+        $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
+        $serverip = $_SERVER['SERVER_ADDR'];
+        $clientip = $request->ip();
+        $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
+        $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        $cancelUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        $mtacUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        $requestID = $trans->id . uniqid('gmag');
+        
+        $data = [
+            'mid' => env('PYNMCS_MERCH_ID'),
+            'request_id' => $requestID,
+            'ip_address' => $serverip,
+            'notification_url' => $notificationUrl,
+            'response_url' => $responseUrl,
+            'cancel_url' => $cancelUrl,
+            'mtac_url' => $mtacUrl,
+            'fname' => 'Emmanuelle',
+            'lname' => 'Esguerra',
+            'mname' => 'Magtibay',
+            'address1' => 'Lorem ipsum comet dolor',
+            'address2' => 'Lorem ipsum comet dolor',
+            'city' => 'Makati',
+            'state' => '',
+            'country' => 'PH',
+            'zip' => '',
+            'email' => 'emman.esguerra2013@gmail.com',
+            'phone' => '09090529279',
+            'mobile' => '09090529279',
+            'client_ip' => $clientip,
+            'amount' => 1000.00,
+            'currency' => self::DEFAULT_CURRENCY,
+            'pmethod' => 'cc',
+            'expiry_limit' => $expirationDate,
+            'mlogo_url' => asset('favicon.ico'),
+            'orders' => [
+                [
+                    'items' => [
+                        'itemname' => 'Item 1',
+                        'quantity' => 1,
+                        'amount' => 1000.00
+                    ]
+                ]
+            ],
+            'secure3d' => 'enabled',
+            'signature' => self::processPayinSignatureHeader($trans, $requestID, $serverip, $notificationUrl, $responseUrl, $clientip),
         ];
+        
+        $xml = new \SimpleXMLElement('<Request/>');
+        self::array_to_xml($data, $xml);
+        return $xml->asXML();
+    }
+
+    private static function processPayinSignatureHeader($trans, $requestID, $serverip, $notificationUrl, $responseUrl, $clientip)
+    {
+        /*
+         * forSign = merchantid + request_id + merchant_ip + total_amount + notification_url + response_url+ 
+            disbursement_info + disbursement_type + disbursement_date + mkey
+         */
+        
+        return hash("sha512", implode('+', [
+                    env('PYNMCS_MERCH_ID'),
+                    $requestID,
+                    $serverip,
+                    $notificationUrl,
+                    $responseUrl,
+                    'Emmanuelle',
+                    'Esguerra',
+                    'Magtibay',
+                    'Lorem ipsum comet dolor',
+                    'Lorem ipsum comet dolor',
+                    'Makati',
+                    '',
+                    'PH',
+                    '',
+                    'emman.esguerra2013@gmail.com',
+                    '09090529279',
+                    $clientip,
+                    1000.00,
+                    self::DEFAULT_CURRENCY,
+                    'enabled',
+                    env('PYNMCS_MERCH_KEY')
+                ]));
     }
     
     public static function processCashout(MembersEncashmentRequest $trans, $trackingno)
     {
-        $xmlData = self::generateXmlData($trans, $trackingno);
+        $xmlData = self::generateXmlDataCashOut($trans, $trackingno);
         
         Log::channel('paynamics')->info($xmlData);
         
@@ -110,7 +218,7 @@ class PaynamicsLibrary {
         
     }
     
-    private static function generateXmlData($trans, $trackingno)
+    private static function generateXmlDataCashOut($trans, $trackingno)
     {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;

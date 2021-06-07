@@ -148,8 +148,6 @@ class CodeVaultController extends Controller
      */
     public function purchase(CodePurchaseRequest $request)
     {
-        dd($request->all());
-        
         try
         {
             if($request->payment_method == 'ewallet' && $request->total_amount > $request->source_amount) {
@@ -159,12 +157,12 @@ class CodeVaultController extends Controller
             DB::beginTransaction();
             
             $member = Auth::user();
-            $product = Product::find($request->package);
+            $product = Product::find($request->product);
                 
             if($request->payment_method == 'paynamics') {
                 $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
                 
-                $resp = PaynamicsLibrary::makeTransaction($request, $trans);
+                $resp = PaynamicsLibrary::processPayin($request, $trans);
 //                '#paynamicsTable'
                 $route = 'profile.show';
                 $ref = ['id' => $member->id . '#paynamics'];
