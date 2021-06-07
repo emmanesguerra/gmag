@@ -51,6 +51,15 @@
             width: auto;
             display: inline-block;
         }
+        
+        .modal-dialog {
+            margin-top: 10rem;
+        }
+        .fade:not(.show) {
+            opacity: 1;
+            background: #00000087;
+            margin-top: 3;
+        }
     </style>
 @endsection
 
@@ -97,7 +106,7 @@
                     searchable: false,
                     orderable: false,
                     data: function ( row, type, set ) {
-                        return '<a href="{{ route('admin.course.index') }}/'+row.id+'/edit">Edit</a> | <a href="#" onclick="showdeletemodal(\''+row.id+'\',\''+row.title+'\',\'{{ route('admin.course.index') }}/'+row.id+'\')"  class="">Delete</a>';
+                        return '<a href="{{ route('admin.course.index') }}/'+row.id+'/edit">Edit</a> | <a href="#" onclick="showdeletemodal(\''+row.id+'\',\''+row.title+'\',\'{{ route('admin.course.index') }}/'+row.id+'\')"  class="text-danger">Delete</a>';
                     }
                 }
             ]

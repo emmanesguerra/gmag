@@ -254,4 +254,12 @@ class PayoutAccountController extends Controller
     {
         //
     }
+    
+    public function activate($id)
+    {
+        DB::table('gmag_accounts')->where('should_use', 1)->update(['should_use' => 0]);
+        DB::table('gmag_accounts')->where('id', $id)->update(['should_use' => 1]);
+        
+        return redirect()->route('payout.accounts.index')->with('status-success', 'Account id# '.$id.' has been set to active');
+    }
 }
