@@ -53,6 +53,15 @@
             width: auto;
             display: inline-block;
         }
+        
+        .modal-dialog {
+            margin-top: 10rem;
+        }
+        .fade:not(.show) {
+            opacity: 1;
+            background: #00000087;
+            margin-top: 3;
+        }
     </style>
 @endsection
 
@@ -87,7 +96,7 @@
                 },
                 {
                     data: function ( row, type, set ) {
-                        return (row.should_use) ? 'Active': '';
+                        return (row.should_use) ? 'Active': '<a href="'+payoutindex+ '/' +row.id+'/active">Set Active</a>';
                     }
                 },
                 {
@@ -106,11 +115,11 @@
                 {"data": "mobile"},
                 {
                     data: function ( row, type, set ) {
-                        return "<a href='"+payoutindex+ '/' +row.id+"/edit'>Edit</a>";
+                        return '<a href="'+payoutindex+ '/' +row.id+'"/edit">Edit</a> | <a href="#" onclick="showdeletemodal(\''+row.id+'\', \'\', \'/admin/entry-codes/'+row.id+'\')" class="text-danger" >Delete</a>';
                     }
                 }
             ],
-            "order": [[ 0, "desc" ]]
+            "order": [[ 1, "desc" ]]
         });
         
         $("div.toolbar").html(

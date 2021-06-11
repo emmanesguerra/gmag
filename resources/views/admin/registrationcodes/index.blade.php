@@ -55,6 +55,15 @@
             width: auto;
             display: inline-block;
         }
+        
+        .modal-dialog {
+            margin-top: 10rem;
+        }
+        .fade:not(.show) {
+            opacity: 1;
+            background: #00000087;
+            margin-top: 3;
+        }
     </style>
 @endsection
 
@@ -100,14 +109,14 @@
                 {
                     data: "remarks",
                     render: function ( data, type, set ) {
-                        return data.split("\\n").join("<br/>");
+                        return ( data) ? data.split("\\n").join("<br/>"): '';
                     }
                 },
                 {
                     searchable: false,
                     orderable: false,
                     data: function ( row, type, set ) {
-                        return '<a href="#" onclick="showdeletemodal(\''+row.id+'\', \'\', \'/admin/entry-codes/'+row.id+'\')" >Delete</a>';
+                        return '<a href="#" onclick="showdeletemodal(\''+row.id+'\', \'\', \'/admin/entry-codes/'+row.id+'\')" class="text-danger">Delete</a>';
                     }
                 }
             ],

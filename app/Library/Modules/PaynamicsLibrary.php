@@ -75,7 +75,7 @@ class PaynamicsLibrary {
         $pl = new PaynamicsLibrary;
         
         //Initiate cURL
-        $curl = curl_init('https://testpti.payserv.net/webpayment/default.aspx');
+        $curl = curl_init(env('PYNMCS_MERCH_ENDPOINT_PAYIN'));
 
         //Set the Content-Type to text/xml.
         curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
@@ -111,7 +111,7 @@ class PaynamicsLibrary {
         $requestID = date('YMDHis') . $trans->id;
         
         $data = [
-            'mid' => env('PYNMCS_MERCH_ID'),
+            'mid' => env('PYNMCS_MERCH_ID_PAYIN'),
             'request_id' => $requestID,
             'ip_address' => $serverip,
             'notification_url' => $notificationUrl,
@@ -162,7 +162,7 @@ class PaynamicsLibrary {
          */
         
         return hash("sha512", implode('+', [
-                    env('PYNMCS_MERCH_ID'),
+                    env('PYNMCS_MERCH_ID_PAYIN'),
                     $requestID,
                     $serverip,
                     $notificationUrl,
@@ -182,7 +182,7 @@ class PaynamicsLibrary {
                     1000.00,
                     self::DEFAULT_CURRENCY,
                     'enabled',
-                    env('PYNMCS_MERCH_KEY')
+                    env('PYNMCS_MERCH_KEY_PAYIN')
                 ]));
     }
     
@@ -229,7 +229,7 @@ class PaynamicsLibrary {
         
         $data = [
             'header_request' => [
-                'merchantid' => env('PYNMCS_MERCH_ID'),
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
                 'merchant_ip' => $ip,
                 'request_id' => $requestID,
                 'notification_url' => $notificationUrl,
@@ -274,7 +274,7 @@ class PaynamicsLibrary {
          */
         
         return hash("sha512", implode('+', [
-                    env('PYNMCS_MERCH_ID'),
+                    env('PYNMCS_MERCH_ID_PAYOUT'),
                     $requestID,
                     $ip,
                     $trans->amount,
@@ -283,7 +283,7 @@ class PaynamicsLibrary {
                     $disbursementInfo,
                     '0',
                     '',
-                    env('PYNMCS_MERCH_KEY')
+                    env('PYNMCS_MERCH_KEY_PAYOUT')
                 ]));
     }
     
@@ -317,7 +317,7 @@ class PaynamicsLibrary {
                     self::FUND_SOURCE,
                     'Cashout',
                     $disbursementInfo,
-                    env('PYNMCS_MERCH_KEY')
+                    env('PYNMCS_MERCH_KEY_PAYOUT')
                 ];
                 
                 break;

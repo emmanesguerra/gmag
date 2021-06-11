@@ -122,25 +122,26 @@ class ProfileController extends Controller
             $member->update($request->only(['firstname', 'middlename', 'lastname', 
                                 'birthdate', 'email', 'mobile', 'address1', 'address2', 
                                 'address3', 'city', 'state', 'country', 'zip', 
-                                'nationality', 'nature_of_work']));
+//                                'nationality', 'nature_of_work'
+                ]));
             
-            foreach($request->document as $key => $docs) {
-                if(!empty($docs['doc'])) {
-                    $fileName = (isset($docs['proof']) ? $docs['proof']: null);
-                    if($request->hasFile('doc_proof_' . $key)) {
-                        $proof = $request->file('doc_proof_' . $key);
-                        $fileName = 'D'.$key.'-U' . strtoupper(substr($member->username,0,7)) .'-I' . $member->id . '.' . $proof->getClientOriginalExtension();
-                        Storage::disk('document_proof')->put($member->id . '/'. $fileName, file_get_contents($proof));
-                    }
-
-                    MemberDocument::updateOrCreate(['member_id' => $member->id, 
-                                                    'type' => $key + 1], 
-                                                   ['doc_type' => $docs['doc'],
-                                                    'doc_id' => $docs['idnum'],
-                                                    'expiry_date' => $docs['exp'],
-                                                    'proof' => $fileName ]);
-                }
-            }
+//            foreach($request->document as $key => $docs) {
+//                if(!empty($docs['doc'])) {
+//                    $fileName = (isset($docs['proof']) ? $docs['proof']: null);
+//                    if($request->hasFile('doc_proof_' . $key)) {
+//                        $proof = $request->file('doc_proof_' . $key);
+//                        $fileName = 'D'.$key.'-U' . strtoupper(substr($member->username,0,7)) .'-I' . $member->id . '.' . $proof->getClientOriginalExtension();
+//                        Storage::disk('document_proof')->put($member->id . '/'. $fileName, file_get_contents($proof));
+//                    }
+//
+//                    MemberDocument::updateOrCreate(['member_id' => $member->id, 
+//                                                    'type' => $key + 1], 
+//                                                   ['doc_type' => $docs['doc'],
+//                                                    'doc_id' => $docs['idnum'],
+//                                                    'expiry_date' => $docs['exp'],
+//                                                    'proof' => $fileName ]);
+//                }
+//            }
             
             DB::commit();
             
@@ -159,23 +160,23 @@ class ProfileController extends Controller
         $response = [];
         $errors = [];
         
-        foreach($request->document as $key => $docs) {
-            if(!empty($docs['doc'])) {
-                if(!$request->hasFile('doc_proof_' . $key) && !isset($docs['proof'])) {
-                    $errors[] = 'Document Proof on box '.($key + 1).' is required';
-                }
-            }
-        }
-        
-        if(!empty($errors)) {
-            $response = [
-                "There's something wrong with your request:",
-                ""
-            ];
-            foreach($errors as $err) {
-                array_push($response, $err);
-            }
-        }
+//        foreach($request->document as $key => $docs) {
+//            if(!empty($docs['doc'])) {
+//                if(!$request->hasFile('doc_proof_' . $key) && !isset($docs['proof'])) {
+//                    $errors[] = 'Document Proof on box '.($key + 1).' is required';
+//                }
+//            }
+//        }
+//        
+//        if(!empty($errors)) {
+//            $response = [
+//                "There's something wrong with your request:",
+//                ""
+//            ];
+//            foreach($errors as $err) {
+//                array_push($response, $err);
+//            }
+//        }
         
         return $response;
     }

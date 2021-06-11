@@ -237,6 +237,7 @@
     <script>
         $(function() {
             $("#birthdate").daterangepicker({
+                autoUpdateInput: false,
                 singleDatePicker: true,
                 showDropdowns: true,
                 minYear: 1901,
@@ -245,17 +246,50 @@
                   format: 'YYYY-MM-DD'
                 }
             }, function(start, end, label) {
-                var years = moment().diff(start, 'years');
-                alert("You are " + years + " years old!");
+                $('#birthdate').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#primary_kyc_expiry").daterangepicker({
+                drops: 'up',
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2018,
+                maxYear: parseInt(moment().add(10, 'years').format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#primary_kyc_expiry').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#secondary_kyc_expiry1").daterangepicker({
+                drops: 'up',
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2018,
+                maxYear: parseInt(moment().add(10, 'years').format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#secondary_kyc_expiry1').val(start.format('YYYY-MM-DD'));
+            });
+            
+            $("#secondary_kyc_expiry2").daterangepicker({
+                drops: 'up',
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2018,
+                maxYear: parseInt(moment().add(10, 'years').format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#secondary_kyc_expiry2').val(start.format('YYYY-MM-DD'));
             });
         });
-        
-        function Copy() {
-            var copyText = document.getElementById("copylink");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999)
-            document.execCommand("copy");
-            alert("Link copied to clipboard");
-        }
     </script>
 @endsection
