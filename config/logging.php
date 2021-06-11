@@ -120,6 +120,13 @@ return [
             'level' => 'info',
             'days' => 30,
         ],
+
+        'paynamics_cashin' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_cashin/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
     ],
 
 ];

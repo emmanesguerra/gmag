@@ -70,33 +70,55 @@ class PaynamicsLibrary {
     {
         $xmlData = self::generateXmlDataCashIn($trans, $request);
         
-        Log::channel('paynamics')->info($xmlData);
-        
         $pl = new PaynamicsLibrary;
         
-        //Initiate cURL
-        $curl = curl_init(env('PYNMCS_MERCH_ENDPOINT_PAYIN'));
+        $soapUrl = 'https://testpti.payserv.net/pnxquery/queryservice.asmx'; // asmx URL of WSDL
 
-        //Set the Content-Type to text/xml.
-        curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlData);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($curl);
+        // xml post structure
 
-        //Do some basic error checking.
-        if(curl_errno($curl)){
-            Log::channel('paynamics')->error(curl_error($curl));
-            throw new Exception(curl_error($curl));
-        }
+        $xml_post_string = '<?xml version="1.0" encoding="utf-8"?>
+                            <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+                              <soap:Body>
+                              <query xmlns="https://testpti.payserv.net/pnxquery">
+                              '.$xmlData.'
+                              </query>
+                              </soap:Body>
+                            </soap:Envelope>';   // data from the form, e.g. some ID number
 
-        //Close the cURL handle.
-        curl_close($curl);
+       $headers = array(
+                    "Content-type: text/xml;charset=\"utf-8\"",
+                    "Host: testpti.payserv.net",
+                    "POST: /pnxquery/queryservice.asmx HTTP/1.1",
+                    "Accept: text/xml",
+                    "Cache-Control: no-cache",
+                    "Pragma: no-cache",
+                    "SOAPAction: https://testpti.payserv.net/pnxquery/query", 
+                    "Content-length: ".strlen($xml_post_string),
+                ); //SOAPAction: your op URL
 
-        //Print out the response output.
-        Log::channel('paynamics')->info($result);
+        $url = $soapUrl;
         
-        echo $result;
+        //Initiate cURL
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_post_string); // the SOAP request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //Do some basic error checking.
+        $response = curl_exec($ch); 
+        curl_close($ch);
+
+        // converting
+        $response1 = str_replace("<soap:Body>","",$response);
+        $response2 = str_replace("</soap:Body>","",$response1);
+        
+         $parser = simplexml_load_string($response2);
+         
+         throw new \Exception('Wait');
     }
     
     private static function generateXmlDataCashIn($trans, $request)
@@ -160,6 +182,30 @@ class PaynamicsLibrary {
          * forSign = merchantid + request_id + merchant_ip + total_amount + notification_url + response_url+ 
             disbursement_info + disbursement_type + disbursement_date + mkey
          */
+         
+         Log::channel('paynamics_cashin')->info(hash("sha512", implode('+', [
+                    env('PYNMCS_MERCH_ID_PAYIN'),
+                    $requestID,
+                    $serverip,
+                    $notificationUrl,
+                    $responseUrl,
+                    'Emmanuelle',
+                    'Esguerra',
+                    'Magtibay',
+                    'Lorem ipsum comet dolor',
+                    'Lorem ipsum comet dolor',
+                    'Makati',
+                    '',
+                    'PH',
+                    '',
+                    'emman.esguerra2013@gmail.com',
+                    '09090529279',
+                    $clientip,
+                    1000.00,
+                    self::DEFAULT_CURRENCY,
+                    'enabled',
+                    env('PYNMCS_MERCH_KEY_PAYIN')
+                ])));
         
         return hash("sha512", implode('+', [
                     env('PYNMCS_MERCH_ID_PAYIN'),
