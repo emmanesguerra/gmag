@@ -106,6 +106,20 @@ return [
             'level' => 'info',
             'days' => 30,
         ],
+
+        'paynamics_noti' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_noti/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
+        'paynamics_resp' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_resp/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
     ],
 
 ];

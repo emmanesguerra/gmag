@@ -108,7 +108,7 @@ class PaynamicsLibrary {
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
         $cancelUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
         $mtacUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $requestID = $trans->id . uniqid('gmag');
+        $requestID = date('YMDHis') . $trans->id;
         
         $data = [
             'mid' => env('PYNMCS_MERCH_ID'),
@@ -225,7 +225,7 @@ class PaynamicsLibrary {
         $ip = $_SERVER['SERVER_ADDR'];
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $requestID = $trans->id . uniqid('gmag');
+        $requestID =  date('YmdHis') . $trans->id;
         
         $data = [
             'header_request' => [
