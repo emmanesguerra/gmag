@@ -224,6 +224,8 @@ class PaynamicsLibrary {
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
         $requestID =  date('YmdHis') . $trans->id;
         
+        $disbursementMethod = 'SBINSTAPAY';
+        
         $data = [
                 'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
                 'merchant_ip' => $ip,
@@ -237,7 +239,7 @@ class PaynamicsLibrary {
                 'total_amount_currency' => self::DEFAULT_CURRENCY,
                 'signature' => self::processPayoutSignatureHeader($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo),
                 'timestamp' => Carbon::now()->format('Y-m-d\TH:i:s\Z'),
-                'disbursement_items' => self::generatePayoutDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo)
+                'disbursement_items' => self::generatePayoutDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo, $disbursementMethod)
         ];
         
         $xml = new \SimpleXMLElement('<header_request/>');
@@ -283,10 +285,36 @@ class PaynamicsLibrary {
     }
     
     
-    private static function processPayoutSignatureDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo)
+    private static function processPayoutSignatureDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo, $disbursementMethod)
     {
         $signatureReq = [];
-        switch($trans->pcenter->type) {
+        switch($disbursementMethod) {
+            case "SBINSTAPAY":
+                /*
+                 * forSign = request_id + sender_fname + sender_lname + sender_mname + sender_address1 + 
+                    sender_addrees2 + sender_phone + disbursement_amount + currency + disbursement_method + 
+                    bank_account_no + fund_source + reason_for_transfer + disbursement_info + mkey
+                 */
+                
+                $signatureReq = [
+                    $requestID,
+                    $trans->firstname,
+                    $trans->lastname,
+                    $trans->middlename,
+                    'B32 L47 Ford Loop St. Broadway Pines',
+                    'Executive Village',
+                    '+639090529279',
+                    ( string ) $trans->amount,
+                    self::DEFAULT_CURRENCY,
+                    $disbursementMethod,
+                    '002400600036803',
+                    self::FUND_SOURCE,
+                    'Cashout',
+                    $disbursementInfo,
+                    env('PYNMCS_MERCH_KEY_PAYOUT')
+                ];
+                
+                break;
             case "AUCP":
             case "GHCP":
                 /*
@@ -308,7 +336,7 @@ class PaynamicsLibrary {
                     $trans->mobile,
                     $trans->amount,
                     self::DEFAULT_CURRENCY,
-                    $trans->pcenter->type,
+                    $disbursementMethod,
                     self::FUND_SOURCE,
                     'Cashout',
                     $disbursementInfo,
@@ -323,26 +351,23 @@ class PaynamicsLibrary {
         return $sign;
     }
     
-    private static function generatePayoutDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo)
+    private static function generatePayoutDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo, $disbursementMethod)
     {
         $sender = GmagAccount::where('should_use', 1)->first();
         
         $data = [
             'request_id' => $requestID,
-            'assigned_ref' => $trackingno,
-            'expiry_date' => $expirationDate,
-            'pickup_center' => $trans->pickup_center,
             'sender_fname' => $sender->firstname,
             'sender_lname' => $sender->lastname,
             'sender_mname' => $sender->middlename,
-            'sender_address1' => $sender->address1,
-            'sender_address2' => $sender->address2,
+            'sender_address1' => 'B32 L47 Ford Loop St. Broadway Pines',
+            'sender_address2' => 'Executive Village',
             'sender_city' => $sender->city,
             'sender_state' => $sender->state,
             'sender_country' => $sender->country,
             'sender_zip' => $sender->zip,
             'sender_email' => $sender->email,
-            'sender_phone' => $sender->mobile,
+            'sender_phone' => '+639090529279',
             'dob' => $sender->birthdate,
             'birthplace' => $sender->birthplace,
             'sender_nature_of_work' => $sender->nature_of_work,
@@ -372,12 +397,25 @@ class PaynamicsLibrary {
             'ben_phone' => $trans->mobile,
             'disbursement_amount' => $trans->amount,
             'currency' => self::DEFAULT_CURRENCY,
-            'disbursement_method' => $trans->pcenter->code,
+            'disbursement_method' => $disbursementMethod,
             'disbursement_info' => $disbursementInfo,
             'fund_source' => self::FUND_SOURCE,
             'reason_for_transfer' => 'Cashout',
-            'signature' => self::processPayoutSignatureDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo)
+            'signature' => self::processPayoutSignatureDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo, $disbursementMethod)
         ];
+        
+        switch($disbursementMethod) {
+            case "SBINSTAPAY":
+                $data['instapay_bank_code'] = 'SBA';
+                $data['bank_account_no'] = '002400600036803';
+                break;
+            case "AUCP":
+            case "GHCP":
+                $data['assigned_ref'] = $trackingno;
+                $data['expiry_date'] = $expirationDate;
+                $data['pickup_center'] = $trans->pickup_center;                
+                break;
+        }
         
         $xmlData = [];
         foreach($data as $key => $value) {
