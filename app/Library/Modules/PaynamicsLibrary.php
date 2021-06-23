@@ -190,6 +190,8 @@ class PaynamicsLibrary {
     {
         $xmlData = self::generateXmlDataCashOut($trans, $trackingno);
         
+        Log::channel('paynamics')->info($xmlData);
+        
         $pl = new PaynamicsLibrary;
         //Initiate cURL
         $curl = curl_init($pl->dGateDisbursementServiceUrl);
@@ -287,6 +289,8 @@ class PaynamicsLibrary {
     
     private static function processPayoutSignatureDetails($trans, $requestID, $trackingno, $expirationDate, $disbursementInfo, $disbursementMethod)
     {
+        $sender = GmagAccount::where('should_use', 1)->first();
+
         $signatureReq = [];
         switch($disbursementMethod) {
             case "SBINSTAPAY":
@@ -298,9 +302,9 @@ class PaynamicsLibrary {
                 
                 $signatureReq = [
                     $requestID,
-                    $trans->firstname,
-                    $trans->lastname,
-                    $trans->middlename,
+                    $sender->firstname,
+                    $sender->lastname,
+                    $sender->middlename,
                     'B32 L47 Ford Loop St. Broadway Pines',
                     'Executive Village',
                     '+639090529279',

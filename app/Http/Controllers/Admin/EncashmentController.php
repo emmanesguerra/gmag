@@ -121,11 +121,16 @@ class EncashmentController extends Controller
     
     public function paynamicsnoti(Request $request)
     {
+        Log::channel('paynamics_noti')->info(date('Y-m-d H:i:s'));
         Log::channel('paynamics_noti')->info($request->all());
+        Log::channel('paynamics_noti')->info($request->getContent());
+
+        echo 'accesible' . date('Y-m-d H:i:s');
     }
     
     public function paynamicsresp(Request $request)
     {
         Log::channel('paynamics_resp')->info($request->all());
+        Log::channel('paynamics_resp')->info($request->getContent());
     }
 }
