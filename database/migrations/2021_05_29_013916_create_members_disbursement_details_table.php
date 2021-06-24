@@ -72,7 +72,6 @@ class CreateMembersDisbursementDetailsTable extends Migration
             $table->softDeletes();
             
             $table->index(['member_id']);
-            $table->index(['deleted_at']);
             $table->index(['member_id', 'disbursement_method']);
             $table->foreign('member_id')->references('id')->on('members');
         });

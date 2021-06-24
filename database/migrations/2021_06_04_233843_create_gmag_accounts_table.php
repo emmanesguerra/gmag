@@ -38,7 +38,6 @@ class CreateGmagAccountsTable extends Migration
             $table->softDeletes();
             
             $table->index(['should_use']);
-            $table->index(['deleted_at']);
         });
         
         Schema::create('gmag_account_documents', function (Blueprint $table) {

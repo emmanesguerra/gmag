@@ -22,7 +22,6 @@ class CreatePickupCentersTable extends Migration
             $table->softDeletes();
             
             $table->index(['code']);
-            $table->index(['deleted_at']);
         });
     }
 

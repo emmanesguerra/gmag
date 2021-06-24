@@ -35,7 +35,6 @@ class CreateTransactionsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['deleted_at']);
             $table->index(['member_id']);
             $table->index(['transaction_no']);
             $table->foreign('member_id')->references('id')->on('members');

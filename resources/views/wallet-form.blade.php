@@ -58,103 +58,15 @@
         Request Cashout E-Wallet
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form method="POST" action="{{ route('wallet.post') }}"  class='no-edit p-2' >
+        <form id="app" method="POST" action="{{ route('wallet.post') }}"  class='no-edit p-2' >
             @csrf
             @include('common.serverresponse')
-            <div class="form-group row field">
-                <label class="col-sm-3 col-form-label">Select E-Wallet:</label>
-                <div class="col-sm-4">
-                    <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
-                        <option {{ (old('source') == 'direct_referral') ? 'selected': '' }} value='direct_referral'>Direct Referral</option>
-                        <option {{ (old('source') == 'encoding_bonus') ? 'selected': '' }} value='encoding_bonus'>Encoding Bonus</option>
-                        <option {{ (old('source') == 'matching_pairs') ? 'selected': '' }} value='matching_pairs'>Matching Pair</option>
-                    </select>
-                    <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Minimum Request: </label>
-                <div class="col-sm-4">
-                    <span class="form-control form-control-lg border-0"><strong>{{ $minimum_req }}</strong> PHP</span>
-                    <input type="hidden" class="form-control form-control-sm "  name="minimum_req" id='minimum_req' value="{{ $minimum_req }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Amount: </label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="amount" id='amount' value="{{ old('amount') }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Pickup Center</label>
-                <div class="col-sm-4">
-                    <select class="form-control form-control-sm "  name="pickup_center">
-                        @foreach($pickupcenters as $pc)
-                        <option value="{{ $pc->code }}" {{ (old('pickup_center') == $pc->code) ? 'selected': '' }}>{{ $pc->description }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Full Name:</label>
-                <div class="input-group col-sm-9">
-                    <input type="text" class="form-control form-control-sm "  name="firstname" id='firstname' value="{{ old('firstname', $member->firstname) }}" placeholder="First name">
-                    <input type="text" class="form-control form-control-sm "  name="middlename" id='middlename' value="{{ old('middlename', $member->middlename) }}"  placeholder="Middle name">
-                    <input type="text" class="form-control form-control-sm "  name="lastname" id='lastname' value="{{ old('lastname',$member->lastname) }}"  placeholder="Last name">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Address 1:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address1" id='address1' value="{{ old('address1', $member->address1) }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Address 2:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="address2" id='address2' value="{{ old('address2', $member->address2) }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">City*/ State/ Country*/ Zip:</label>
-                <div class="input-group col-sm-9">
-                    <input type="text" class="form-control form-control-sm "  name="city" id='city' value="{{ old('city', $member->city) }}">
-                    <input type="text" class="form-control form-control-sm "  name="state" id='state' value="{{ old('state', $member->state) }}">
-                    <select class="form-control form-control-sm "  name="country" id='country'>
-                        <option value="">Select a country</option>
-                        <option value="PH" {{ old('country', $member->country) == 'PH' ? "selected": "" }}>Philipines</option>
-                        <option value="US" {{ old('country', $member->country) == 'US' ? "selected": "" }}>United States America</option>
-                    </select>
-                    <input type="text" class="form-control form-control-sm "  name="zip" id='zip ' value="{{ old('zip ', $member->zip ) }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Email:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="email" id='email ' value="{{ old('email ', $member->email ) }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Mobile:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control form-control-sm "  name="mobile" id='mobile ' value="{{ old('mobile ', $member->mobile ) }}">
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Password:</label>
-                <div class="col-sm-4">
-                    <input type="password" class="form-control form-control-sm "  name="password" id='password' value="">
-                </div>
-            </div>
-
-            <div class="form-group row text-center">
-                <div class="col-12 p-3">
-                    <button type="submit" class="btn btn-success">
-                        {{ __('SUBMIT REQUEST') }}
-                    </button>
-                </div>
-            </div>
-
+            <cashout-form 
+                v-bind:member="memberdata"
+                v-bind:model="postdata"
+                v-bind:disbursementmethods="disbursementmethods"
+                >
+            </cashout-form>
         </form>
     </div>
 </div>
@@ -162,20 +74,30 @@
 
 @section('javascripts')
     <script>
-        function updatesource (el) {
-            console.log($(el).val());
-            switch($(el).val()) {
-                case "direct_referral":
-                    $('#source_amount').val('{{ $member->direct_referral }}');
-                    break;
-                case "encoding_bonus":
-                    $('#source_amount').val('{{ $member->encoding_bonus }}');
-                    break;
-                case "matching_pairs":
-                    $('#source_amount').val('{{ $member->matching_pairs }}');
-                    break;
-            }
-            
-        }
+        var postvalue = {
+            'source': {!! json_encode( old('source'), JSON_NUMERIC_CHECK ) !!},
+            'amount': {!! json_encode( old('amount')) !!},
+            'minimum_req': {!! json_encode($minimum_req) !!},
+            'disbursement_method': {!! json_encode( old('disbursement_method')) !!},
+            'firstname': {!! json_encode( old('firstname', $member->firstname)) !!},
+            'middlename': {!! json_encode( old('middlename', $member->middlename)) !!},
+            'lastname': {!! json_encode( old('lastname', $member->lastname)) !!},
+            'address1': {!! json_encode( old('address1', $member->address1)) !!},
+            'address2': {!! json_encode( old('address2', $member->address2)) !!},
+            'city': {!! json_encode( old('city', $member->city)) !!},
+            'state': {!! json_encode( old('state', $member->state)) !!},
+            'country': {!! json_encode( old('country', $member->country)) !!},
+            'zip': {!! json_encode( old('zip', $member->zip)) !!},
+            'email': {!! json_encode( old('email', $member->email)) !!},
+            'mobile': {!! json_encode( old('mobile', $member->mobile)) !!}
+        };
+        
+        var memberData = {!! json_encode($member) !!};
+        var products = '';
+        var walletTypes = '';
+        var paymentMethods = '';
+        var payinMethods = '';
+        var disbursementMethods = {!! json_encode($disbursementmethods) !!};
     </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 @endsection

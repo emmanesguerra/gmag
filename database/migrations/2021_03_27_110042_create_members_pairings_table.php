@@ -24,8 +24,6 @@ class CreateMembersPairingsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             
-            
-            $table->index(['deleted_at']);
             $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('lft_mid')->references('id')->on('members');
             $table->foreign('rgt_mid')->references('id')->on('members');

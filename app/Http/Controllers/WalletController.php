@@ -25,8 +25,13 @@ class WalletController extends Controller
     {
         $member = Auth::user();
         $pickupcenters = DB::table('pickup_centers')->select(['code', 'description'])->whereNull('deleted_at')->orderBy('sequence')->get();
+        $disbursementMethod = DB::table('paynamics_disbursement_methods')->select(['method', 'name'])->whereNull('deleted_at')->orderBy('sequence')->get();
         
-        return view('wallet-form', ['member' => $member, 'minimum_req' => self::MINIMUM_REQUEST_AMOUNT, 'pickupcenters' => $pickupcenters]);
+        return view('wallet-form', [
+            'member' => $member, 
+            'minimum_req' => self::MINIMUM_REQUEST_AMOUNT, 
+            'pickupcenters' => $pickupcenters,
+            'disbursementmethods' => $disbursementMethod]);
     }
     
 

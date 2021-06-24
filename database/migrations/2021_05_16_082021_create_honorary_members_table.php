@@ -26,7 +26,6 @@ class CreateHonoraryMembersTable extends Migration
             $table->softDeletes();
             
             
-            $table->index(['deleted_at']);
             $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('member_id')->references('id')->on('members');
         });

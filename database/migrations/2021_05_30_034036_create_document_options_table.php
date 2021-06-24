@@ -22,7 +22,7 @@ class CreateDocumentOptionsTable extends Migration
             $table->softDeletes();
             
             $table->index(['code']);
-            $table->index(['deleted_at', 'is_primary']);
+            $table->index(['is_primary']);
         });
     }
 

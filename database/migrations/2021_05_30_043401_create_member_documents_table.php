@@ -24,7 +24,6 @@ class CreateMemberDocumentsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['deleted_at']);
             $table->index(['member_id', 'type', 'deleted_at']);
             $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('doc_type')->references('code')->on('document_options');

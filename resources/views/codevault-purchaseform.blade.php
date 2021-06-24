@@ -93,6 +93,7 @@
         var walletTypes = {!! json_encode($walletTypes) !!};
         var paymentMethods = {!! json_encode($paymentMethods) !!};
         var payinMethods = {!! json_encode($payinmethods) !!};
+        var disbursementMethods = '';
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

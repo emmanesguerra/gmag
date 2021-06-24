@@ -21,7 +21,6 @@ class CreatePaymentMethodsTable extends Migration
             $table->softDeletes();
             
             $table->index(['method']);
-            $table->index(['deleted_at']);
         });
     }
 

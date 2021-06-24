@@ -24,6 +24,7 @@ Vue.component('treeselect-form-multi', require('./components/Treeselect/MultiDim
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('cashout-form', require('./components/Cashout/Form.vue').default);
 Vue.component('payment-form', require('./components/Payments/Form.vue').default);
 Vue.component('payment-table', require('./components/Payments/Table.vue').default);
 
@@ -41,6 +42,7 @@ const app = new Vue({
         products: products,
         wallettypes: walletTypes,
         paymentmethods: paymentMethods,
-        payinmethods: payinMethods
+        payinmethods: payinMethods,
+        disbursementmethods: disbursementMethods
     }
 });

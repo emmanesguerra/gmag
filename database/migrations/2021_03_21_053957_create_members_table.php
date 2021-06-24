@@ -56,7 +56,6 @@ class CreateMembersTable extends Migration
             $table->boolean('has_credits')->default(0);
             $table->string('timezone', 32)->default('Asia/Manila');
             
-            $table->index(['deleted_at']);
         });
     }
 

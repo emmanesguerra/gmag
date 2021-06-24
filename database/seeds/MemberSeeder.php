@@ -30,7 +30,7 @@ class MemberSeeder extends Seeder
             'mobile' => '+5590897035601',
             'city' => 'Makati',
             'country' => 'PH',
-            'birhtdate' => '2005-01-01',
+            'birthdate' => '2005-01-01',
             'registration_code_id' => 0,
             'must_change_password' => 0,
         ]);

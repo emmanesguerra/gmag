@@ -32,7 +32,6 @@ class CreatePaynamicsTransactionsTable extends Migration
             $table->softDeletes();
             
             
-            $table->index(['deleted_at']);
             $table->index(['id', 'transaction_no']);
             $table->index(['member_id']);
             $table->foreign('member_id')->references('id')->on('members');
