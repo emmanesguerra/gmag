@@ -33,52 +33,99 @@
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='GCASH'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">GCASH Number</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">GCASH Number</span></label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm " name="gcash_no" v-model="datamodel.gcash_no" />
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='PXP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Wallet ID</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Wallet ID</span></label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm " name="pxp_wallet_id" v-model="datamodel.pxp_wallet_id" />
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='PXP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Wallet Account Number</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Wallet Account Number</span></label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm " name="pxp_wallet_account_no" v-model="datamodel.pxp_wallet_account_no" />
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='IBRTPP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Bank Name</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Bank Name</span></label>
+            <div class="col-sm-3">
                 <select class="form-control form-control-sm "  name="ibrtpp_bank_code" v-model="datamodel.ibrtpp_bank_code">
-                    <option value="">Select a bank code</option>
-                    <option value="BDO">BDO</option>
-                    <option value="BDOCC">BDO Cash Card</option>
+                    <option value="">Select a bank</option>
+                    <option v-for="dm in ibttpbanks" :value="dm.code" >{{ dm.name }}</option>
                 </select>
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='IBRTPP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Account Number</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Account Number</span></label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm " name="ibrtpp_bank_number" v-model="datamodel.ibrtpp_bank_number" />
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='UBP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Bank Name</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Bank Name</span></label>
+            <div class="col-sm-3">
                 <select class="form-control form-control-sm "  name="ubp_bank_code" v-model="datamodel.ubp_bank_code">
-                    <option value="">Select a bank code</option>
-                    <option value="UBP">Union Bank of the Philippines</option>
+                    <option value="">Select a bank</option>
+                    <option v-for="dm in ubpbanks" :value="dm.code" >{{ dm.name }}</option>
                 </select>
             </div>
         </div>
         <div v-if="datamodel.disbursement_method=='UBP'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Account Number</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Account Number</span></label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control form-control-sm " name="ubp_bank_number" v-model="datamodel.ubp_bank_number" />
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='IBBT'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Bank Name</span></label>
+            <div class="col-sm-3">
+                <select class="form-control form-control-sm "  name="ibbt_bank_code" v-model="datamodel.ibbt_bank_code">
+                    <option value="">Select a bank</option>
+                    <option v-for="dm in ibbtbanks" :value="dm.code" >{{ dm.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='IBBT'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Account Number</span></label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm " name="ibbt_bank_number" v-model="datamodel.ibbt_bank_number" />
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='SBINSTAPAY'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Bank Name</span></label>
+            <div class="col-sm-3">
+                <select class="form-control form-control-sm "  name="insta_bank_code" v-model="datamodel.insta_bank_code">
+                    <option value="">Select a bank</option>
+                    <option v-for="dm in instabanks" :value="dm.code" >{{ dm.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='SBINSTAPAY'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Account Number</span></label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm " name="insta_bank_number" v-model="datamodel.insta_bank_number" />
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='GHCP'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Pickup Center</span></label>
+            <div class="col-sm-3">
+                <select class="form-control form-control-sm "  name="ghcp_pickupcenter" v-model="datamodel.ghcp_pickupcenter">
+                    <option value="">Select a pickup center</option>
+                    <option v-for="dm in ghcppicksenters" :value="dm.code" >{{ dm.description }}</option>
+                </select>
+            </div>
+        </div>
+        <div v-if="datamodel.disbursement_method=='AUCP'" class="form-group row field">
+            <label  class="col-sm-3 col-form-label"><span class="ml-4">Pickup Center</span></label>
+            <div class="col-sm-3">
+                <select class="form-control form-control-sm "  name="aucp_pickupcenter" v-model="datamodel.aucp_pickupcenter">
+                    <option value="">Select a pickup center</option>
+                    <option v-for="dm in aucppicksenters" :value="dm.code" >{{ dm.description }}</option>
+                </select>
             </div>
         </div>
         <div class="form-group row field">
@@ -145,7 +192,7 @@
 
 <script>
     export default {
-        props: ['member', 'model', 'disbursementmethods'],
+        props: ['member', 'model', 'disbursementmethods', 'ibttpbanks', 'ubpbanks', 'ibbtbanks', 'instabanks', 'ghcppicksenters', 'aucppicksenters'],
         data () {
             return {
                 datamodel: this.model,

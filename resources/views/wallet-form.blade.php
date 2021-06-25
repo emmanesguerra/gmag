@@ -64,7 +64,13 @@
             <cashout-form 
                 v-bind:member="memberdata"
                 v-bind:model="postdata"
-                v-bind:disbursementmethods="disbursementmethods"
+                v-bind:disbursementmethods="{{ json_encode($disbursementmethods) }}"
+                v-bind:ibttpbanks="{{ json_encode($ibttpBanks) }}"
+                v-bind:ubpbanks="{{ json_encode($ubpBanks) }}"
+                v-bind:ibbtbanks="{{ json_encode($ibbtBanks) }}"
+                v-bind:instabanks="{{ json_encode($instaBanks) }}"
+                v-bind:ghcppicksenters="{{ json_encode($ghcppicksenters) }}"
+                v-bind:aucppicksenters="{{ json_encode($aucppicksenters) }}"
                 >
             </cashout-form>
         </form>
@@ -97,7 +103,6 @@
         var walletTypes = '';
         var paymentMethods = '';
         var payinMethods = '';
-        var disbursementMethods = {!! json_encode($disbursementmethods) !!};
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

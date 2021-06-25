@@ -24,14 +24,24 @@ class WalletController extends Controller
     public function index()
     {
         $member = Auth::user();
-        $pickupcenters = DB::table('pickup_centers')->select(['code', 'description'])->whereNull('deleted_at')->orderBy('sequence')->get();
+        $ghcppicksenters = DB::table('pickup_centers')->select(['code', 'description'])->where('type', 'GHCP')->whereNull('deleted_at')->orderBy('sequence')->get();
+        $aucppicksenters = DB::table('pickup_centers')->select(['code', 'description'])->where('type', 'AUCP')->whereNull('deleted_at')->orderBy('sequence')->get();
         $disbursementMethod = DB::table('paynamics_disbursement_methods')->select(['method', 'name'])->whereNull('deleted_at')->orderBy('sequence')->get();
+        $ibtttpBanks = DB::table('paynamics_disbursement_method_bank_codes')->select(['code', 'name'])->where('method', 'IBRTPP')->whereNull('deleted_at')->orderBy('sequence')->get();
+        $ubpBanks = DB::table('paynamics_disbursement_method_bank_codes')->select(['code', 'name'])->where('method', 'UBP')->whereNull('deleted_at')->orderBy('sequence')->get();
+        $ibbtBanks = DB::table('paynamics_disbursement_method_bank_codes')->select(['code', 'name'])->where('method', 'IBBT')->whereNull('deleted_at')->orderBy('sequence')->get();
+        $instaBanks = DB::table('paynamics_disbursement_method_bank_codes')->select(['code', 'name'])->where('method', 'SBINSTAPAY')->whereNull('deleted_at')->orderBy('sequence')->get();
         
         return view('wallet-form', [
             'member' => $member, 
             'minimum_req' => self::MINIMUM_REQUEST_AMOUNT, 
-            'pickupcenters' => $pickupcenters,
-            'disbursementmethods' => $disbursementMethod]);
+            'disbursementmethods' => $disbursementMethod,
+            'ibttpBanks' => $ibtttpBanks,
+            'ubpBanks' => $ubpBanks,
+            'ibbtBanks' => $ibbtBanks,
+            'instaBanks' => $instaBanks, 
+            'ghcppicksenters' => $ghcppicksenters,
+            'aucppicksenters' => $aucppicksenters]);
     }
     
 

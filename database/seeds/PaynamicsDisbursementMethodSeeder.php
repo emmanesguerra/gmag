@@ -69,7 +69,7 @@ class PaynamicsDisbursementMethodSeeder extends Seeder
         ]);
         
         PaynamicsDisbursementMethod::create([
-            'method' => 'BNINSTAPAY',
+            'method' => 'SBINSTAPAY',
             'name' => 'INSTAPAY',
             'sequence' => 9,
             'transaction_limit' => 50000
