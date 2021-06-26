@@ -18,7 +18,9 @@ class CreateMembersEncashmentRequestsTable extends Migration
             $table->unsignedBigInteger('member_id');
             $table->string('source', 20);
             $table->float('amount');
-            $table->string('pickup_center', 20);
+            $table->string('disbursement_method', 20);
+            $table->string('reference1', 25)->nullable();
+            $table->string('reference2', 25)->nullable();
             $table->string('firstname', 35);
             $table->string('middlename', 35);
             $table->string('lastname', 50);
@@ -31,8 +33,8 @@ class CreateMembersEncashmentRequestsTable extends Migration
             $table->string('country', 2)->nullable();
             $table->string('zip', 10)->nullable();
             $table->string('tracking_no', 150)->nullable();
-            $table->string('remarks', 200)->nullable();
-            $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed, X - Cancelled');
+            $table->text('remarks')->nullable();
+            $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed by Admin, X - Cancelled, CC - Transaction Completed, XX - Transaction Failed');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

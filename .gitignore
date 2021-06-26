@@ -15,3 +15,5 @@ yarn-error.log
 /public/css/app.css
 /public/js/app.js
 /storage/paynamics/
+/storage/paynamics_cashin/
+/storage/paynamics_noti/

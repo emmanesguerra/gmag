@@ -19,7 +19,7 @@ class CreatePaynamicsDisbursementMethodBankCodesTable extends Migration
             $table->string('code', 5);
             $table->string('name', 50);
             $table->unsignedTinyInteger('sequence');
-            $table->string('legnth', 15);
+            $table->string('length', 15);
             $table->boolean('leading_zeroes')->default(0);
             $table->timestamps();
             $table->softDeletes();

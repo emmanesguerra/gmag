@@ -3,7 +3,7 @@
         <div class="form-group row field">
             <label class="col-sm-3 col-form-label">Select E-Wallet:</label>
             <div class="col-sm-4">
-                <select class="form-control form-control-sm " v-model="datamodel.source"  name="source">
+                <select class="form-control form-control-sm " v-model="datamodel.source"  name="source" @change="setSourceAmount" required>
                     <option value='direct_referral'>Direct Referral</option>
                     <option value='encoding_bonus'>Encoding Bonus</option>
                     <option value='matching_pairs'>Matching Pair</option>
@@ -14,13 +14,14 @@
             <label  class="col-sm-3 col-form-label">Minimum Request: </label>
             <div class="col-sm-4">
                 <span class="form-control form-control-lg border-0"><strong>{{ model.minimum_req }}</strong> PHP</span>
-                <input type="hidden" class="form-control form-control-sm "  name="minimum_req" v-model="datamodel.minimum_req" />
+                <input type="hidden" name="minimum_req" v-model="datamodel.minimum_req" />
+                <input type="hidden" name="source_amount" v-model="datamodel.source_amount" />
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Amount: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm " name="amount" v-model="datamodel.amount" />
+                <input type="text" class="form-control form-control-sm " name="amount" v-model="datamodel.amount"  required/>
             </div>
         </div>
         <div class="form-group row field">
@@ -131,15 +132,15 @@
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Full Name:</label>
             <div class="input-group col-sm-9">
-                <input type="text" class="form-control form-control-sm "  name="firstname" v-model="datamodel.firstname" />
+                <input type="text" class="form-control form-control-sm "  name="firstname" v-model="datamodel.firstname" required/>
                 <input type="text" class="form-control form-control-sm "  name="middlename" v-model="datamodel.middlename" />
-                <input type="text" class="form-control form-control-sm "  name="lastname" v-model="datamodel.lastname" />
+                <input type="text" class="form-control form-control-sm "  name="lastname" v-model="datamodel.lastname" required/>
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Address 1:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm "  name="address1" v-model="datamodel.address1" />
+                <input type="text" class="form-control form-control-sm "  name="address1" v-model="datamodel.address1" required/>
             </div>
         </div>
         <div class="form-group row field">
@@ -151,9 +152,9 @@
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">City*/ State/ Country*/ Zip:</label>
             <div class="input-group col-sm-9">
-                <input type="text" class="form-control form-control-sm "  name="city" v-model="datamodel.city" />
+                <input type="text" class="form-control form-control-sm "  name="city" v-model="datamodel.city" required/>
                 <input type="text" class="form-control form-control-sm "  name="state" v-model="datamodel.state" />
-                <select class="form-control form-control-sm "  name="country" v-model="datamodel.country">
+                <select class="form-control form-control-sm "  name="country" v-model="datamodel.country" required>
                     <option value="">Select a country</option>
                     <option value="PH">Philipines</option>
                     <option value="US">United States America</option>
@@ -164,19 +165,19 @@
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Email:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm "  name="email" v-model="datamodel.email" />
+                <input type="text" class="form-control form-control-sm "  name="email" v-model="datamodel.email" required/>
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Mobile:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm "  name="mobile" v-model="datamodel.mobile" />
+                <input type="text" class="form-control form-control-sm "  name="mobile" v-model="datamodel.mobile" required/>
             </div>
         </div>
         <div class="form-group row field">
             <label  class="col-sm-3 col-form-label">Password:</label>
             <div class="col-sm-4">
-                <input type="password" class="form-control form-control-sm "  name="password">
+                <input type="password" class="form-control form-control-sm "  name="password" required>
             </div>
         </div>
 
@@ -202,17 +203,7 @@
         },
         methods: {
             setSourceAmount() {
-                this.model.source_amount = this.member[this.model.source];
-            },
-            setTotalAmount () {
-                var price = _.find(this.products, { 'id': this.model.product });
-                this.model.total_amount = price.price * this.model.quantity;
-            },
-            openDisbursementForm () {
-                window.open(this.disbursementformurl + '?method=' + this.model.disbursementmethods + '&member=' + this.member.id, '_blank');
-            },
-            updatepayin (data) {
-                this.model.payinmethods = data;
+                this.datamodel.source_amount = this.member[this.datamodel.source];
             }
         }
     }

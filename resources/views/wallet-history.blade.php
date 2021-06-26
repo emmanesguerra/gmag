@@ -24,7 +24,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Date Requested</th>
-                            <th>Pickup Center</th>
+                            <th>Disbursement Method</th>
                             <th>Amount</th>
                             <th>Fullname</th>
                             <th>Mobile</th>
@@ -99,7 +99,7 @@
                         return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
-                {"data": "pickup_center"},
+                {"data": "disbursement_method"},
                 {"data": "amount"},
                 {
                     data: function ( row, type, set ) {

@@ -30,7 +30,7 @@ class EncashmentRequest extends FormRequest
         return [
             'source' => 'required',
             'amount' => 'required|gte:minimum_req|lte:source_amount',
-            'pickup_center' => 'required',
+            'disbursement_method' => 'required',
             'firstname' => 'required|string|max:50',
             'middlename' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',

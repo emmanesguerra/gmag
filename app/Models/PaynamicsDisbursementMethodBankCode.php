@@ -10,6 +10,6 @@ class PaynamicsDisbursementMethodBankCode extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'method', 'code', 'name', 'sequence', 'legnth', 'leading_zeroes'
+        'method', 'code', 'name', 'sequence', 'length', 'leading_zeroes'
     ];
 }
