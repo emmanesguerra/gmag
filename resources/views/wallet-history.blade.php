@@ -27,7 +27,6 @@
                             <th>Disbursement Method</th>
                             <th>Amount</th>
                             <th>Fullname</th>
-                            <th>Mobile</th>
                             <th>Tracking No</th>
                             <th>Status</th>
                         </tr>
@@ -37,10 +36,25 @@
         </div>
         
     </div>
+    
+    <div class="modal fade in" id="detail-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h4 class="modal-title">Transaction Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="transaction-content">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/bootstrap.min.css') }}"  rel="stylesheet">
     <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
     <style>
@@ -106,20 +120,25 @@
                         return row.firstname + ' ' + row.lastname;
                     }
                 },
-                {"data": "mobile"},
                 {"data": "tracking_no"},
                 {
                     data: function ( row, type, set ) {
                         var stat = "";
                         switch(row.status) {
                             case "WA":
-                                stat = "Waiting";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary' >Waiting</span>";
                                 break;
                             case "C":
-                                stat = "<span class='text-success'>Confirmed</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Confirmed</span>";
+                                break;
+                            case "CC":
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Completed</span>";
+                                break;
+                            case "XX":
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Failed</span>";
                                 break;
                             default:
-                                stat = "<span class='text-danger'>Cancelled</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Cancelled</span>";
                                 break;
                         }
                         return stat;
@@ -143,6 +162,26 @@
     
         function drawTable() {
             table.ajax.reload();
+        }
+        
+        function displayInfo(id) {
+            $.ajax({
+                url: '{{ route("wallet.history.details") }}',
+                type: "get",
+                data: {
+                    id: id
+                },
+                beforeSend: function() {
+                    $('#detail-modal').modal('show');
+                    $('#transaction-content').html('<div class="col-12 text-center"><img src="{{ asset('images/loader.svg') }}" height="40" widht="40" class="m-5"></div>');
+                }, 
+            }).done(function(response) {
+                console.log(response);
+                $('#transaction-content').html(response.html);
+            }).fail(function(XHR) {
+                alert('Unable to retrieve data');
+                $('#detail-modal').modal('hide');
+            });
         }
     </script>
 @endsection

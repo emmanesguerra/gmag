@@ -48,6 +48,16 @@ class MembersEncashmentRequest extends Model implements Auditable
     
     public function pcenter()
     {
-        return $this->hasOne(PickupCenter::class, 'code', 'pickup_center');
+        return $this->hasOne(PickupCenter::class, 'code', 'reference1');
+    }
+    
+    public function bank()
+    {
+        return $this->hasOne(PaynamicsDisbursementMethodBankCode::class, 'code', 'reference1');
+    }
+    
+    public function disbursement()
+    {
+        return $this->hasOne(PaynamicsDisbursementMethod::class, 'method', 'disbursement_method');
     }
 }

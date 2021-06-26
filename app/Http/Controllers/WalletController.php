@@ -276,9 +276,8 @@ class WalletController extends Controller
             2 => 'disbursement_method',
             3 => 'amount',
             4 => 'firstname|lastname',
-            5 => 'mobile',
-            6 => 'tracking_no',
-            7 => 'status',
+            5 => 'tracking_no',
+            6 => 'status',
         ];
         
         $filteredmodel = DB::table('members_encashment_requests')
@@ -287,7 +286,6 @@ class WalletController extends Controller
                                                 disbursement_method, 
                                                 firstname,
                                                 lastname,
-                                                mobile,
                                                 tracking_no,
                                                 status,
                                                 created_at,
@@ -314,5 +312,18 @@ class WalletController extends Controller
             'draw' => $request->draw,
             'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
             'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
+    public function historydetails(Request $request)
+    {
+        if($request->has('id')) {
+            $data = MembersEncashmentRequest::find($request->id);
+            
+            return response(['success' => true,
+                    'html' => view('wallet-transaction-detail', ['data'=> $data])->render()
+                ], 200);
+        } else {
+            return response(['success' => false], 500);
+        }
     }
 }
