@@ -20,4 +20,27 @@ class Common {
 	$string = wordwrap($str, $width, "|");
         return explode("|", $string, $length);
     }
+    
+    public static function arrayToXml($template_info, &$xml_template_info) 
+    {
+	foreach($template_info as $key => $value) {
+            if (is_array($value)) {
+                if (!is_numeric($key)) {
+                    $subnode = $xml_template_info->addChild("$key");
+                    self::arrayToXml($value, $subnode);
+                } else {
+                    self::arrayToXml($value, $xml_template_info);
+                }
+            } else {
+                $xml_template_info->addChild("$key", "$value");
+            }
+        }
+    }
+    
+    public static function convertXmlToJson($xml)
+    {
+        $xml = simplexml_load_string($xml);
+        $json = json_encode($xml);
+        return json_decode($json, TRUE);
+    }
 }

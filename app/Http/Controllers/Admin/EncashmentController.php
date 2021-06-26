@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Library\DataTables;
-use App\Library\Modules\TransactionLibrary;
-use App\Library\Modules\PaynamicsLibrary;
+use App\Library\Common;
+use App\Library\Modules\Paynamics\CashoutLibrary;
+use App\Library\Modules\Paynamics\CommonPynmcs;
+use App\Library\Modules\MembersLibrary;
 use App\Models\MembersEncashmentRequest;
 use App\Models\TransactionEncashment;
 use App\Http\Requests\ApproveEncashmentRequest;
@@ -74,7 +76,33 @@ class EncashmentController extends Controller
             
             $trans = MembersEncashmentRequest::find($request->id);
             
-            PaynamicsLibrary::processCashout($trans, $request->tracking_no);
+            $this->checkWalletAmount($trans);
+            
+            $result = CashoutLibrary::processCashout($trans, $request->tracking_no);
+            $data = Common::convertXmlToJson($result);
+            
+            if($data) {
+                if(CommonPynmcs::isSuccessfulResp($data)) {
+                    // move the requested amount to X
+                    MembersLibrary::stashMemberRequestedAmount($trans);
+                    $trans->status = 'C';
+                } else {
+                    $trans->status = 'CX';
+                }
+                $remarks = [];
+                if(!empty($trans->remarks)) {
+                    $remarks = explode('|', $trans->remarks);
+                }
+                if(!empty($request->remarks)) {
+                    array_push($remarks, date('Ymd H:i') . ' ADMIN: ' . $request->remarks);
+                }
+                array_push($remarks, CommonPynmcs::constructRemarks($data));
+                $trans->remarks = implode("|", $remarks);
+                $trans->save();
+            } else {
+                Log::channel('paynamics')->error($result);
+                throw new \Exception('Unable to translate paynamics response');
+            }
             
             DB::commit();
             return response(['success' => true], 200);
@@ -84,6 +112,21 @@ class EncashmentController extends Controller
             return response(['success' => false,
                 'message' => $ex->getMessage()], 400);
         }
+    }
+    
+    private function checkWalletAmount(MembersEncashmentRequest $trans)
+    {
+        $member = $trans->member;
+        $source = $trans->source;
+        $previousAmount = $member->$source;
+        $deductedAmount = $trans->amount;
+        $newAmount = $previousAmount - $deductedAmount;
+
+        if($newAmount < 0) {
+            throw new \Exception('Not enough wallet amount');
+        }
+        
+        return;
     }
     
     public function reject(Request $request)

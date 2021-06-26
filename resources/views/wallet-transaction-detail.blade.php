@@ -5,7 +5,14 @@
     </div>
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Remarks</strong></span>
-        <span class="col-8">{{ $data->remarks }}</span>
+        <?php $remarks = explode("|", $data->remarks) ?>
+        <span class="col-8">
+            @foreach($remarks as $remark)
+                @if(!empty($remark))
+                    {!! $remark !!} <br />
+                @endif
+            @endforeach
+        </span>
     </div>
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Wallet Source</strong></span>
@@ -106,6 +113,9 @@
                 @break
             @case ('XX')
                 <span class="col-8 text-danger">Transaction failed</span>
+                @break
+            @case ('CX')
+                <span class="col-8 text-danger">Confirmed with Issue</span>
                 @break
             @case ('WA')
                 <span class="col-8 text-secondary">Waiting for confirmation</span>

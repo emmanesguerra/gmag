@@ -48,8 +48,11 @@ class CreateMembersTable extends Migration
             $table->unsignedSmallInteger('pair_cycle_ctr')->nullable();
             $table->unsignedBigInteger('pair_cycle_id')->nullable();
             $table->float('matching_pairs')->nullable();
+            $table->float('matching_pairs_x')->nullable()->comment('amount to be cashout, if not empty means there is a pending transaction in paynamics');
             $table->float('direct_referral')->nullable();
+            $table->float('direct_referral_x')->nullable()->comment('amount to be cashout, if not empty means there is a pending transaction in paynamics');
             $table->float('encoding_bonus')->nullable();
+            $table->float('encoding_bonus_x')->nullable()->comment('amount to be cashout, if not empty means there is a pending transaction in paynamics');
             $table->float('purchased')->nullable();
             $table->float('total_amt')->nullable()->comment('total_amt = (matching_pairs + direct_referral + encoding_bonus) - purchased');
             $table->unsignedMediumInteger('flush_pts')->nullable();

@@ -131,6 +131,9 @@
                             case "C":
                                 stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary'>Confirmed</span>";
                                 break;
+                            case "CX":
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Confirmed</span>";
+                                break;
                             case "CC":
                                 stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Completed</span>";
                                 break;

@@ -14,6 +14,7 @@ use App\Models\RegistrationCode;
 use App\Models\MembersPairing;
 use App\Models\MembersPairCycle;
 use App\Models\HonoraryMember;
+use App\Models\MembersEncashmentRequest;
 use App\Library\Common;
 use App\Library\HierarchicalDB;
 use App\Library\Modules\SettingLibrary;
@@ -252,6 +253,25 @@ class MembersLibrary {
         $placement = $member->placement;
         $placement->product_id = $product->id;
         $placement->save();
+        
+        return;
+    }
+    
+    public static function stashMemberRequestedAmount(MembersEncashmentRequest $transaction)
+    {
+        $member = $transaction->member;
+        $source = $transaction->source;
+        $previousAmount = $member->$source;
+        $deductedAmount = $transaction->amount;
+        $newAmount = $previousAmount - $deductedAmount;
+        
+        $member->$source = $newAmount;
+        
+        $stash = $source . '_x';
+        $member->$source = $newAmount;
+        $member->$stash += $transaction->amount;
+        $member->total_amt -= $transaction->amount;
+        $member->save();
         
         return;
     }

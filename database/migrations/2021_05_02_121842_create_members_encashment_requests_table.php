@@ -34,7 +34,7 @@ class CreateMembersEncashmentRequestsTable extends Migration
             $table->string('zip', 10)->nullable();
             $table->string('tracking_no', 150)->nullable();
             $table->text('remarks')->nullable();
-            $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed by Admin, X - Cancelled, CC - Transaction Completed, XX - Transaction Failed');
+            $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed by Admin, X - Cancelled, CX - Confirmed with Issue, CC - Transaction Completed, XX - Transaction Failed');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
