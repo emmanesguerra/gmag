@@ -76,7 +76,7 @@
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         
-        var start = moment('{{ env('GO_LIVE') }}');
+        var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
         
         var table = $('#encashtable').DataTable({

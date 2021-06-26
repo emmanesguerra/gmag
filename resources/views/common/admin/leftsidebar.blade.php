@@ -21,7 +21,7 @@
                     <li><a href="{{ route('admin.member.index') }}"><i class="fa fa-ellipsis-h"></i> Member Lists</a></li>
                     <li><a href="{{ route('admin.transactions.index') }}"><i class="fa fa-ellipsis-h"></i> Transactions</a></li>
                     <li><a href="{{ route('admin.transactions.bonus') }}"><i class="fa fa-ellipsis-h"></i> Transaction Bonuses</a></li>
-                    <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i> Encashment Requests</a></li>
+                    <li><a href="{{ route('admin.encashment.index') }}"><i class="fa fa-ellipsis-h"></i> Encashment Request {!! GmagHelpers::getPendingEncash() !!}</a></li>
                     <li><a href="{{ route('admin.memberusername.index') }}"><i class="fa fa-ellipsis-h"></i> Change Username</a></li>
                 </ul>
             </li>

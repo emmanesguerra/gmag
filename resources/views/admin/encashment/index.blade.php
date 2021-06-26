@@ -12,15 +12,12 @@
         <table id="encashtable" class="table table-hover table-striped text-center small">
             <thead>
                 <tr>
-                    <th>Date Request</th>
+                    <th>Date Requested</th>
                     <th>Username</th>
-                    <th>Pickup Center</th>
-                    <th>Fullname</th>
-                    <th>Mobile</th>
-                    <th>Request Amount</th>
+                    <th>Disbursement Method</th>
+                    <th>Requested Amount</th>
                     <th>Tracking No</th>
                     <th>Status</th>
-                    <th>Remarks</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -66,6 +63,20 @@
                         <input id="reject" class="btn btn-outline text-danger" type="button" value="Reject">
                         <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade in" id="detail-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h4 class="modal-title">Transaction Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="transaction-content">
+                    
                 </div>
             </div>
         </div>
@@ -162,7 +173,7 @@
             });;
         });
         
-        var start = moment('{{ env('GO_LIVE') }}');
+        var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
         
         var table = $('#encashtable').DataTable({
@@ -184,13 +195,7 @@
                     }
                 },
                 {"data": "username"},
-                {"data": "description"},
-                {
-                    data: function ( row, type, set ) {
-                        return row.firstname + ' ' + row.lastname;
-                    }
-                },
-                {"data": "mobile"},
+                {"data": "disbursement_method"},
                 {
                     data: function ( row, type, set ) {
                         return Number(row.amount).toLocaleString("en", {minimumFractionDigits: 2});
@@ -202,19 +207,24 @@
                         var stat = "";
                         switch(row.status) {
                             case "WA":
-                                stat = "Waiting";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary' >Waiting</span>";
                                 break;
                             case "C":
-                                stat = "<span class='text-success'>Confirmed</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Confirmed</span>";
+                                break;
+                            case "CC":
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Completed</span>";
+                                break;
+                            case "XX":
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Failed</span>";
                                 break;
                             default:
-                                stat = "<span class='text-danger'>Cancelled</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Cancelled</span>";
                                 break;
                         }
                         return stat;
                     }
                 },
-                {"data": "remarks"},
                 {
                     data: function ( row, type, set ) {
                         if(row.status == 'WA') {
@@ -229,9 +239,11 @@
         $("div.toolbar").html(
             '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" style="font-size: 13px;" onChange="drawTable()">'+
                 '<option value="">All</option>'+
-                '<option value="WA">Waiting</option>'+
                 '<option value="C">Confirmed</option>'+
+                '<option value="CC">Completed</option>'+
+                '<option value="WA">Waiting</option>'+
                 '<option value="X">Cancelled</option>'+
+                '<option value="XX">Failed</option>'+
             '</select></label>' +
             '<div id="reportrange" class="btn" style="margin-top: -4px">'+
                 '<i class="fa fa-calendar"></i>&nbsp;'+
@@ -241,6 +253,26 @@
     
         function drawTable() {
             table.ajax.reload();
+        }
+        
+        function displayInfo(id) {
+            $.ajax({
+                url: '{{ route("wallet.history.details") }}',
+                type: "get",
+                data: {
+                    id: id
+                },
+                beforeSend: function() {
+                    $('#detail-modal').modal('show');
+                    $('#transaction-content').html('<div class="col-12 text-center"><img src="{{ asset('images/loader.svg') }}" height="40" widht="40" class="m-5"></div>');
+                }, 
+            }).done(function(response) {
+                console.log(response);
+                $('#transaction-content').html(response.html);
+            }).fail(function(XHR) {
+                alert('Unable to retrieve data');
+                $('#detail-modal').modal('hide');
+            });
         }
     </script>
 @endsection

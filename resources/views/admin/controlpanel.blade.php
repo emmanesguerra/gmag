@@ -16,6 +16,18 @@
     
     @include('common.serverresponse')
     
+    
+    <div class="form-group row">
+        <div class="col-12 head">
+            Site
+        </div>
+    </div>
+    <div class="form-group row field">
+        <label for="staticEmail" class="col-sm-3 col-form-label">Starting Date</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm" id='starting_date' name="starting_date" value="{{ old('starting_date', $data['model']['starting_date']) }}">
+        </div>
+    </div>
     <div class="form-group row">
         <div class="col-12 head">
             Bonuses
@@ -69,4 +81,29 @@
     </div>
 
 </form>
+@endsection
+
+@section('css')
+    <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <script>
+        $(function() {
+            $("#starting_date").daterangepicker({
+                autoUpdateInput: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2021,
+                maxYear: parseInt(moment().format('YYYY'),10),
+                locale: {
+                  format: 'YYYY-MM-DD'
+                }
+            }, function(start, end, label) {
+                $('#starting_date').val(start.format('YYYY-MM-DD'));
+            });
+        });
+    </script>
 @endsection

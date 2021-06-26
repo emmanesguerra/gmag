@@ -68,7 +68,8 @@ class ControlPanelController extends Controller
             'direct_referral_bonus', 
             'encoding_bonus', 
             'max_pairing_ctr',
-            'expiry_day'
+            'expiry_day',
+            'starting_date'
         ];
     }
 

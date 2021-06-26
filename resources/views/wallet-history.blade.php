@@ -90,7 +90,7 @@
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
         
-        var start = moment('{{ env('GO_LIVE') }}');
+        var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
         
         var table = $('#encashtable').DataTable({
@@ -151,8 +151,10 @@
             '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" onChange="drawTable()">'+
                 '<option value="">All</option>'+
                 '<option value="C">Confirmed</option>'+
+                '<option value="CC">Completed</option>'+
                 '<option value="WA">Waiting</option>'+
                 '<option value="X">Cancelled</option>'+
+                '<option value="XX">Failed</option>'+
             '</select></label>' +
             '<div id="reportrange" class="btn" style="margin-top: -4px">'+
                 '<i class="fa fa-calendar"></i>&nbsp;'+

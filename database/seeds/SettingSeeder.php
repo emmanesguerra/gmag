@@ -32,5 +32,10 @@ class SettingSeeder extends Seeder
             'keyword' => 'expiry_day',
             'keyvalue' => '5'
         ]);
+        
+        Setting::create([
+            'keyword' => 'starting_date',
+            'keyvalue' => '2021-05-01'
+        ]);
     }
 }

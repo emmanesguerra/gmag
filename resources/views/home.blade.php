@@ -183,7 +183,7 @@
         
         $(function() {
         
-            var start = moment('{{ env('GO_LIVE') }}');
+            var start = moment('{{ GmagHelpers::getStartingDate() }}');
             var end = moment();
 
             function cb(start, end) {

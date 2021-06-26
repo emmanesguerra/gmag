@@ -37,6 +37,8 @@ Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->n
 Route::post('/paygate-notification', 'Admin\EncashmentController@paynamicsnoti')->name('paynamics.noti');
 Route::post('/paygate-response', 'Admin\EncashmentController@paynamicsresp')->name('paynamics.resp');
 
+Route::get('/ewallet-history-details', 'WalletController@historydetails')->name('wallet.history.details');
+
 Route::middleware('auth:web')->group(function () {
     Route::middleware('mustchanged')->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');
@@ -79,7 +81,6 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');
         Route::get('/ewallet-history', 'WalletController@history')->name('wallet.history');
         Route::get('/ewallet-history-data/{id}', 'WalletController@historydata')->name('wallet.history.data');
-        Route::get('/ewallet-history-details', 'WalletController@historydetails')->name('wallet.history.details');
         
         Route::get('/courses', 'CoursesController@index')->name('course.index');
         

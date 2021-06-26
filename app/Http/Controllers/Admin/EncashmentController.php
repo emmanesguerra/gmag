@@ -27,27 +27,19 @@ class EncashmentController extends Controller
             0 => 'a.id',
             1 => 'a.created_at',
             2 => 'b.username',
-            3 => 'c.description',
-            4 => 'a.firstname|a.lastname',
-            5 => 'a.mobile',
-            6 => 'a.amount',
-            7 => 'a.tracking_no',
-            8 => 'a.status',
-            9 => 'a.remarks',
+            3 => 'a.disbursement_method',
+            4 => 'a.amount',
+            5 => 'a.tracking_no',
+            6 => 'a.status',
         ];
         
         $filteredmodel = DB::table('members_encashment_requests as a')
                                 ->join('members as b', 'b.id', '=', 'a.member_id')
-                                ->join('pickup_centers as c', 'c.code', '=', 'a.pickup_center')
                                 ->select(DB::raw("a.id, 
                                                 a.created_at,
                                                 b.username,
-                                                c.description, 
-                                                a.firstname,
-                                                a.lastname,
-                                                a.mobile,
+                                                a.disbursement_method, 
                                                 a.amount,
-                                                a.remarks,
                                                 a.tracking_no,
                                                 a.status")
                             );

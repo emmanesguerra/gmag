@@ -73,7 +73,7 @@
     <script>
         
         var payoutindex = '{{ route('payout.accounts.index') }}';
-        var start = moment('{{ env('GO_LIVE') }}');
+        var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
         
         var table = $('#member-table').DataTable({
