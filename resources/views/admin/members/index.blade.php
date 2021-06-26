@@ -66,6 +66,7 @@
         
         var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
+        var indexurl = "{{ route('admin.member.index') }}";
         
         var table = $('#member-table').DataTable({
             "ajax": {
@@ -115,7 +116,7 @@
                 {"data": "flush_pts"},
                 {
                     data: function ( row, type, set ) {
-                        return "<a href='/admin/members/"+row.id+"'>View</a> | <a href='/admin/members/"+row.id+"/edit'>Edit</a>";
+                        return "<a href='"+indexurl+'/'+row.id+"'>View</a> | <a href='"+indexurl+'/'+row.id+"/edit'>Edit</a>";
                     }
                 }
             ],

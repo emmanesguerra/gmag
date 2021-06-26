@@ -96,7 +96,7 @@
         <span class="col-4"><strong>Status</strong></span>
         @switch($data->status)
             @case ('C')
-                <span class="col-8 text-success">Confirmed by Admin</span>
+                <span class="col-8 text-primary">Confirmed by Admin</span>
                 @break
             @case ('CC')
                 <span class="col-8 text-success">Transaction completed</span>
@@ -108,7 +108,7 @@
                 <span class="col-8 text-danger">Transaction failed</span>
                 @break
             @case ('WA')
-                <span class="col-8 text-primary">Waiting for confirmation</span>
+                <span class="col-8 text-secondary">Waiting for confirmation</span>
                 @break
         @endswitch
     </div>

@@ -126,10 +126,10 @@
                         var stat = "";
                         switch(row.status) {
                             case "WA":
-                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary' >Waiting</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-secondary' >Waiting</span>";
                                 break;
                             case "C":
-                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Confirmed</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary'>Confirmed</span>";
                                 break;
                             case "CC":
                                 stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Completed</span>";
