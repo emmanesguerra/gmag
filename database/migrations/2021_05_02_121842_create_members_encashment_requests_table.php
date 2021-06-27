@@ -16,6 +16,7 @@ class CreateMembersEncashmentRequestsTable extends Migration
         Schema::create('members_encashment_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
+            $table->string('generated_req_id', 25)->nullable();
             $table->string('source', 20);
             $table->float('amount');
             $table->string('disbursement_method', 20);
@@ -33,6 +34,7 @@ class CreateMembersEncashmentRequestsTable extends Migration
             $table->string('country', 2)->nullable();
             $table->string('zip', 10)->nullable();
             $table->string('tracking_no', 150)->nullable();
+            $table->boolean('has_stashed_amount')->default(false);
             $table->text('remarks')->nullable();
             $table->string('status', 2)->default('WA')->comment('WA - Waiting for Approval, C - Confirmed by Admin, X - Cancelled, CX - Confirmed with Issue, CC - Transaction Completed, XX - Transaction Failed');
             $table->unsignedBigInteger('created_by')->nullable();

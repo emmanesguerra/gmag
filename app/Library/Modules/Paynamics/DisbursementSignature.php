@@ -277,10 +277,18 @@ class DisbursementSignature {
          */
     }
     
-    public static function notificationConfirmation()
+    public static function notificationConfirmation($trans, $notificationStatus, $timestamp)
     {
         /*
          * forSign = mechantid + request_id + response_id + notification_status + timestamp + mkey
          */
+        return [
+            env('PYNMCS_MERCH_ID_PAYOUT'),
+            $trans->generated_req_id,
+            $trans->paynamicsInitialResponse->det_response_id,
+            $notificationStatus,
+            $timestamp,
+            env('PYNMCS_MERCH_KEY_PAYOUT')
+        ];
     }
 }

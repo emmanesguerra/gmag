@@ -60,4 +60,9 @@ class MembersEncashmentRequest extends Model implements Auditable
     {
         return $this->hasOne(PaynamicsDisbursementMethod::class, 'method', 'disbursement_method');
     }
+    
+    public function paynamicsInitialResponse()
+    {
+        return $this->hasOne(PaynamicsEncashmentResp::class, 'encashment_id', 'id');
+    }
 }

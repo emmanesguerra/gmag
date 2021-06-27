@@ -273,6 +273,41 @@ class MembersLibrary {
         $member->total_amt -= $transaction->amount;
         $member->save();
         
+        $transaction->has_stashed_amount = true;
+        $transaction->save();
+        
+        return;
+    }
+    
+    public static function removeStashedMemberRequestedAmount(MembersEncashmentRequest $transaction)
+    {
+        $member = $transaction->member;
+        $source = $transaction->source;
+        
+        $stash = $source . '_x';
+        $member->$stash -= $transaction->amount;
+        $member->save();
+        
+        $transaction->has_stashed_amount = false;
+        $transaction->save();
+        
+        return;
+    }
+    
+    public static function returnStashedMemberRequestedAmount(MembersEncashmentRequest $transaction)
+    {
+        $member = $transaction->member;
+        $source = $transaction->source;
+        
+        $stash = $source . '_x';
+        $member->$stash -= $transaction->amount;
+        $member->$source += $transaction->amount;
+        $member->total_amt += $transaction->amount;
+        $member->save();
+        
+        $transaction->has_stashed_amount = false;
+        $transaction->save();
+        
         return;
     }
 }

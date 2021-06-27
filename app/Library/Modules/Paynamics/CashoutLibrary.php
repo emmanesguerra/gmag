@@ -65,9 +65,9 @@ class CashoutLibrary {
         }
     }
     
-    public static function processCashout(MembersEncashmentRequest $trans, $trackingno)
+    public static function processCashout(MembersEncashmentRequest $trans, $trackingno, $requestID)
     {
-        $xmlData = self::generateXmlDataCashOut($trans, $trackingno);
+        $xmlData = self::generateXmlDataCashOut($trans, $trackingno, $requestID);
         
         $pl = new CashoutLibrary;
         //Initiate cURL
@@ -92,14 +92,13 @@ class CashoutLibrary {
         return $result;
     }
     
-    private static function generateXmlDataCashOut($trans, $trackingno)
+    private static function generateXmlDataCashOut($trans, $trackingno, $requestID)
     {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
         $ip = $_SERVER['SERVER_ADDR'];
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $requestID =  date('YmdHis') . $trans->id;
         $disbursementMethod = $trans->disbursement_method;
         
         $data = [
@@ -256,6 +255,34 @@ class CashoutLibrary {
                 $signatureReq = DisbursementSignature::requestPickupCenters($requestID, $trackingno, $expirationDate, $sender, $trans, $disbursementMethod, $disbursementInfo);
                 break;
         }
+        
+        $sign = hash("sha512", implode('', $signatureReq));
+        
+        return $sign;
+    }
+    
+    public static function generateNotificationConfirmation(MembersEncashmentRequest $trans)
+    {
+        $notificationStatus = 'SUCCESS';
+        $timestamp = Carbon::now()->format('Y-m-d\TH:i:s\Z');
+        
+        $data = [
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'org_request_id' => $trans->generated_req_id,
+                'org_response_id' => $trans->paynamicsInitialResponse->det_response_id,
+                'notification_status' => $notificationStatus,
+                'timestamp' => $timestamp,
+                'signature' => self::processNotificationSignature($trans, $notificationStatus, $timestamp)
+        ];
+        
+        $xml = new \SimpleXMLElement('<Response/>');
+        Common::arrayToXml($data, $xml);
+        return $xml->asXML();
+    }
+    
+    private static function processNotificationSignature($trans, $notificationStatus, $timestamp)
+    {
+        $signatureReq = DisbursementSignature::notificationConfirmation($trans, $notificationStatus, $timestamp);
         
         $sign = hash("sha512", implode('', $signatureReq));
         

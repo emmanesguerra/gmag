@@ -25,6 +25,15 @@ class CommonPynmcs {
         return false;
     }
     
+    public static function isRetriableResp($data)
+    {
+        if(in_array($data['header_response']['response_code'], self::retriableResponseCodes())) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     public static function successfulResponseCodes()
     {
         return [
@@ -33,6 +42,18 @@ class CommonPynmcs {
             'GR033',
             'GR035',
             'GR044',
+        ];
+    }
+    
+    public static function retriableResponseCodes()
+    {
+        return [
+            'GR004',
+            'GR008',
+            'GR023',
+            'GR027',
+            'GR040',
+            'RM003',
         ];
     }
     
