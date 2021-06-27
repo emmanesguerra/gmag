@@ -1,7 +1,23 @@
 <div class="col-12">
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Tracking No</strong></span>
-        <span class="col-8">{{ $data->tracking_no }}</span>
+        <span class="col-8">
+            {{ $data->tracking_no }}
+            @if(Auth::guard('admin')->check())
+                @if(in_array($data->status, ['C', 'CX']))
+                <a href='{{ route('admin.encashment.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right'>Cancel</a>
+                    @if(in_array($data->status, ['CX']))
+                        <a href='{{ route('admin.encashment.retry', $data->id) }}' class='btn btn-sm btn-info float-right mr-3'>Retry</a>
+                    @else
+                        <a href='{{ route('admin.encashment.query', $data->id) }}' class='btn btn-sm btn-info float-right mr-3'>Check Status</a>
+                    @endif
+                @endif
+            @elseif(Auth::guard('web')->check())
+                @if(in_array($data->status, ['WA', 'C']))
+                <a href='{{ route('wallet.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right'>Cancel Request</a>
+                @endif
+            @endif
+        </span>
     </div>
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Remarks</strong></span>
@@ -109,7 +125,7 @@
                 <span class="col-8 text-success">Transaction completed</span>
                 @break
             @case ('X')
-                <span class="col-8 text-danger">Cancelled by Admin</span>
+                <span class="col-8 text-danger">Cancelled</span>
                 @break
             @case ('XX')
                 <span class="col-8 text-danger">Transaction failed</span>

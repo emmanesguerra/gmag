@@ -79,6 +79,7 @@ Route::middleware('auth:web')->group(function () {
         
         Route::get('/ewallet', 'WalletController@index')->name('wallet.index');
         Route::post('/ewallet-request', 'WalletController@postEncashment')->name('wallet.post');
+        Route::get('/ewallet-request-cancel/{id}', 'WalletController@cancel')->name('wallet.cancel');
         Route::get('/ewallet-history', 'WalletController@history')->name('wallet.history');
         Route::get('/ewallet-history-data/{id}', 'WalletController@historydata')->name('wallet.history.data');
         
@@ -157,6 +158,9 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('/encashment-data', 'Admin\EncashmentController@data')->name('admin.encashment.data');
     Route::post('/encashment-approve', 'Admin\EncashmentController@approve')->name('admin.encashment.approve');
     Route::delete('/encashment-reject', 'Admin\EncashmentController@reject')->name('admin.encashment.reject');
+    Route::get('/encashment-cancel/{id}', 'Admin\EncashmentController@cancel')->name('admin.encashment.cancel');
+    Route::get('/encashment-retry/{id}', 'Admin\EncashmentController@retry')->name('admin.encashment.retry');
+    Route::get('/encashment-query/{id}', 'Admin\EncashmentController@query')->name('admin.encashment.query');
     
     Route::get('/courses/data', 'Admin\CoursesController@getdata')->name('admin.course.data');
     Route::get('/courses', 'Admin\CoursesController@index')->name('admin.course.index');

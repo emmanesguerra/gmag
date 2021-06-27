@@ -68,6 +68,7 @@ class CashoutLibrary {
     public static function processCashout(MembersEncashmentRequest $trans, $trackingno, $requestID)
     {
         $xmlData = self::generateXmlDataCashOut($trans, $trackingno, $requestID);
+        Log::channel('paynamics')->info($xmlData);
         
         $pl = new CashoutLibrary;
         //Initiate cURL
@@ -89,6 +90,7 @@ class CashoutLibrary {
         //Close the cURL handle.
         curl_close($curl);
         
+        Log::channel('paynamics')->info($result);
         return $result;
     }
     
@@ -125,6 +127,7 @@ class CashoutLibrary {
     private static function processPayoutSignatureHeader($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo)
     {
         $signatureReq = DisbursementSignature::requestHeader($requestID, $ip, $trans->amount, $notificationUrl, $responseUrl, $disbursementInfo);
+        Log::channel('paynamics')->info($signatureReq);
         return hash("sha512", implode('', $signatureReq));
     }
     
@@ -256,6 +259,7 @@ class CashoutLibrary {
                 break;
         }
         
+        Log::channel('paynamics')->info($signatureReq);
         $sign = hash("sha512", implode('', $signatureReq));
         
         return $sign;
@@ -283,6 +287,181 @@ class CashoutLibrary {
     private static function processNotificationSignature($trans, $notificationStatus, $timestamp)
     {
         $signatureReq = DisbursementSignature::notificationConfirmation($trans, $notificationStatus, $timestamp);
+        
+        $sign = hash("sha512", implode('', $signatureReq));
+        
+        return $sign;
+    }
+    
+    public static function cancelDisbursement(MembersEncashmentRequest $trans, $requestID)
+    {
+        $xmlData = self::generateXmlDataCancel($trans, $requestID);
+        Log::channel('paynamicscancel')->info($xmlData);
+        
+        $pl = new CashoutLibrary;
+        //Initiate cURL
+        $curl = curl_init($pl->dGateDisbursementCancelUrl);
+
+        //Set the Content-Type to text/xml.
+        curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlData);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curl);
+
+        //Do some basic error checking.
+        if(curl_errno($curl)){
+            Log::channel('paynamicscancel')->error(curl_error($curl));
+            throw new Exception(curl_error($curl));
+        }
+
+        //Close the cURL handle.
+        curl_close($curl);
+        
+        Log::channel('paynamicscancel')->info($result);
+        return $result;
+    }
+    
+    private static function generateXmlDataCancel($trans, $requestID)
+    {
+        $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
+        $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        
+        $data = [
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'request_id' => $requestID,
+                'org_trxid' => $trans->paynamicsInitialResponse->hed_response_id,
+                'org_trxid2' => '',
+                'notification_url' => $notificationUrl,
+                'response_ur' => $responseUrl,
+                'signature' => self::processCancelDisbursementSignature($trans, $requestID, $notificationUrl, $responseUrl)
+        ];
+        
+        $xml = new \SimpleXMLElement('<Request/>');
+        Common::arrayToXml($data, $xml);
+        return $xml->asXML();
+    }
+    
+    private static function processCancelDisbursementSignature($trans, $requestID, $notificationUrl, $responseUrl)
+    {
+        $signatureReq = DisbursementSignature::cancelDisbursementRequest($trans, $requestID, $notificationUrl, $responseUrl);
+        Log::channel('paynamicscancel')->info($signatureReq);
+        
+        $sign = hash("sha512", implode('', $signatureReq));
+        
+        return $sign;
+    }
+    
+    public function retryDisbursement(MembersEncashmentRequest $trans, $requestID)
+    {
+        $xmlData = self::generateXmlDataRetry($trans, $requestID);
+        Log::channel('paynamicsretry')->info($xmlData);
+        
+        $pl = new CashoutLibrary;
+        //Initiate cURL
+        $curl = curl_init($pl->dGateDisbursementRetryUrl);
+
+        //Set the Content-Type to text/xml.
+        curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlData);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curl);
+
+        //Do some basic error checking.
+        if(curl_errno($curl)){
+            Log::channel('paynamicsretry')->error(curl_error($curl));
+            throw new Exception(curl_error($curl));
+        }
+
+        //Close the cURL handle.
+        curl_close($curl);
+        
+        Log::channel('paynamicsretry')->info($result);
+        return $result;
+    }
+    
+    private static function generateXmlDataRetry($trans, $requestID)
+    {
+        $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
+        $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
+        $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        $ip = $_SERVER['SERVER_ADDR'];
+        
+        $data = [
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchant_ip' => $ip,
+                'request_id' => $requestID,
+                'notification_url' => $notificationUrl,
+                'response_ur' => $responseUrl,
+                'org_response_id' => $trans->paynamicsInitialResponse->det_response_id,
+                'disbursement_info' => $disbursementInfo,
+                'signature' => self::processRetryDisbursementSignature($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo)
+        ];
+        
+        $xml = new \SimpleXMLElement('<header_request/>');
+        Common::arrayToXml($data, $xml);
+        return $xml->asXML();
+    }
+    
+    private static function processRetryDisbursementSignature($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo)
+    {
+        $signatureReq = DisbursementSignature::retryDisbursementRequest($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo);
+        Log::channel('paynamicsretry')->info($signatureReq);
+        
+        $sign = hash("sha512", implode('', $signatureReq));
+        
+        return $sign;
+    }
+    
+    public static function queryDisbursement(MembersEncashmentRequest $trans, $requestID)
+    {
+        $xmlData = self::generateXmlDataQuery($trans, $requestID);
+        Log::channel('paynamicsquery')->info($xmlData);
+        
+        $pl = new CashoutLibrary;
+        //Initiate cURL
+        $curl = curl_init($pl->dGateDisbursementRetryUrl);
+
+        //Set the Content-Type to text/xml.
+        curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlData);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curl);
+
+        //Do some basic error checking.
+        if(curl_errno($curl)){
+            Log::channel('paynamicsquery')->error(curl_error($curl));
+            throw new Exception(curl_error($curl));
+        }
+
+        //Close the cURL handle.
+        curl_close($curl);
+        
+        Log::channel('paynamicsquery')->info($result);
+        return $result;
+    }
+    
+    private static function generateXmlDataQuery($trans, $requestID)
+    {        
+        $data = [
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'request_id' => $requestID,
+                'org_trxid' => $trans->paynamicsInitialResponse->hed_response_id,
+                'org_trxid2' => '',
+                'signature' => self::processQueryDisbursementSignature($trans, $requestID)
+        ];
+        
+        $xml = new \SimpleXMLElement('<header_request/>');
+        Common::arrayToXml($data, $xml);
+        return $xml->asXML();
+    }
+    
+    private static function processQueryDisbursementSignature($trans, $requestID)
+    {
+        $signatureReq = DisbursementSignature::singleQueryRequest($trans, $requestID);
+        Log::channel('paynamicsquery')->info($signatureReq);
         
         $sign = hash("sha512", implode('', $signatureReq));
         

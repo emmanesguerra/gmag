@@ -154,6 +154,7 @@
             '<label style="float: left;">Display <select id="status" class="custom-select custom-select-sm" onChange="drawTable()">'+
                 '<option value="">All</option>'+
                 '<option value="C">Confirmed</option>'+
+                '<option value="CX">Confirmed with Issues</option>'+
                 '<option value="CC">Completed</option>'+
                 '<option value="WA">Waiting</option>'+
                 '<option value="X">Cancelled</option>'+

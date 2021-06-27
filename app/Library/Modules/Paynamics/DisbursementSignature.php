@@ -198,11 +198,20 @@ class DisbursementSignature {
          */
     }
     
-    public static function cancelDisbursementRequest()
+    public static function cancelDisbursementRequest($trans, $requestID, $notificationUrl, $responseUrl)
     {
         /*
          * forSign =   merchant_id + request_id + org_trxid + org_trxid2 + notification_url + response_url + mkey
          */
+        return [
+            env('PYNMCS_MERCH_ID_PAYOUT'),
+            $requestID,
+            $trans->paynamicsInitialResponse->hed_response_id,
+            '',
+            $notificationUrl,
+            $responseUrl,
+            env('PYNMCS_MERCH_KEY_PAYOUT')
+        ];
     }
     
     public static function cancelDisbursementResponse()
@@ -212,18 +221,35 @@ class DisbursementSignature {
          */
     }
     
-    public static function singleQueryRequest()
+    public static function singleQueryRequest($trans, $requestID)
     {
         /*
          * forSign = merchantid + request_id + org_trxid + org_trxid2 + mkey
          */
+        return [
+            env('PYNMCS_MERCH_ID_PAYOUT'),
+            $requestID,
+            $trans->paynamicsInitialResponse->hed_response_id,
+            '',
+            env('PYNMCS_MERCH_KEY_PAYOUT')
+        ];
     }
     
-    public static function retryDisbursementRequest()
+    public static function retryDisbursementRequest($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo)
     {
         /*
          * forSign = merchantid + merchant_ip + request_id + notification_url + response_url + org_response_id + disbursement_info + mkey
          */
+        return [
+            env('PYNMCS_MERCH_ID_PAYOUT'),
+            $ip,
+            $requestID,
+            $notificationUrl,
+            $responseUrl,
+            $trans->paynamicsInitialResponse->det_response_id,
+            $disbursementInfo,
+            env('PYNMCS_MERCH_KEY_PAYOUT')
+        ];
     }
     
     public static function retryDisbursementResponse()

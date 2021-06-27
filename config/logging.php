@@ -107,6 +107,27 @@ return [
             'days' => 30,
         ],
 
+        'paynamicsquery' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_query/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
+        'paynamicscancel' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_cancel/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
+        'paynamicsretry' => [
+            'driver' => 'daily',
+            'path' => storage_path('paynamics_retry/laravel.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
         'paynamics_noti' => [
             'driver' => 'daily',
             'path' => storage_path('paynamics_noti/laravel.log'),

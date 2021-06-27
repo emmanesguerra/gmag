@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\EncashmentRequest;
 use App\Models\MembersEncashmentRequest;
 use App\Library\DataTables;
+use App\Library\Modules\Paynamics\CashoutLibrary;
 use App\Rules\VerifyTransactionLimit;
 use App\Rules\VerifyBankNo;
 
@@ -325,5 +326,37 @@ class WalletController extends Controller
         } else {
             return response(['success' => false], 500);
         }
+    }
+    
+    public function cancel($id)
+    {
+        $trans = MembersEncashmentRequest::find($id);
+        
+        if($trans) {
+            if(in_array($trans->status, ['WA', 'C'])) {
+                if($trans->status == 'C') {
+                    // do cancel query
+                    CashoutLibrary::cancelDisbursement($trans);
+                }
+
+                $remarks = [];
+                if(!empty($trans->remarks)) {
+                    $remarks = explode('|', $trans->remarks);
+                }
+                array_push($remarks, date('Ymd H:i') . ' MEMBER: ' . 'Cancelled by ' . $trans->member->username);
+                $trans->remarks = implode("|", $remarks);
+                $trans->status = 'X';
+                $trans->save();
+
+                return redirect(route('wallet.history'))
+                        ->with('status-success', 'Your encashment request has been cancelled');
+            }
+
+            return redirect(route('wallet.history'))
+                    ->with('status-failed', 'Transaction cannot be cancelled. Status should be either Waiting or Confirmed');
+        }
+
+        return redirect(route('wallet.history'))
+                ->with('status-failed', 'Unable to retrieve encashment request.');
     }
 }

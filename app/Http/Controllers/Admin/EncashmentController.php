@@ -76,7 +76,7 @@ class EncashmentController extends Controller
             DB::beginTransaction();
             
             $trans = MembersEncashmentRequest::find($request->id);
-            $requestID = 'GM' . date('ynjHis') . $trans->id;
+            $requestID = date('YmdHis') . $trans->id;
             
             $this->checkWalletAmount($trans);
             
@@ -235,5 +235,88 @@ class EncashmentController extends Controller
     {
         Log::channel('paynamics_resp')->info($request->all());
         Log::channel('paynamics_resp')->info($request->getContent());
+    }
+    
+    public function cancel($id)
+    {
+        $trans = MembersEncashmentRequest::find($id);
+        
+        if($trans) {
+            if(in_array($trans->status, ['C', 'CX'])) {
+                $requestID = date('YmdHis') . $trans->id;
+                CashoutLibrary::cancelDisbursement($trans, $requestID);
+
+                $remarks = [];
+                if(!empty($trans->remarks)) {
+                    $remarks = explode('|', $trans->remarks);
+                }
+                array_push($remarks, date('Ymd H:i') . ' ADMIN: ' . 'Cancelled by Admin');
+                $trans->remarks = implode("|", $remarks);
+                $trans->status = 'X';
+                $trans->save();
+
+                return redirect(route('wallet.history'))
+                        ->with('status-success', 'The encashment request has been cancelled');
+            }
+
+            return redirect(route('wallet.history'))
+                    ->with('status-failed', 'Transaction cannot be cancelled. Status should be either Confirmed or Confirmed with Issues');
+        }
+
+        return redirect(route('wallet.history'))
+                ->with('status-failed', 'Unable to retrieve encashment request.');
+    }
+    
+    public function retry($id)
+    {
+        $trans = MembersEncashmentRequest::find($id);
+        
+        if($trans) {
+            if(in_array($trans->status, ['CX'])) {
+                $requestID = date('YmdHis') . $trans->id;
+                CashoutLibrary::retryDisbursement($trans, $requestID);
+                
+                $remarks = [];
+                if(!empty($trans->remarks)) {
+                    $remarks = explode('|', $trans->remarks);
+                }
+                array_push($remarks, date('Ymd H:i') . ' Admin: ' . 'Re-process by Admin');
+                $trans->remarks = implode("|", $remarks);
+                $trans->save();
+
+                return redirect(route('admin.encashment.index'))
+                        ->with('status-success', 'The encashment request has been re-processed ');
+            }
+
+            return redirect(route('admin.encashment.index'))
+                    ->with('status-failed', 'Transaction is not retriable');
+        }
+
+        return redirect(route('admin.encashment.index'))
+                ->with('status-failed', 'Unable to retrieve encashment request.');
+    }
+    
+    public function query($id)
+    {
+        $trans = MembersEncashmentRequest::find($id);
+        
+        if($trans) {
+            $requestID = date('YmdHis') . $trans->id;
+            CashoutLibrary::queryDisbursement($trans, $requestID);
+
+//            $remarks = [];
+//            if(!empty($trans->remarks)) {
+//                $remarks = explode('|', $trans->remarks);
+//            }
+//            array_push($remarks, date('Ymd H:i') . ' Admin: ' . 'Re-process by Admin');
+//            $trans->remarks = implode("|", $remarks);
+//            $trans->save();
+
+            return redirect(route('admin.encashment.index'))
+                    ->with('status-success', 'The encashment request status has been retrieved');
+        }
+
+        return redirect(route('admin.encashment.index'))
+                ->with('status-failed', 'Unable to retrieve encashment request.');
     }
 }
