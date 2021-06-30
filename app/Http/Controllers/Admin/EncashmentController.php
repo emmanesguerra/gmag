@@ -191,11 +191,13 @@ class EncashmentController extends Controller
         Log::channel('paynamics_noti')->info(date('Y-m-d H:i:s'));
         Log::channel('paynamics_noti')->info($request->all());
         
-        $paymentResponse = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UmVzcG9uc2UgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSI+PGhlYWRlcl9yZXNwb25zZT48bWVyY2hhbnRpZD4wMDAwMDAwMDAwMDAwMDI8L21lcmNoYW50aWQ+PHJlcXVlc3RfaWQ+UEFZTkFNSUNTX1RFU1RfMjY0NTwvcmVxdWVzdF9pZD48cmVzcG9uc2VfaWQ+SEVEUl8yNDk3MDYyMjE3NTMwMDY8L3Jlc3BvbnNlX2lkPjxyZXNwb25zZV9jb2RlPkdSMDAzPC9yZXNwb25zZV9jb2RlPjxyZXNwb25zZV9tZXNzYWdlPlRyYW5zYWN0aW9uIEZhaWxlZC48L3Jlc3BvbnNlX21lc3NhZ2U+PHNpZ25hdHVyZT41NmZlM2NkOGUyZDQyYTY1ZDY3NmIwNjYzYzkzYjMxYjQzNTMzNWIxMzJmNGI3MTYzYzQ1OTY5OGI2ZGZkMjRkYjFlYTZlMDJhZWU1YTc0YzNmOGZmNTdjOTZiYzE0ZWFmNmYyNDgwYmMzZmQzNzQ4NjBmMjQ2OTkxOTBkYjc5MDwvc2lnbmF0dXJlPjx0aW1lc3RhbXA+MjAyMS0wNi0yNVQxMToyMDozMy43MDEwMDAwKzA4OjAwPC90aW1lc3RhbXA+PC9oZWFkZXJfcmVzcG9uc2U+PGRldGFpbHNfcmVzcG9uc2U+PGRldGFpbHNfcmVzcG9uc2U+PG1lcmNoYW50aWQ+MDAwMDAwMDAwMDAwMDAyPC9tZXJjaGFudGlkPjxyZXF1ZXN0X2lkPlBBWU5BTUlDU19URVNUXzI2NDU8L3JlcXVlc3RfaWQ+PHJlc3BvbnNlX2lkPkRFVFJfNTg1MDM4NjEyMzk0MTQ2PC9yZXNwb25zZV9pZD48dGltZXN0YW1wPjIwMjEtMDYtMjVUMTE6MTk6NTAuMTA3MDAwMCswODowMDwvdGltZXN0YW1wPjxyZXNwb25zZV9jb2RlPkdSMDI4PC9yZXNwb25zZV9jb2RlPjxyZXNwb25zZV9tZXNzYWdlPlRyYW5zYWN0aW9uIEZhaWxlZCBkdWUgdG8gSW52YWxpZCBUcmFuc2ZlcmVlIEFjY291bnQuPC9yZXNwb25zZV9tZXNzYWdlPjxwcm9jZXNzb3JfcmVzcG9uc2VfaWQgLz48c2lnbmF0dXJlPjFkOGMzZTM1NWMyYjIxNTEyNzEwMGFjMTE3YTRhNTI1ZWY1MWMzNTA3YWM1MTVhNjg2NmVhMzE5NDg0Mjc3MjA2ZDhhZTAyN2U0Y2IyNTExZDA1NjIxNGY5NTVjMGNkNjc5NzA1YzAxZTlhZjM4ZGI1ZWRhYzczZDBiNmFmNzlhPC9zaWduYXR1cmU+PC9kZXRhaWxzX3Jlc3BvbnNlPjwvZGV0YWlsc19yZXNwb25zZT48L1Jlc3BvbnNlPg==';
+        $paymentResponse = $request->paymentresponse;
         $trans = MembersEncashmentRequest::find($request->transaction_id);
 
         $xmlString = base64_decode($paymentResponse);
         $data = Common::convertXmlToJson($xmlString);
+
+        Log::channel('paynamics_noti')->info($$data);
 
         if($data) {
             if(CommonPynmcs::isSuccessfulResp($data)) {
@@ -246,6 +248,10 @@ class EncashmentController extends Controller
                 $requestID = date('YmdHis') . $trans->id;
                 CashoutLibrary::cancelDisbursement($trans, $requestID);
 
+                if($trans->has_stashed_amount) {
+                    MembersLibrary::returnStashedMemberRequestedAmount($trans);
+                }
+
                 $remarks = [];
                 if(!empty($trans->remarks)) {
                     $remarks = explode('|', $trans->remarks);
@@ -255,15 +261,15 @@ class EncashmentController extends Controller
                 $trans->status = 'X';
                 $trans->save();
 
-                return redirect(route('wallet.history'))
+                return redirect(route('admin.encashment.index'))
                         ->with('status-success', 'The encashment request has been cancelled');
             }
 
-            return redirect(route('wallet.history'))
+            return redirect(route('admin.encashment.index'))
                     ->with('status-failed', 'Transaction cannot be cancelled. Status should be either Confirmed or Confirmed with Issues');
         }
 
-        return redirect(route('wallet.history'))
+        return redirect(route('admin.encashment.index'))
                 ->with('status-failed', 'Unable to retrieve encashment request.');
     }
     

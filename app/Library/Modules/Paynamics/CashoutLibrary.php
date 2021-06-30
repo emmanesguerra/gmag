@@ -421,7 +421,7 @@ class CashoutLibrary {
         
         $pl = new CashoutLibrary;
         //Initiate cURL
-        $curl = curl_init($pl->dGateDisbursementRetryUrl);
+        $curl = curl_init($pl->dGateDisbursementQueryUrl);
 
         //Set the Content-Type to text/xml.
         curl_setopt ($curl, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
@@ -448,12 +448,12 @@ class CashoutLibrary {
         $data = [
                 'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
                 'request_id' => $requestID,
-                'org_trxid' => $trans->paynamicsInitialResponse->hed_response_id,
-                'org_trxid2' => '',
+                'org_trxid' => $trans->paynamicsInitialResponse->det_response_id,
+                'org_trxid2' => $trans->generated_req_id,
                 'signature' => self::processQueryDisbursementSignature($trans, $requestID)
         ];
         
-        $xml = new \SimpleXMLElement('<header_request/>');
+        $xml = new \SimpleXMLElement('<Request/>');
         Common::arrayToXml($data, $xml);
         return $xml->asXML();
     }

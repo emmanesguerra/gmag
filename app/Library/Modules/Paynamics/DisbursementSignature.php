@@ -229,8 +229,8 @@ class DisbursementSignature {
         return [
             env('PYNMCS_MERCH_ID_PAYOUT'),
             $requestID,
-            $trans->paynamicsInitialResponse->hed_response_id,
-            '',
+            $trans->paynamicsInitialResponse->det_response_id,
+            $trans->generated_req_id,
             env('PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
