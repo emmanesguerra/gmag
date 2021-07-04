@@ -15,6 +15,7 @@ namespace App\Helper;
  */
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Library\Modules\SettingLibrary;
 
 class GmagHelpers {
@@ -33,5 +34,10 @@ class GmagHelpers {
     public static function getStartingDate()
     {
         return SettingLibrary::retrieve('starting_date');
+    }
+    
+    public static function getUserTimezone()
+    {
+        return Auth::user()->timezone;
     }
 }

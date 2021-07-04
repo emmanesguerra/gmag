@@ -68,6 +68,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/moment-timezone.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
@@ -89,7 +90,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
+                        return moment.utc(row.created_at).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "username"},
@@ -115,7 +116,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
+                        return moment.utc(row.created_at).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "username"},
