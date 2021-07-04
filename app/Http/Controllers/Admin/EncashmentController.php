@@ -199,9 +199,10 @@ class EncashmentController extends Controller
             $trans = MembersEncashmentRequest::find($request->transaction_id);
 
             $xmlString = base64_decode($paymentResponse);
+            Log::channel('paynamics_noti')->info($xmlString);
             $data = Common::convertXmlToJson($xmlString);
 
-            Log::channel('paynamics_noti')->info($$data);
+            Log::channel('paynamics_noti')->info($data);
 
             if($data) {
                 if(CommonPynmcs::isSuccessfulResp($data)) {
