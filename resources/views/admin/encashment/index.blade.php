@@ -41,7 +41,8 @@
                         
                         <input type='hidden' name="approve_id" id="approve_id" />
                         
-                        <input id="confirm" class="btn btn-outline text-success" type="button" value="Confirm">
+                        <input id="confirm" class="btn btn-outline text-success" type="button" value="Confirm"> 
+                        <img id="approverloader" style="display: none" src="{{ asset('images/loader.svg') }}" height="30" widht="30" class="m-2">
                     </form>
                     <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
                 </div>
@@ -140,18 +141,24 @@
             $.ajax({
                 url: '{{ route("admin.encashment.approve") }}',
                 method: 'POST',
+                async: false,
                 data: {
                     id: $('#approve_id').val(),
                     tracking_no: $('#tracking_no').val(),
                     remarks: $('#approve_remarks').val()
+                },
+                beforeSend: function( xhr ) {
+                    $('#approverloader').css('display', 'inline');
                 }
             }).done(function(response) {
+                $('#approverloader').css('display', 'none');
                 $('#approve-modal').modal('hide');
                 table.ajax.reload();
             }).fail(function(XHR) {
                 var error = getAjaxErrorMessage(XHR);
                 $('#approve_resp').html(error);
                 $('#approve_resp').css('display', 'block');
+                $('#approverloader').css('display', 'none');
             });
         });
         
@@ -236,7 +243,8 @@
                         return '';
                     }
                 }
-            ]
+            ],
+            "order": [[ 0, "desc" ]]
         });
         
         $("div.toolbar").html(

@@ -3,18 +3,20 @@
         <span class="col-4"><strong>Tracking No</strong></span>
         <span class="col-8">
             {{ $data->tracking_no }}
+            <img id="transactionloader1" style="display: none" src="{{ asset('images/loader.svg') }}" height="30" widht="30" class=" ml-3 float-right">
             @if(Auth::guard('admin')->check())
                 @if(in_array($data->status, ['C', 'CX']))
-                <a href='{{ route('admin.encashment.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right'>Cancel</a>
+                <a href='{{ route('admin.encashment.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right' onclick="showloader(false)">Cancel</a>
+                    <img id="transactionloader2" style="display: none" src="{{ asset('images/loader.svg') }}" height="30" widht="30" class=" mr-3 float-right">
                     @if(in_array($data->status, ['CX']))
-                        <a href='{{ route('admin.encashment.retry', $data->id) }}' class='btn btn-sm btn-info float-right mr-3'>Retry</a>
+                        <a href='{{ route('admin.encashment.retry', $data->id) }}' class='btn btn-sm btn-info float-right mr-3' onclick="showloader(true)">Retry</a>
                     @else
-                        <a href='{{ route('admin.encashment.query', $data->id) }}' class='btn btn-sm btn-info float-right mr-3'>Check Status</a>
+                        <a href='{{ route('admin.encashment.query', $data->id) }}' class='btn btn-sm btn-info float-right mr-3' onclick="showloader(true)">Check Status</a>
                     @endif
                 @endif
             @elseif(Auth::guard('web')->check())
                 @if(in_array($data->status, ['WA', 'C']))
-                <a href='{{ route('wallet.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right'>Cancel Request</a>
+                <a href='{{ route('wallet.cancel', $data->id) }}' class='btn btn-sm btn-danger float-right' onclick="showloader(false)">Cancel Request</a>
                 @endif
             @endif
         </span>
@@ -139,3 +141,13 @@
         @endswitch
     </div>
 </div> 
+
+<script>
+    function showloader (isTwo){
+        if(isTwo) {
+            $('#transactionloader2').css('display', 'inline');
+        } else {
+            $('#transactionloader1').css('display', 'inline');
+        }
+    }
+</script>

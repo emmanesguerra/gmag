@@ -147,7 +147,8 @@
                         return stat;
                     }
                 }
-            ]
+            ],
+            "order": [[ 0, "desc" ]]
         });
         
         $("div.toolbar").html(

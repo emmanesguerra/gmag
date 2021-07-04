@@ -10,6 +10,7 @@ use App\Http\Requests\EncashmentRequest;
 use App\Models\MembersEncashmentRequest;
 use App\Library\DataTables;
 use App\Library\Modules\Paynamics\CashoutLibrary;
+use App\Library\Modules\MembersLibrary;
 use App\Rules\VerifyTransactionLimit;
 use App\Rules\VerifyBankNo;
 
@@ -330,33 +331,46 @@ class WalletController extends Controller
     
     public function cancel($id)
     {
-        $trans = MembersEncashmentRequest::find($id);
+        try
+        {
+            DB::beginTransaction();
         
-        if($trans) {
-            if(in_array($trans->status, ['WA', 'C'])) {
-                if($trans->status == 'C') {
-                    // do cancel query
-                    CashoutLibrary::cancelDisbursement($trans);
+            $trans = MembersEncashmentRequest::find($id);
+
+            if($trans) {
+                if(in_array($trans->status, ['WA', 'C'])) {
+                    if($trans->status == 'C') {
+                        // do cancel query
+                        $requestID = date('YmdHis') . $trans->id;
+                        CashoutLibrary::cancelDisbursement($trans, $requestID);
+
+                        if($trans->has_stashed_amount) {
+                            MembersLibrary::returnStashedMemberRequestedAmount($trans);
+                        }
+                    }
+
+                    $remarks = [];
+                    if(!empty($trans->remarks)) {
+                        $remarks = explode('|', $trans->remarks);
+                    }
+                    array_push($remarks, date('Ymd H:i') . ' MEMBER: ' . 'Cancelled by ' . $trans->member->username);
+                    $trans->remarks = implode("|", $remarks);
+                    $trans->status = 'X';
+                    $trans->save();
+
+                    DB::commit();
+                    return redirect(route('wallet.history'))
+                            ->with('status-success', 'Your encashment request has been cancelled');
                 }
 
-                $remarks = [];
-                if(!empty($trans->remarks)) {
-                    $remarks = explode('|', $trans->remarks);
-                }
-                array_push($remarks, date('Ymd H:i') . ' MEMBER: ' . 'Cancelled by ' . $trans->member->username);
-                $trans->remarks = implode("|", $remarks);
-                $trans->status = 'X';
-                $trans->save();
-
-                return redirect(route('wallet.history'))
-                        ->with('status-success', 'Your encashment request has been cancelled');
+                throw new \Exception('Transaction cannot be cancelled. Status should be either Waiting or Confirmed');
             }
-
+            throw new \Exception('Unable to retrieve encashment request.');
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
             return redirect(route('wallet.history'))
-                    ->with('status-failed', 'Transaction cannot be cancelled. Status should be either Waiting or Confirmed');
+                    ->with('status-failed', $ex->getMessage());
         }
-
-        return redirect(route('wallet.history'))
-                ->with('status-failed', 'Unable to retrieve encashment request.');
     }
 }

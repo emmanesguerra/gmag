@@ -188,49 +188,59 @@ class EncashmentController extends Controller
     
     public function paynamicsnoti(Request $request)
     {
-        Log::channel('paynamics_noti')->info(date('Y-m-d H:i:s'));
-        Log::channel('paynamics_noti')->info($request->all());
+        try
+        {
+            DB::beginTransaction();
         
-        $paymentResponse = $request->paymentresponse;
-        $trans = MembersEncashmentRequest::find($request->transaction_id);
+            Log::channel('paynamics_noti')->info(date('Y-m-d H:i:s'));
+            Log::channel('paynamics_noti')->info($request->all());
 
-        $xmlString = base64_decode($paymentResponse);
-        $data = Common::convertXmlToJson($xmlString);
+            $paymentResponse = $request->paymentresponse;
+            $trans = MembersEncashmentRequest::find($request->transaction_id);
 
-        Log::channel('paynamics_noti')->info($$data);
+            $xmlString = base64_decode($paymentResponse);
+            $data = Common::convertXmlToJson($xmlString);
 
-        if($data) {
-            if(CommonPynmcs::isSuccessfulResp($data)) {
-                // move the requested amount to X
-                if($trans->has_stashed_amount) {
-                    MembersLibrary::removeStashedMemberRequestedAmount($trans);
+            Log::channel('paynamics_noti')->info($$data);
+
+            if($data) {
+                if(CommonPynmcs::isSuccessfulResp($data)) {
+                    // move the requested amount to X
+                    if($trans->has_stashed_amount) {
+                        MembersLibrary::removeStashedMemberRequestedAmount($trans);
+                    }
+
+                    $trans->status = 'CC';
+                } else if(CommonPynmcs::isRetriableResp($data)) {
+                    $trans->status = 'CX';
+                } else {
+                    if($trans->has_stashed_amount) {
+                        MembersLibrary::returnStashedMemberRequestedAmount($trans);
+                    }
+                    $trans->status = 'XX';
                 }
-
-                $trans->status = 'CC';
-            } else if(CommonPynmcs::isRetriableResp($data)) {
-                $trans->status = 'CX';
+                $remarks = [];
+                if(!empty($trans->remarks)) {
+                    $remarks = explode('|', $trans->remarks);
+                }
+                array_push($remarks, CommonPynmcs::constructRemarks($data));
+                $trans->remarks = implode("|", $remarks);
+                $trans->save();
             } else {
-                if($trans->has_stashed_amount) {
-                    MembersLibrary::returnStashedMemberRequestedAmount($trans);
-                }
-                $trans->status = 'XX';
+                Log::channel('paynamics_noti')->error($result);
+                Log::channel('paynamics_noti')->error('Unable to translate paynamics response');
             }
-            $remarks = [];
-            if(!empty($trans->remarks)) {
-                $remarks = explode('|', $trans->remarks);
-            }
-            array_push($remarks, CommonPynmcs::constructRemarks($data));
-            $trans->remarks = implode("|", $remarks);
-            $trans->save();
-        } else {
-            Log::channel('paynamics')->error($result);
-            Log::channel('paynamics')->error('Unable to translate paynamics response');
+
+            $xmlFile = CashoutLibrary::generateNotificationConfirmation($trans);
+
+            DB::commit();
+            header('Content-Type:text/xml');
+            return $xmlFile;
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            Log::channel('paynamics_noti')->error($ex->getMessage());
         }
-        
-        $xmlFile = CashoutLibrary::generateNotificationConfirmation($trans);
-        
-        header('Content-Type:text/xml');
-        return $xmlFile;
     }
     
     public function paynamicsresp(Request $request)
@@ -241,36 +251,43 @@ class EncashmentController extends Controller
     
     public function cancel($id)
     {
-        $trans = MembersEncashmentRequest::find($id);
-        
-        if($trans) {
-            if(in_array($trans->status, ['C', 'CX'])) {
-                $requestID = date('YmdHis') . $trans->id;
-                CashoutLibrary::cancelDisbursement($trans, $requestID);
+        try
+        {
+            DB::beginTransaction();
+            $trans = MembersEncashmentRequest::find($id);
 
-                if($trans->has_stashed_amount) {
-                    MembersLibrary::returnStashedMemberRequestedAmount($trans);
+            if($trans) {
+                if(in_array($trans->status, ['C', 'CX'])) {
+                    $requestID = date('YmdHis') . $trans->id;
+                    CashoutLibrary::cancelDisbursement($trans, $requestID);
+
+                    if($trans->has_stashed_amount) {
+                        MembersLibrary::returnStashedMemberRequestedAmount($trans);
+                    }
+
+                    $remarks = [];
+                    if(!empty($trans->remarks)) {
+                        $remarks = explode('|', $trans->remarks);
+                    }
+                    array_push($remarks, date('Ymd H:i') . ' ADMIN: ' . 'Cancelled by Admin');
+                    $trans->remarks = implode("|", $remarks);
+                    $trans->status = 'X';
+                    $trans->save();
+
+                    DB::commit();
+                    return redirect(route('admin.encashment.index'))
+                            ->with('status-success', 'The encashment request has been cancelled');
                 }
 
-                $remarks = [];
-                if(!empty($trans->remarks)) {
-                    $remarks = explode('|', $trans->remarks);
-                }
-                array_push($remarks, date('Ymd H:i') . ' ADMIN: ' . 'Cancelled by Admin');
-                $trans->remarks = implode("|", $remarks);
-                $trans->status = 'X';
-                $trans->save();
-
-                return redirect(route('admin.encashment.index'))
-                        ->with('status-success', 'The encashment request has been cancelled');
+                throw new \Exception('Transaction cannot be cancelled. Status should be either Confirmed or Confirmed with Issues');
             }
 
+            throw new \Exception('Unable to retrieve encashment request.');
+        } catch (\Exception $ex) {
+            DB::rollback();
             return redirect(route('admin.encashment.index'))
-                    ->with('status-failed', 'Transaction cannot be cancelled. Status should be either Confirmed or Confirmed with Issues');
+                    ->with('status-failed', $ex->getMessage());
         }
-
-        return redirect(route('admin.encashment.index'))
-                ->with('status-failed', 'Unable to retrieve encashment request.');
     }
     
     public function retry($id)
@@ -304,25 +321,55 @@ class EncashmentController extends Controller
     
     public function query($id)
     {
-        $trans = MembersEncashmentRequest::find($id);
-        
-        if($trans) {
-            $requestID = date('YmdHis') . $trans->id;
-            CashoutLibrary::queryDisbursement($trans, $requestID);
+        try
+        {
+            DB::beginTransaction();
+            $trans = MembersEncashmentRequest::find($id);
 
-//            $remarks = [];
-//            if(!empty($trans->remarks)) {
-//                $remarks = explode('|', $trans->remarks);
-//            }
-//            array_push($remarks, date('Ymd H:i') . ' Admin: ' . 'Re-process by Admin');
-//            $trans->remarks = implode("|", $remarks);
-//            $trans->save();
+            if($trans) {
+                $requestID = date('YmdHis') . $trans->id;
+                $result = CashoutLibrary::queryDisbursement($trans, $requestID);
+                $data = Common::convertXmlToJson($result);
 
+                if($data) {
+                    if(CommonPynmcs::isQuerySuccessfulResp($data)) {
+                        MembersLibrary::removeStashedMemberRequestedAmount($trans);
+                        $trans->status = 'CC';
+                    } else if (CommonPynmcs::isQuerySemiSuccessfulResp($data)) {
+                        $trans->status = 'C';
+                    } else if(CommonPynmcs::isQueryRetriableResp($data)) {
+                        $trans->status = 'CX';
+                    } else {
+                        MembersLibrary::returnStashedMemberRequestedAmount($trans);
+                        $trans->status = 'XX';
+                    }
+                    $remarks = [];
+                    if(!empty($trans->remarks)) {
+                        $remarks = explode('|', $trans->remarks);
+                    }
+                    if(!empty($request->remarks)) {
+                        array_push($remarks, date('Ymd H:i') . ' Admin: ' . 'Status fetched by Admin');
+                    }
+                    array_push($remarks, CommonPynmcs::constructQueryRemarks($data));
+                    $trans->remarks = implode("|", $remarks);
+                    $trans->save();
+                } else {
+                    Log::channel('paynamics')->error($result);
+                    throw new \Exception('Unable to translate paynamics response');
+                }
+
+                DB::commit();
+                return redirect(route('admin.encashment.index'))
+                        ->with('status-success', 'The encashment request status has been retrieved');
+            }
+            
+            throw new \Exception('Unable to retrieve encashment request.');
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
             return redirect(route('admin.encashment.index'))
-                    ->with('status-success', 'The encashment request status has been retrieved');
-        }
+                    ->with('status-failed', $ex->getMessage());
 
-        return redirect(route('admin.encashment.index'))
-                ->with('status-failed', 'Unable to retrieve encashment request.');
+        }
     }
 }
