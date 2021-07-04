@@ -58,6 +58,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/moment-timezone.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script src="{{ asset('js/daterange.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
@@ -65,6 +66,7 @@
         
         var start = moment('{{ GmagHelpers::getStartingDate() }}');
         var end = moment();
+        var indexurl = "{{ route('admin.products.index') }}";
         
         var table = $('#product-table').DataTable({
             "ajax": {
@@ -91,12 +93,12 @@
                 {"data": "flush_bonus"},
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.created_at).format('MMMM DD, YYYY hh:mm A');
+                        return moment.utc(row.created_at).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {
                     data: function ( row, type, set ) {
-                        return "<a href='/admin/products/"+row.slug+"'>View</a> | <a href='/admin/products/"+row.slug+"/edit'>Edit</a>";
+                        return "<a href='"+indexurl+'/'+row.slug+"'>View</a> | <a href='"+indexurl+'/'+row.slug+"/edit'>Edit</a>";
                     }
                 }
             ],

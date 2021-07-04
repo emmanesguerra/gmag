@@ -53,6 +53,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/moment-timezone.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script src="{{ asset('js/daterange.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
@@ -77,7 +78,7 @@
                 {"data": "id"},
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.log_in).format('MMMM DD, YYYY hh:mm A');
+                        return moment.utc(row.log_in).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "ip_address"},

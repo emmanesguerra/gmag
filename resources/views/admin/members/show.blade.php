@@ -38,7 +38,11 @@
             <div class="form-group row field">
                 <label  class="col-sm-4 col-form-label">Date Joined:</label>
                 <div class="col-sm-6">
-                    <span class="form-control form-control-sm border-0">{{ date('F d, Y H:i:s A', strtotime($member->created_at)) }}</span>
+                    <?php 
+                    $date2 = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $member->created_at); 
+                    $date2->setTimezone($member->timezone);
+                    ?>
+                    <span class="form-control form-control-sm border-0">{{ $date2->format('F d, Y h:i A') }}</span>
                 </div>
             </div>
             <div class="form-group row field">
@@ -224,6 +228,7 @@
 
 @section('javascripts')
     <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ asset('js/moment-timezone.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
     <script>
@@ -264,7 +269,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.transaction_date).format('MMMM DD, YYYY, h:mm:ss a');
+                        return moment.utc(row.transaction_date).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "transaction_no"},
@@ -317,7 +322,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment(row.transaction_date).format('MMMM DD, YYYY');
+                        return moment.utc(row.transaction_date).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "transaction_no"},
@@ -351,7 +356,7 @@
                 "columns": [
                     {
                         data: function ( row, type, set ) {
-                            return moment(row.created_at).format('MMMM DD, YYYY');
+                            return moment.utc(row.created_at).tz(utimezone).format('MMMM DD, YYYY hh:mm A');
                         }
                     },
                     {"data": "transaction_no"},
