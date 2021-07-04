@@ -35,7 +35,7 @@ Route::get('/test-search', function() {
 Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->name('set.yesterdays.pair.type');
 
 Route::post('/paygate-notification', 'Admin\EncashmentController@paynamicsnoti')->name('paynamics.noti');
-Route::post('/paygate-response', 'Admin\EncashmentController@paynamicsresp')->name('paynamics.resp');
+Route::get('/paygate-response', 'Admin\EncashmentController@paynamicsresp')->name('paynamics.resp');
 
 Route::get('/ewallet-history-details', 'WalletController@historydetails')->name('wallet.history.details');
 

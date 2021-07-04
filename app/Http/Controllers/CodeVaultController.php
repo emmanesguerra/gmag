@@ -12,6 +12,7 @@ use App\Library\Modules\TransactionLibrary;
 use App\Library\Modules\EntryCodesLibrary;
 use App\Library\Modules\PaynamicsLibrary;
 use App\Http\Requests\CodePurchaseRequest;
+use App\Library\Modules\Paynamics\CashInLibrary;
 
 /**
  * @group Members/Entry Codes
@@ -162,21 +163,20 @@ class CodeVaultController extends Controller
             if($request->payment_method == 'paynamics') {
                 $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
                 
-                $resp = PaynamicsLibrary::processPayin($request, $trans);
-//                '#paynamicsTable'
-                $route = 'profile.show';
-                $ref = ['id' => $member->id . '#paynamics'];
-                $msg = 'Your request has been forwarded to paynamics. Please wait for a moment for their feedback.';
+                $resp = CashInLibrary::processPayin($request, $trans);
+                
+                DB::commit();
+                return view('refirect-to-paynamics', ['data' => $resp]);
                 
             } else {
                 $this->processProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
                 $route = 'codevault.index';
                 $ref = null;
                 $msg = 'Thank you for your purchase. Please use these entry codes below when registering new accounts';
-            }
             
-            DB::commit();
-            return redirect()->route($route, $ref)->with('status-success', $msg);
+                DB::commit();
+                return redirect()->route($route, $ref)->with('status-success', $msg);
+            }
             
         } catch (\Exception $ex) {
             DB::rollback();
