@@ -22,6 +22,7 @@ class CreateAdminsTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->string('timezone', 32)->default('Asia/Manila');
             
         });
     }
