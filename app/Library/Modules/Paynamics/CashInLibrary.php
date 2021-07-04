@@ -99,29 +99,32 @@ class CashInLibrary {
                     + lname + mname + address1 + address2 + city + state + country + zip + email + phone + 
                     client_ip + amount + currency + secure3d + merchantkey)
          */
+        $signature = [
+            env('PYNMCS_MERCH_ID_PAYIN'),
+            $requestID,
+            $serverip,
+            $notificationUrl,
+            $responseUrl,
+            'Emmanuelle',
+            'Esguerra',
+            'Magtibay',
+            'Lorem ipsum comet dolor',
+            'Lorem ipsum comet dolor',
+            'Makati',
+            '',
+            'PH',
+            '',
+            'emman.esguerra2013@gmail.com',
+            '+63090529278',
+            $clientip,
+            number_format((1000), 2, '.', $thousands_sep = ''),
+            self::DEFAULT_CURRENCY,
+            'try3d',
+            env('PYNMCS_MERCH_KEY_PAYIN')
+        ];
         
-        return hash("sha512", implode('', [
-                env('PYNMCS_MERCH_ID_PAYIN'),
-                $requestID,
-                $serverip,
-                $notificationUrl,
-                $responseUrl,
-                'Emmanuelle',
-                'Esguerra',
-                'Magtibay',
-                'Lorem ipsum comet dolor',
-                'Lorem ipsum comet dolor',
-                'Makati',
-                '',
-                'PH',
-                '',
-                'emman.esguerra2013@gmail.com',
-                '+63090529278',
-                $clientip,
-                number_format((1000), 2, '.', $thousands_sep = ''),
-                self::DEFAULT_CURRENCY,
-                'try3d',
-                env('PYNMCS_MERCH_KEY_PAYIN')
-            ]));
+        Log::channel('paynamics')->info($signature);
+        
+        return hash("sha512", implode('', $signature));
     }
 }
