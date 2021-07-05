@@ -326,14 +326,14 @@ class CashoutLibrary {
     {
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        
+
         $data = [
                 'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
                 'request_id' => $requestID,
                 'org_trxid' => $trans->paynamicsInitialResponse->hed_response_id,
                 'org_trxid2' => '',
                 'notification_url' => $notificationUrl,
-                'response_ur' => $responseUrl,
+                'response_url' => $responseUrl,
                 'signature' => self::processCancelDisbursementSignature($trans, $requestID, $notificationUrl, $responseUrl)
         ];
         
@@ -393,7 +393,7 @@ class CashoutLibrary {
                 'merchant_ip' => $ip,
                 'request_id' => $requestID,
                 'notification_url' => $notificationUrl,
-                'response_ur' => $responseUrl,
+                'response_url' => $responseUrl,
                 'org_response_id' => $trans->paynamicsInitialResponse->det_response_id,
                 'disbursement_info' => $disbursementInfo,
                 'signature' => self::processRetryDisbursementSignature($trans, $requestID, $ip, $notificationUrl, $responseUrl, $disbursementInfo)
