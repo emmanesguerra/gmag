@@ -28,6 +28,7 @@ class CashInLibrary {
         $xmlData = self::generateXmlDataCashIn($trans, $request);
         Log::channel('paynamics')->info($xmlData);
         $encodedRequest = base64_encode($xmlData);
+        Log::channel('paynamics')->info($encodedRequest);
         $postData = [
             'paymentrequest' => $encodedRequest
         ];
@@ -58,19 +59,20 @@ class CashInLibrary {
             'lname' => 'Esguerra',
             'mname' => 'Magtibay',
             'address1' => 'Lorem ipsum comet dolor',
-            'address2' => 'Lorem ipsum comet dolor',
+            'address2' => 'Lorem ipsum comet dolor2',
             'city' => 'Makati',
-            'state' => '',
+            'state' => 'MM',
             'country' => 'PH',
-            'zip' => '',
+            'zip' => '1299',
             'email' => 'emman.esguerra2013@gmail.com',
-            'phone' => '+63090529279',
+            'phone' => '3308772',
             'mobile' => '+63090529278',
             'client_ip' => $clientip,
             'amount' => number_format((1000), 2, '.', $thousands_sep = ''),
             'currency' => self::DEFAULT_CURRENCY,
             'pmethod' => '',
             'expiry_limit' => $expirationDate,
+            'trxtype' => 'sale',
             'mlogo_url' => asset('favicon.ico'),
             'orders' => [
                 [
@@ -109,22 +111,23 @@ class CashInLibrary {
             'Esguerra',
             'Magtibay',
             'Lorem ipsum comet dolor',
-            'Lorem ipsum comet dolor',
+            'Lorem ipsum comet dolor2',
             'Makati',
-            '',
+            'MM',
             'PH',
-            '',
+            '1299',
             'emman.esguerra2013@gmail.com',
-            '+63090529278',
+            '3308772',
             $clientip,
             number_format((1000), 2, '.', $thousands_sep = ''),
             self::DEFAULT_CURRENCY,
             'try3d',
             env('PYNMCS_MERCH_KEY_PAYIN')
         ];
+
+        $signatureText = implode('', $signature);
+        $hash = hash("sha512", $signatureText);
         
-        Log::channel('paynamics')->info($signature);
-        
-        return hash("sha512", implode('', $signature));
+        return $hash;
     }
 }
