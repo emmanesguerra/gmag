@@ -37,6 +37,14 @@ Route::get('set-yesterdays-pair-type', 'ScheduleController@checkTodaysPairs')->n
 Route::post('/paygate-notification', 'Admin\EncashmentController@paynamicsnoti')->name('paynamics.noti');
 Route::get('/paygate-response', 'Admin\EncashmentController@paynamicsresp')->name('paynamics.resp');
 
+Route::post('/paygate-notification-resp', 'PaynamicsResponseController@notification')->name('paynamics.member.noti');
+Route::get('/paygate-response-resp', 'PaynamicsResponseController@response')->name('paynamics.member.resp');
+Route::get('/paygate-cancel-resp', 'PaynamicsResponseController@cancel')->name('paynamics.member.cancel');
+
+Route::get('/terms-and-condition', function(){
+    return view('termsandcondition');
+})->name('terms.and.condition');
+
 Route::get('/ewallet-history-details', 'WalletController@historydetails')->name('wallet.history.details');
 
 Route::middleware('auth:web')->group(function () {

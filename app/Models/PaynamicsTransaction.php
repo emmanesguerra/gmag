@@ -12,4 +12,14 @@ class PaynamicsTransaction extends Model
     protected $fillable = [
         'member_id', 'product_id', 'quantity', 'total_amount', 'transaction_date'
     ];
+    
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'id', 'member_id');
+    }
+    
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

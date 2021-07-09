@@ -41,10 +41,10 @@ class CashInLibrary {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $serverip = $_SERVER['SERVER_ADDR'];
         $clientip = $request->ip();
-        $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
-        $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $cancelUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $mtacUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
+        $notificationUrl = route('paynamics.member.noti', ['transaction_id' => $trans->id]);
+        $responseUrl = route('paynamics.member.resp', ['transaction_id' => $trans->id]);
+        $cancelUrl = route('paynamics.member.cancel', ['transaction_id' => $trans->id]);
+        $mtacUrl = route('terms.and.condition');
         $requestID = date('YmdHis') . $trans->id;
         
         $data = [
@@ -55,22 +55,22 @@ class CashInLibrary {
             'response_url' => $responseUrl,
             'cancel_url' => $cancelUrl,
             'mtac_url' => $mtacUrl,
-            'fname' => 'Emmanuelle',
-            'lname' => 'Esguerra',
-            'mname' => 'Magtibay',
-            'address1' => 'Lorem ipsum comet dolor',
-            'address2' => 'Lorem ipsum comet dolor2',
-            'city' => 'Makati',
-            'state' => 'MM',
-            'country' => 'PH',
-            'zip' => '1299',
-            'email' => 'emman.esguerra2013@gmail.com',
-            'phone' => '3308772',
-            'mobile' => '+63090529278',
+            'fname' => $trans->member->firstname,
+            'lname' => $trans->member->lastname,
+            'mname' => $trans->member->middlename,
+            'address1' => $trans->member->address1,
+            'address2' => $trans->member->address2,
+            'city' => $trans->member->city,
+            'state' => $trans->member->state,
+            'country' => $trans->member->country,
+            'zip' => $trans->member->zip,
+            'email' => $trans->member->email,
+            'phone' => $trans->member->mobile,
+            'mobile' => $trans->member->mobile,
             'client_ip' => $clientip,
-            'amount' => number_format((1000), 2, '.', $thousands_sep = ''),
+            'amount' => number_format(($trans->total_amount), 2, '.', $thousands_sep = ''),
             'currency' => self::DEFAULT_CURRENCY,
-            'pmethod' => '',
+            'pmethod' => implode(',', $request->payinmethod_name),
             'expiry_limit' => $expirationDate,
             'trxtype' => 'sale',
             'mlogo_url' => asset('favicon.ico'),
@@ -78,9 +78,9 @@ class CashInLibrary {
                 [
                     'items' => [
                         'Items' => [
-                            'itemname' => 'Item 1',
-                            'quantity' => 1,
-                            'amount' => number_format((1000), 2, '.', $thousands_sep = '')
+                            'itemname' => $trans->product->name,
+                            'quantity' => $trans->quantity,
+                            'amount' => number_format(($trans->product->price), 2, '.', $thousands_sep = '')
                         ]
                     ]
                 ]
@@ -107,19 +107,19 @@ class CashInLibrary {
             $serverip,
             $notificationUrl,
             $responseUrl,
-            'Emmanuelle',
-            'Esguerra',
-            'Magtibay',
-            'Lorem ipsum comet dolor',
-            'Lorem ipsum comet dolor2',
-            'Makati',
-            'MM',
-            'PH',
-            '1299',
-            'emman.esguerra2013@gmail.com',
-            '3308772',
+            $trans->member->firstname,
+            $trans->member->lastname,
+            $trans->member->middlename,
+            $trans->member->address1,
+            $trans->member->address2,
+            $trans->member->city,
+            $trans->member->state,
+            $trans->member->country,
+            $trans->member->zip,
+            $trans->member->email,
+            $trans->member->mobile,
             $clientip,
-            number_format((1000), 2, '.', $thousands_sep = ''),
+            number_format(($trans->total_amount), 2, '.', $thousands_sep = ''),
             self::DEFAULT_CURRENCY,
             'try3d',
             env('PYNMCS_MERCH_KEY_PAYIN')
