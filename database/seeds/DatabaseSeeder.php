@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             DocumentOptionSeeder::class,
             PickupCenterSeeder::class,
             PaynamicsPayinMethodSeeder::class,
+            PaynamicsPayinMethodStateSeeder::class,
             GmagAccountSeeder::class
         ]);
     }

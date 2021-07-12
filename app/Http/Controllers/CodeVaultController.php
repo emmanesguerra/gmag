@@ -97,10 +97,19 @@ class CodeVaultController extends Controller
     public function purchaseform()
     {
         $member = Auth::user();
-        $products = DB::table('products')->select('name', 'price', 'id')->get();
-        $walletTypes = DB::table('wallet_types')->select('method', 'name')->orderBy('sequence')->get();
-        $paymentMethods = DB::table('payment_methods')->select('method', 'name')->orderBy('sequence')->get();
+        $products = DB::table('products')
+                            ->whereNull('deleted_at')
+                            ->select('name', 'price', 'id')->get();
+        $walletTypes = DB::table('wallet_types')
+                            ->whereNull('deleted_at')
+                            ->select('method', 'name')
+                            ->orderBy('sequence')->get();
+        $paymentMethods = DB::table('payment_methods')
+                            ->whereNull('deleted_at')
+                            ->select('method', 'name')
+                            ->orderBy('sequence')->get();
         $payinmethodsres = DB::table('paynamics_payin_methods')
+                            ->whereNull('deleted_at')
                             ->select('method', 'type', 'type_name', 'description')
                             ->orderBy('type')->get();
         
