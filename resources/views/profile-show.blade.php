@@ -411,6 +411,9 @@
                             case "F":
                                 return 'Failed';
                                 break;
+                            case "X":
+                                return 'Cancelled';
+                                break;
                         }
                         return '';
                     }

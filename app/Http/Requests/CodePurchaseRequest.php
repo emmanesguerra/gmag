@@ -33,6 +33,7 @@ class CodePurchaseRequest extends FormRequest
             "quantity" => "required",
             "total_amount" => "required|verifytotalamount:quantity,product",
             "payment_method" => "required",
+            "payinmethod_name" => "required_if:payment_method,paynamics",
             "source" => "required_if:payment_method,ewallet",
             "source_amount" => 'required_if:payment_method,ewallet'
         ];
@@ -47,6 +48,7 @@ class CodePurchaseRequest extends FormRequest
     {
         return [
             'total_amount.verifytotalamount' => "The total amount doesn't match with the system's computation. Please refresh your browser and resend the request",
+            'payinmethod_name.required_if' => "Please select atleast one pay in method"
         ];
     }
 }

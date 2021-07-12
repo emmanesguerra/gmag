@@ -25,7 +25,11 @@ class CashInLibrary {
     
     public static function processPayin($request = null, PaynamicsTransaction $trans)
     {
-        $xmlData = self::generateXmlDataCashIn($trans, $request);
+        $requestID = date('YmdHis') . $trans->id;
+        $trans->generated_req_id = $requestID;
+        $trans->save();
+        
+        $xmlData = self::generateXmlDataCashIn($trans, $request, $requestID);
         Log::channel('paynamics')->info($xmlData);
         $encodedRequest = base64_encode($xmlData);
         Log::channel('paynamics')->info($encodedRequest);
@@ -36,7 +40,7 @@ class CashInLibrary {
         return $postData;
     }
     
-    private static function generateXmlDataCashIn($trans, $request)
+    private static function generateXmlDataCashIn($trans, $request, $requestID)
     {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $serverip = $_SERVER['SERVER_ADDR'];
@@ -45,7 +49,6 @@ class CashInLibrary {
         $responseUrl = route('paynamics.member.resp', ['transaction_id' => $trans->id]);
         $cancelUrl = route('paynamics.member.cancel', ['transaction_id' => $trans->id]);
         $mtacUrl = route('terms.and.condition');
-        $requestID = date('YmdHis') . $trans->id;
         
         $data = [
             'mid' => env('PYNMCS_MERCH_ID_PAYIN'),

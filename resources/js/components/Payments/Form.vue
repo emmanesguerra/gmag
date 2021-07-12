@@ -46,7 +46,7 @@
             </div>
         </div>
         <div v-if="model.payment_method=='paynamics'" class="form-group row field">
-            <label  class="col-sm-3 col-form-label">Select a Payment Methods: </label>
+            <label  class="col-sm-3 col-form-label">Select a Pay In Methods: </label>
             <div class="col-sm-4">
                 <treeselect-form-multi
                     v-bind:value="model.payinmethods"

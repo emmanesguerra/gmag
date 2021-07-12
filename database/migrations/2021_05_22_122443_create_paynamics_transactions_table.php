@@ -16,6 +16,8 @@ class CreatePaynamicsTransactionsTable extends Migration
         Schema::create('paynamics_transactions', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_no', 15);
+            $table->string('generated_req_id', 25)->nullable();
+            $table->string('response_id', 32)->nullable();
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedSmallInteger('quantity')->nullable();
@@ -24,7 +26,7 @@ class CreatePaynamicsTransactionsTable extends Migration
             $table->timestamp('transaction_date');
             $table->string('payment_method', 9)->default('paynamics');
             $table->string('payment_source', 20)->nullable();
-            $table->string('status', 2)->default('WR')->comment('WR - Waiting for Dgate Response, S - Success, F - Failed');
+            $table->string('status', 2)->default('WR')->comment('WR - Waiting for Dgate Response, S - Success, F - Failed, X - Cancelled');
             $table->text('remarks')->nullable()->comment('Paynamics Remarks');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
