@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Library\Common;
 use App\Models\PaynamicsTransaction;
 
@@ -10,12 +12,42 @@ class PaynamicsResponseController extends Controller
 {
     public function notification(Request $request)
     {
+        try
+        {
+            DB::beginTransaction();
         
+            Log::channel('paynamics_noti')->info(date('Y-m-d H:i:s'));
+            Log::channel('paynamics_noti')->info($request->all());
+
+            $paymentResponse = $request->paymentresponse;
+            $trans = PaynamicsTransaction::find($request->transaction_id);
+
+            $xmlString = base64_decode($paymentResponse);
+            Log::channel('paynamics_noti')->info($xmlString);
+            $data = Common::convertXmlToJson($xmlString);
+
+            Log::channel('paynamics_noti')->info($data);
+            DB::commit();
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            Log::channel('paynamics_noti')->error($ex->getMessage());
+        }
     }
     
     public function response(Request $request)
     {
+        $trans = PaynamicsTransaction::find($request->transaction_id);
+        if($trans)
+        {
+            $responseid = base64_decode($request->responseid);
+            $trans->response_id = $responseid;
+            $trans->save();
+            
+            return view('paynamics-response', ['trans' => $trans]);
+        }
         
+        abort(404);
     }
     
     public function cancel(Request $request)
