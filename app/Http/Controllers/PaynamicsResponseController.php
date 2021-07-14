@@ -22,7 +22,8 @@ class PaynamicsResponseController extends Controller
             $paymentResponse = $request->paymentresponse;
             $trans = PaynamicsTransaction::find($request->transaction_id);
 
-            $xmlString = base64_decode($paymentResponse);
+            $paymentResponse2 = str_replace(" ", "+", $paymentResponse);
+            $xmlString = base64_decode($paymentResponse2);
             Log::channel('paynamics_noti')->info($xmlString);
             $data = Common::convertXmlToJson($xmlString);
 
