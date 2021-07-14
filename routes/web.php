@@ -98,6 +98,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/code-vault/{id}/data', 'CodeVaultController@data')->name('codevault.data');
         Route::get('/code-vault/purchase', 'CodeVaultController@purchaseform')->name('codevault.purchaseform');
         Route::post('/code-vault/purchase', 'CodeVaultController@purchase')->name('codevault.purchase');
+        Route::get('/code-vault/check-stat/{id}', 'CodeVaultController@checkstatus')->name('codevault.checkstatus');
         
         Route::get('/settlement-form', 'HonoraryController@settleform')->name('settle.form');
         Route::post('/settle-amount', 'HonoraryController@settleamount')->name('settle.amount');

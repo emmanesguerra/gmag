@@ -6,7 +6,7 @@
             <img id="transactionloader1" style="display: none" src="{{ asset('images/loader.svg') }}" height="30" widht="30" class=" ml-3 float-right">
             @if(Auth::guard('web')->check())
                 @if(in_array($data->status, ['WR']))
-                    <a href='{{ route('admin.encashment.query', $data->id) }}' class='btn btn-sm btn-info float-right mr-3' onclick="showloader(true)">Check Status</a>
+                    <a href='{{ route('codevault.checkstatus', $data->id) }}' class='btn btn-sm btn-info float-right mr-3' onclick="showloader(true)">Check Status</a>
                 @endif
             @endif
         </span>

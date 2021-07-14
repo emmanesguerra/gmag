@@ -205,4 +205,9 @@ class CodeVaultController extends Controller
         
         return;
     }
+    
+    public function checkstatus($id)
+    {
+        
+    }
 }
