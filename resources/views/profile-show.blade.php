@@ -220,6 +220,21 @@
         </div>
         <span id="paynamics"></span>
     </div>
+    
+    
+    <div class="modal fade in" id="detail-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h4 class="modal-title">Transaction Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="transaction-content">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     @if($member->honorary)
     <div class='col-12 pl-0 pr-0 py-3'>
         <div class="col-12 contentheader100">
@@ -248,11 +263,34 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('css/bootstrap.min.css') }}"  rel="stylesheet">
     <link href="{{ asset('css/daterangepicker.css') }}"  rel="stylesheet">
     <link rel="stylesheet"  href="{{ asset('js/DataTables/datatables.min.css') }}" />
     <style>
         #leftTable_filter {
             float: right;
+        }
+        div.dataTables_length,
+        div.dataTables_info,
+        div.paging_simple_numbers,
+        div.dataTables_filter {
+            float: right;
+        }
+        div.dataTables_info,
+        div.paging_simple_numbers {
+            width: 50%;
+        }
+        div.dataTables_length {
+            float: left;
+            width: 20%;
+        }
+        div.toolbar.dataTables_filter {
+            width: 55%;
+            float: left;
+        }
+        div.toolbar select {
+            width: auto;
+            display: inline-block;
         }
     </style>
 @endsection
@@ -325,7 +363,8 @@
                         return '';
                     }
                 },
-            ]
+            ],
+            "order": [[ 0, "desc" ]]
         });
         
         $("div.toolbar").html(
@@ -374,7 +413,8 @@
                         }
                     }
                 }
-            ]
+            ],
+            "order": [[ 0, "desc" ]]
         });
         
         $('#paynamicsTable').DataTable({
@@ -400,25 +440,26 @@
                 },
                 {
                     data: function ( row, type, set ) {
-                        switch(row.status)
-                        {
+                        var stat = "";
+                        switch(row.status) {
                             case "WR":
-                                return 'Waiting';
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-secondary' >Waiting</span>";
                                 break;
                             case "S":
-                                return 'Status';
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary'>Success</span>";
                                 break;
                             case "F":
-                                return 'Failed';
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Failed</span>";
                                 break;
                             case "X":
-                                return 'Cancelled';
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Cancelled</span>";
                                 break;
                         }
-                        return '';
+                        return stat;
                     }
                 },
-            ]
+            ],
+            "order": [[ 0, "desc" ]]
         });
         
         @if($member->honorary)
@@ -447,8 +488,29 @@
                         }
                     },
                     {"data": "status"},
-                ]
+                ],
+                "order": [[ 0, "desc" ]]
             });
         @endif
+        
+        function displayInfo(id) {
+            $.ajax({
+                url: '{{ route("paynamics.transaction.details") }}',
+                type: "get",
+                data: {
+                    id: id
+                },
+                beforeSend: function() {
+                    $('#detail-modal').modal('show');
+                    $('#transaction-content').html('<div class="col-12 text-center"><img src="{{ asset('images/loader.svg') }}" height="40" widht="40" class="m-5"></div>');
+                }, 
+            }).done(function(response) {
+                console.log(response);
+                $('#transaction-content').html(response.html);
+            }).fail(function(XHR) {
+                alert('Unable to retrieve data');
+                $('#detail-modal').modal('hide');
+            });
+        }
     </script>
 @endsection

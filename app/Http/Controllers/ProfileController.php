@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Member;
 use App\Models\MemberDocument;
+use App\Models\PaynamicsTransaction;
 use App\Models\MembersPairCycle;
 use App\Library\DataTables;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -378,7 +379,8 @@ class ProfileController extends Controller
                                                 b.name, 
                                                 a.quantity, 
                                                 a.total_amount,
-                                                a.status")
+                                                a.status,
+                                                a.id")
                             );
 
         $modelcnt = $filteredmodel->count();
@@ -389,5 +391,18 @@ class ProfileController extends Controller
             'draw' => $request->draw,
             'recordsTotal' => ($hasValue)? $data->count(): $modelcnt,
             'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
+    }
+    
+    public function paynamicsdetails(Request $request)
+    {
+        if($request->has('id')) {
+            $data = PaynamicsTransaction::find($request->id);
+            
+            return response(['success' => true,
+                    'html' => view('paynamics-transaction-details', ['data'=> $data])->render()
+                ], 200);
+        } else {
+            return response(['success' => false], 500);
+        }
     }
 }
