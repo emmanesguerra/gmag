@@ -78,6 +78,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/profile/{id}/credits', 'ProfileController@credits')->name('profile.credits');
         Route::get('/profile/{id}/paynamics', 'ProfileController@paynamics')->name('profile.paynamics');
         Route::get('/paynamics-transaction-details', 'ProfileController@paynamicsdetails')->name('paynamics.transaction.details');
+        Route::get('/paynamics-transaction-stats/{id}', 'ProfileController@checkPaynamicsTransactionStatus')->name('paynamics.transaction.checkstatus');
         
         Route::get('/transaction-bonus', 'TransactionsController@bonus')->name('transactions.bonus');
         Route::get('/transaction-bonus/{id}/data', 'TransactionsController@bonusdata')->name('transactions.bonusdata');
@@ -98,7 +99,6 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/code-vault/{id}/data', 'CodeVaultController@data')->name('codevault.data');
         Route::get('/code-vault/purchase', 'CodeVaultController@purchaseform')->name('codevault.purchaseform');
         Route::post('/code-vault/purchase', 'CodeVaultController@purchase')->name('codevault.purchase');
-        Route::get('/code-vault/check-stat/{id}', 'CodeVaultController@checkstatus')->name('codevault.checkstatus');
         
         Route::get('/settlement-form', 'HonoraryController@settleform')->name('settle.form');
         Route::post('/settle-amount', 'HonoraryController@settleamount')->name('settle.amount');

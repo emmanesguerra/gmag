@@ -405,4 +405,9 @@ class ProfileController extends Controller
             return response(['success' => false], 500);
         }
     }
+    
+    public function checkPaynamicsTransactionStatus($id)
+    {
+        
+    }
 }
