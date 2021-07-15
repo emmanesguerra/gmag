@@ -133,4 +133,50 @@ class CashInLibrary {
         
         return $hash;
     }
+    
+    public static function queryDisbursement(PaynamicsTransaction $trans, $requestID)
+    {
+        $xmlData = self::generateXmlDataQuery($trans, $requestID);
+        $context = stream_context_create(array(
+                'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+                )
+        ));
+        $soapclient = new \SoapClient(env('PYNMCS_MERCH_ENDPOINT_PAYIN_QUERY'), array('stream_context' => $context));
+        $response = $soapclient->query($xmlData);
+        
+        return $response;
+    }
+    
+    private static function generateXmlDataQuery($trans, $requestID)
+    {           
+        return [
+                'merchantid' => env('PYNMCS_MERCH_ID_PAYIN'),
+                'request_id' => $requestID,
+                'org_trxid' => $trans->response_id,
+                'org_trxid2' => $trans->generated_req_id,
+                'signature' => self::processQueryDisbursementSignature($trans, $requestID)
+        ];
+    }
+    
+    private static function processQueryDisbursementSignature($trans, $requestID)
+    {
+        /*
+         * forSign = merchantid + request_id + org_trxid + org_trxid2 + mkey
+         */
+        $signature = [
+            env('PYNMCS_MERCH_ID_PAYIN'),
+            $requestID,
+            $trans->response_id,
+            $trans->generated_req_id,
+            env('PYNMCS_MERCH_KEY_PAYIN')
+        ];
+
+        $signatureText = implode('', $signature);
+        $sign = hash("sha512", $signatureText);
+        
+        return $sign;
+    }
 }

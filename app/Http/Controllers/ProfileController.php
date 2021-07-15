@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\Member;
 use App\Models\MemberDocument;
 use App\Models\PaynamicsTransaction;
 use App\Models\MembersPairCycle;
 use App\Library\DataTables;
+use App\Library\Modules\Paynamics\CashInLibrary;
+use App\Library\Common;
 use App\Http\Requests\ProfileUpdateRequest;
 
 /**
@@ -408,6 +411,71 @@ class ProfileController extends Controller
     
     public function checkPaynamicsTransactionStatus($id)
     {
-        
+        try
+        {
+            DB::beginTransaction();
+            $trans = PaynamicsTransaction::find($id);
+
+            if($trans) {
+                $requestID = date('YmdHis') . $trans->id;
+                $result = CashInLibrary::queryDisbursement($trans, $requestID);
+
+                if(isset($result->queryResult)) {
+                    if(isset($result->queryResult->txns)) {
+                        if(isset($result->queryResult->txns->ServiceResponse)) {
+                            if(isset($result->queryResult->txns->ServiceResponse->responseStatus)) { 
+                                $responseStat = $result->queryResult->txns->ServiceResponse->responseStatus;
+                                
+                                if(in_array($responseStat->response_code, ['GR001', 'GR002'])) {
+                                    $trans->status = 'S';
+                
+                                    switch ($trans->transaction_type)
+                                    {
+                                        case "Purchase":
+                                            Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
+                                            break;
+                                        case "Activation":
+                                            $this->processActivation($trans);
+                                            break;
+                                        case "Credit Adj":
+                                            $this->processCreditAdj($trans);
+                                            break;
+                                    }
+                                    
+                                } else {
+                                    $trans->status = 'F';
+                                }
+                                
+                                $remarks = [];
+                                if(!empty($trans->remarks)) {
+                                    $remarks = explode('|', $trans->remarks);
+                                }
+                                array_push($remarks, date('Ymd H:i') . ' Member: ' . 'Status fetched by ' . $trans->member->username);
+                                array_push($remarks, date('Ymd H:i') . ' Pynmcs D: ' . $responseStat->response_message);
+                                array_push($remarks, date('Ymd H:i') . ' Pynmcs D: ' . $responseStat->response_advise);
+                                $trans->remarks = implode("|", $remarks);
+                                $trans->save();
+
+                                DB::commit();
+                                return redirect(route('profile.show', $trans->member_id))
+                                        ->with('status-success', 'Transaction status has been verified.');
+                            }
+                        }
+                    }
+                }
+                
+                Log::channel('paynamicsquery')->error(serialize($result));
+                throw new \Exception('Unable to translate paynamics response');
+            }
+            
+            Log::channel('paynamicsquery')->error($id);
+            throw new \Exception('Unable to retrieve transaction request.');
+            
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect(route('home'))
+                    ->with('status-failed', $ex->getMessage());
+
+        }
     }
 }
