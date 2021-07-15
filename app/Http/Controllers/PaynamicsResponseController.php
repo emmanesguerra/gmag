@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Library\Common;
 use App\Models\PaynamicsTransaction;
+use App\Models\Member;
 
 class PaynamicsResponseController extends Controller
 {
@@ -26,14 +27,56 @@ class PaynamicsResponseController extends Controller
             $xmlString = base64_decode($paymentResponse2);
             Log::channel('paynamics_noti')->info($xmlString);
             $data = Common::convertXmlToJson($xmlString);
-
             Log::channel('paynamics_noti')->info($data);
+            
+            if($data && $this->transactionSuccessful($data))
+            {
+                switch ($trans->transaction_type)
+                {
+                    case "Purchased":
+                        $this->processPurchased($trans);
+                        break;
+                    case "Activation":
+                        $this->processActivation($trans);
+                        break;
+                    case "Credit Adj":
+                        $this->processCreditAdj($trans);
+                        break;
+                }
+            }
+            
             DB::commit();
             
         } catch (\Exception $ex) {
             DB::rollback();
             Log::channel('paynamics_noti')->error($ex->getMessage());
         }
+    }
+    
+    private function transactionSuccessful($data)
+    {
+        if(isset($data['responseStatus']) && isset($data['responseStatus']['response_code'])) {
+            if(in_array($data['responseStatus']['response_code'], ['GR001', 'GR002'])) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private function processPurchased(PaynamicsTransaction $trans)
+    {
+        Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount);
+    }
+    
+    private function processActivation(PaynamicsTransaction $trans)
+    {
+        
+    }
+    
+    private function processCreditAdj(PaynamicsTransaction $trans)
+    {
+        
     }
     
     public function response(Request $request)
