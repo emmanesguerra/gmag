@@ -22,7 +22,7 @@ class CreatePaynamicsTransactionsTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedSmallInteger('quantity')->nullable();
             $table->float('total_amount');
-            $table->string('transaction_type', 12)->default('Purchased');
+            $table->string('transaction_type', 12)->default('Purchase')->comment('Purchase, Credit Adj, Activation');
             $table->timestamp('transaction_date');
             $table->string('payment_method', 9)->default('paynamics');
             $table->string('payment_source', 20)->nullable();

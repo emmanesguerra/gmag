@@ -25,7 +25,7 @@ class CreateTransactionsTable extends Migration
             $table->float('product_price')->nullable();
             $table->unsignedSmallInteger('quantity')->nullable();
             $table->float('total_amount');
-            $table->string('transaction_type', 12);
+            $table->string('transaction_type', 12)->comment('Purchase, Credit Adj, Activation');
             $table->timestamp('transaction_date');
             $table->string('payment_method', 9)->comment('site_reg = website registration; e_wallet = Ewallet; paynamics = Paynamics');
             $table->string('payment_source', 20)->nullable();
