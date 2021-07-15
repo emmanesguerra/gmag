@@ -31,10 +31,12 @@ class PaynamicsResponseController extends Controller
             
             if($data && $this->transactionSuccessful($data))
             {
+                $trans->status = 'S';
+                
                 switch ($trans->transaction_type)
                 {
-                    case "Purchased":
-                        $this->processPurchased($trans);
+                    case "Purchase":
+                        Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
                         break;
                     case "Activation":
                         $this->processActivation($trans);
@@ -43,7 +45,19 @@ class PaynamicsResponseController extends Controller
                         $this->processCreditAdj($trans);
                         break;
                 }
+            } else {
+                $trans->status = 'F';
             }
+            
+            $remarks = [];
+            if(!empty($trans->remarks)) {
+                $remarks = explode('|', $trans->remarks);
+            }
+            array_push($remarks, date('Ymd H:i') . ' Pynmcs D: ' . $data['responseStatus']['response_message']);
+            array_push($remarks, date('Ymd H:i') . ' Pynmcs D: ' . $data['responseStatus']['response_advise']);
+            $trans->remarks = implode("|", $remarks);
+
+            $trans->save();
             
             DB::commit();
             
@@ -62,21 +76,6 @@ class PaynamicsResponseController extends Controller
         }
         
         return false;
-    }
-    
-    private function processPurchased(PaynamicsTransaction $trans)
-    {
-        Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount);
-    }
-    
-    private function processActivation(PaynamicsTransaction $trans)
-    {
-        
-    }
-    
-    private function processCreditAdj(PaynamicsTransaction $trans)
-    {
-        
     }
     
     public function response(Request $request)
