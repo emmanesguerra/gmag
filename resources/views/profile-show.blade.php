@@ -201,6 +201,7 @@
             Paynamics Transaction List
         </div>
         <div class='col-12 content-container py-3' style='position: relative'>
+            @include('common.serverresponse')
             <div class="row">
                 <div class="col-12">
                     <table id="paynamicsTable" class=" datatables table table-hover table-bordered text-center small">
