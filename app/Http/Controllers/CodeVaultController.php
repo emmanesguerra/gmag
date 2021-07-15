@@ -11,6 +11,7 @@ use App\Library\DataTables;
 use App\Library\Modules\TransactionLibrary;
 use App\Library\Modules\EntryCodesLibrary;
 use App\Library\Modules\PaynamicsLibrary;
+use App\Library\Common;
 use App\Http\Requests\CodePurchaseRequest;
 use App\Library\Modules\Paynamics\CashInLibrary;
 
@@ -170,7 +171,7 @@ class CodeVaultController extends Controller
             $product = Product::find($request->product);
                 
             if($request->payment_method == 'paynamics') {
-                $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, $request->quantity, $request->total_amount);
+                $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, 'Purchase', $request->quantity, $request->total_amount);
                 
                 $resp = CashInLibrary::processPayin($request, $trans);
                 
@@ -178,7 +179,7 @@ class CodeVaultController extends Controller
                 return view('refirect-to-paynamics', ['data' => $resp]);
                 
             } else {
-                $this->processProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
+                Common::processProductPurchase($member, $product, $request->quantity, 'Purchase', $request->payment_method, $request->source, $request->total_amount);
                 $route = 'codevault.index';
                 $ref = null;
                 $msg = 'Thank you for your purchase. Please use these entry codes below when registering new accounts';
@@ -193,21 +194,5 @@ class CodeVaultController extends Controller
                     ->with('status-failed', $ex->getMessage())
                     ->withInput($request->input());
         }
-    }
-    
-    private function processProductPurchase(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount)
-    {
-        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount);
-
-        if($trans) {
-            EntryCodesLibrary::createEntryCodes($product, $member->id, $quantity, 'Purchased by ' . $member->username, $trans->id);
-        }
-        
-        return;
-    }
-    
-    public function checkstatus($id)
-    {
-        
     }
 }

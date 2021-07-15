@@ -13,6 +13,11 @@ namespace App\Library;
  *
  * @author alvin
  */
+use App\Library\Modules\TransactionLibrary;
+use App\Library\Modules\EntryCodesLibrary;
+use App\Models\Member;
+use App\Models\Product;
+
 class Common {
     //put your code here
     public static function splitWord($str, $width, $length = PHP_INT_MAX)
@@ -42,5 +47,16 @@ class Common {
         $xml = simplexml_load_string($xml);
         $json = json_encode($xml);
         return json_decode($json, TRUE);
+    }
+    
+    public static function processProductPurchase(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount)
+    {
+        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount);
+
+        if($trans) {
+            EntryCodesLibrary::createEntryCodes($product, $member->id, $quantity, 'Purchased by ' . $member->username, $trans->id);
+        }
+        
+        return;
     }
 }
