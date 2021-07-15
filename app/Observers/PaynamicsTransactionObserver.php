@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\PaynamicsTransaction;
 use Illuminate\Support\Facades\Auth;
+use App\Library\Modules\TransactionLibrary;
 
 class PaynamicsTransactionObserver
 {
@@ -17,7 +18,17 @@ class PaynamicsTransactionObserver
     public function creating(PaynamicsTransaction $args)
     {
         $args->created_by = Auth::id();
-        $args->transaction_no = substr(strtoupper(bin2hex(random_bytes(10))), 0, 15);
+        switch($args->transaction_type) {
+            case "Credit Adj":
+                $args->transaction_no = TransactionLibrary::getNextSequence('CA');
+                break;
+            case "Purchase":
+                $args->transaction_no = TransactionLibrary::getNextSequence('PP');
+                break;
+            case "Activation":
+                $args->transaction_no = TransactionLibrary::getNextSequence('AT');
+                break;
+        }
     }
     
     /**
