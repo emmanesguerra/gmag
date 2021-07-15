@@ -446,7 +446,7 @@
                                 stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-secondary' >Waiting</span>";
                                 break;
                             case "S":
-                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-primary'>Success</span>";
+                                stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-success'>Success</span>";
                                 break;
                             case "F":
                                 stat = "<span onclick='displayInfo("+row.id+")' style='cursor:pointer; text-decoration: underline' class='text-danger'>Failed</span>";
