@@ -49,9 +49,9 @@ class Common {
         return json_decode($json, TRUE);
     }
     
-    public static function processProductPurchase(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount)
+    public static function processProductPurchase(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount, $transactionno = null)
     {
-        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount);
+        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount, $transactionno);
 
         if($trans) {
             EntryCodesLibrary::createEntryCodes($product, $member->id, $quantity, 'Purchased by ' . $member->username, $trans->id);

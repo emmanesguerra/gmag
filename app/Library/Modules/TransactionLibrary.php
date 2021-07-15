@@ -38,7 +38,7 @@ class TransactionLibrary {
         ]);
     }
     
-    public static function saveProductPurchase(Member $member, $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null, $totalAmount = 0)
+    public static function saveProductPurchase(Member $member, $product, int $quantity, string $transactionType, string $paymentMethod, string $source = null, $totalAmount = 0, $transactionno = null)
     {
         $transaction = Transaction::create([
             'member_id' => $member->id,
@@ -52,6 +52,7 @@ class TransactionLibrary {
             'total_amount' => $totalAmount,
             'transaction_type' => $transactionType,
             'transaction_date' => date('Y-m-d h:i:s'),
+            'transaction_no' => $transactionno,
             'payment_method' => $paymentMethod,
             'payment_source' => ($paymentMethod == 'ewallet') ? $source : null
         ]);
