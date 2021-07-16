@@ -62,6 +62,19 @@ class Common {
         return;
     }
     
+    public static function processActivation(Member $member, Product $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount, $transactionno = null)
+    {        
+        $trans = TransactionLibrary::saveProductPurchase($member, $product, $quantity, $ttype, $tpaymetMethod, $tsource, $tttlAmount, $transactionno);
+
+        if($trans) {
+            MembersLibrary::updateMemberPlacementProduct($member, $product);
+
+            MembersLibrary::registerMemberPairingCycle($member);
+        }
+        
+        return;
+    }
+    
     public static function processCreditAdj(Member $member, HonoraryMember $credit, $ttype, $tpaymetMethod, $tsource, $totalAmount, $diff)
     {
         $trans = TransactionLibrary::saveProductPurchase($member, null, 0, $ttype, $tpaymetMethod, $tsource, $totalAmount);
