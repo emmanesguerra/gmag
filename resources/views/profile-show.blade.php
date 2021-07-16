@@ -329,7 +329,7 @@
             serverSide: true,
             responsive: true,
             processing: true,
-            "dom": 'f<"toolbar">rtip',
+            "dom": 'f<"toolbar">rtpi',
             "ajax": {
                 url: "{{ route('profile.cycle', $member->id) }}",
                 data: function ( d ) {
@@ -391,6 +391,7 @@
             serverSide: true,
             responsive: true,
             processing: true,
+            "dom": 'lfrtpi',
             "columns": [
                 {
                     data: function ( row, type, set ) {
@@ -433,6 +434,7 @@
             serverSide: true,
             responsive: true,
             processing: true,
+            "dom": 'lfrtpi',
             "columns": [
                 {
                     data: function ( row, type, set ) {
@@ -487,6 +489,7 @@
                 serverSide: true,
                 responsive: true,
                 processing: true,
+                "dom": 'lfrtpi',
                 "columns": [
                     {
                         data: function ( row, type, set ) {
