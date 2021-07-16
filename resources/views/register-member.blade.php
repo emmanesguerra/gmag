@@ -13,7 +13,7 @@
 <div class="row p-3">
     <div class='col-12 contentheader100'>
         Register Form
-        @if (env('APP_ENV')=='local')
+        @if ( config('app.env') =='local' )
         <span id='generatevalues' class='btn btn-sm btn-success float-right'>Generate Fake Values</span>
         @endif
     </div>
@@ -103,7 +103,7 @@
 @endsection
 
 @section('javascripts')
-    @if (env('APP_ENV')=='local')
+    @if ( config('app.env') =='local' )
     <script>
         <?php
         $faker = Faker\Factory::create();
