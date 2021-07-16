@@ -17,7 +17,7 @@ class TransactionObserver
      */
     public function creating(Transaction $args)
     {
-        $args->created_by = Auth::id();
+        $args->created_by = (Auth::check()) ? Auth::id(): 0;
         if(empty($args->transaction_no)) {
             switch($args->transaction_type) {
                 case "Credit Adj":
