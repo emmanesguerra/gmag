@@ -28,7 +28,7 @@ class ActivationRequest extends FormRequest
     public function rules()
     {
         return [
-            "product_id" => "required",
+            "product" => "required",
             "total_amount" => "required",
             "payment_method" => "required",
             "source" => "required_if:payment_method,ewallet",
