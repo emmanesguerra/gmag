@@ -26,15 +26,16 @@ use App\Library\Modules\SettingLibrary;
 
 class TransactionLibrary {
     //put your code here    
-    public static function savePaynamicsTransaction(Member $member, Product $product, $paymentType, int $quantity, $totalAmount = 0) 
+    public static function savePaynamicsTransaction(Member $member, $product, $paymentType, int $quantity, $totalAmount = 0, $honoraryMemberId = null) 
     {
         return PaynamicsTransaction::create([
             'member_id' => $member->id, 
-            'product_id' => $product->id, 
+            'product_id' => ($product) ? $product->id: null, 
             'quantity' => $quantity, 
             'total_amount' => $totalAmount, 
             'transaction_date' => date('Y-m-d H:i:s'),
-            'transaction_type' => $paymentType
+            'transaction_type' => $paymentType,
+            'honorary_member_id' => $honoraryMemberId
         ]);
     }
     
