@@ -19,6 +19,7 @@ class CreatePaynamicsTransactionsTable extends Migration
             $table->string('generated_req_id', 25)->nullable();
             $table->string('response_id', 32)->nullable();
             $table->unsignedBigInteger('member_id');
+            $table->unsignedBigInteger('honorary_member_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedSmallInteger('quantity')->nullable();
             $table->float('total_amount');
