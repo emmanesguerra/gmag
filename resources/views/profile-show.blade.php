@@ -436,7 +436,7 @@
             "columns": [
                 {
                     data: function ( row, type, set ) {
-                        return moment.utc(row.transaction_date).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
+                        return moment.utc(row.created_at).tz('{{ $member->timezone }}').format('MMMM DD, YYYY hh:mm A');
                     }
                 },
                 {"data": "transaction_no"},

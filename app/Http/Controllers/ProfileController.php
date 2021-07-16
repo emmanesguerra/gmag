@@ -367,7 +367,7 @@ class ProfileController extends Controller
     public function paynamics(Request $request, $id)
     {
         $tablecols = [
-            0 => 'a.transaction_date',
+            0 => 'a.created_at',
             1 => 'a.transaction_no',
             2 => 'b.name',
             3 => 'a.quantity',
@@ -378,7 +378,7 @@ class ProfileController extends Controller
         $filteredmodel = DB::table('paynamics_transactions as a')
                                 ->leftjoin('products as b', 'b.id', '=', 'a.product_id')
                                 ->where('a.member_id', $id)
-                                ->select(DB::raw("a.transaction_date,  
+                                ->select(DB::raw("a.created_at,  
                                                 a.transaction_no , 
                                                 b.name, 
                                                 a.quantity, 
