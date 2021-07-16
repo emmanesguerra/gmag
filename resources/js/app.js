@@ -29,6 +29,7 @@ Vue.component('payment-form', require('./components/Payments/Form.vue').default)
 Vue.component('payment-table', require('./components/Payments/Table.vue').default);
 
 Vue.component('settlement-form', require('./components/Settlement/Form.vue').default);
+Vue.component('activation-form', require('./components/Activation/Form.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
