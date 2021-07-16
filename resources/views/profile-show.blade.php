@@ -399,7 +399,15 @@
                 },
                 {"data": "transaction_no"},
                 {"data": "transaction_type"},
-                {"data": "product_code"},
+                {
+                    data: function ( row, type, set ) {
+                        if(row.transaction_type == 'Credit Adj') {
+                            return row.transaction_type;
+                        } else {
+                            return row.product_code;
+                        }
+                    }
+                },
                 {
                     data: function ( row, type, set ) {
                         return Number(row.total_amount).toLocaleString("en", {minimumFractionDigits: 2});
@@ -432,7 +440,15 @@
                     }
                 },
                 {"data": "transaction_no"},
-                {"data": "name"},
+                {
+                    data: function ( row, type, set ) {
+                        if(row.transaction_type == 'Credit Adj') {
+                            return row.transaction_type;
+                        } else {
+                            return row.name;
+                        }
+                    }
+                },
                 {"data": "quantity"},
                 {
                     data: function ( row, type, set ) {
