@@ -11,10 +11,10 @@
             <div class="card p-3" style='box-shadow: 0 0 20px #000000b3;'>
                 <div class="card-body">
                     
-                    <h1>Thank you for purchasing our products.</h1>
+                    <h2>Thank you for settling your credit amount.</h2>
                     <br />
                     
-                    <p>Below are the details of your purchase</p>
+                    <p>Below are the details of your transaction</p>
                     <table class='table table-borderless'>
                         <tr>
                             <td width='40%'>Transaction No</td>
@@ -25,12 +25,8 @@
                             <td>{{ $trans->response_id }}</td>
                         </tr>
                         <tr>
-                            <td>Package</td>
-                            <td>{{ $trans->product->name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Price</td>
-                            <td>{{ number_format($trans->product->price, 2) }}</td>
+                            <td>Transasction</td>
+                            <td>Credit Adjustment</td>
                         </tr>
                         <tr>
                             <td>Quantity</td>

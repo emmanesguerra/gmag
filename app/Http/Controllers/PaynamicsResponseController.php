@@ -96,7 +96,7 @@ class PaynamicsResponseController extends Controller
                     return 'emman2';
                     break;
                 case "Credit Adj":
-                    return 'emman';
+                    return view('paynamics-response-2', ['trans' => $trans]);
                     break;
             }
                 
