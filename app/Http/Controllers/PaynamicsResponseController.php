@@ -87,7 +87,19 @@ class PaynamicsResponseController extends Controller
             $trans->response_id = $responseid;
             $trans->save();
             
-            return view('paynamics-response', ['trans' => $trans]);
+            switch ($trans->transaction_type)
+            {
+                case "Purchase":
+                    return view('paynamics-response', ['trans' => $trans]);
+                    break;
+                case "Activation":
+                    return 'emman2';
+                    break;
+                case "Credit Adj":
+                    return 'emman';
+                    break;
+            }
+                
         }
         
         abort(404);

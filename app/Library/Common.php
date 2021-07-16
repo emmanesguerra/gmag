@@ -15,8 +15,10 @@ namespace App\Library;
  */
 use App\Library\Modules\TransactionLibrary;
 use App\Library\Modules\EntryCodesLibrary;
+use App\Library\Modules\MembersLibrary;
 use App\Models\Member;
 use App\Models\Product;
+use App\Models\HonoraryMember;
 
 class Common {
     //put your code here
@@ -58,5 +60,25 @@ class Common {
         }
         
         return;
+    }
+    
+    public static function processCreditAdj(Member $member, HonoraryMember $credit, $ttype, $tpaymetMethod, $tsource, $totalAmount, $diff)
+    {
+        $trans = TransactionLibrary::saveProductPurchase($member, null, 0, $ttype, $tpaymetMethod, $tsource, $totalAmount);
+
+        if($trans) {
+            $credit->transaction_id = $trans->id;
+            $credit->amount_paid = $totalAmount;
+            $credit->status = 'Paid';
+            $credit->save();
+
+            if(isset($diff) && $diff > 0) {
+                MembersLibrary::createHonoraryRecord($member, $diff);
+            } else {
+                $member->has_credits = 0;
+                $member->save();
+            }
+
+        }   
     }
 }

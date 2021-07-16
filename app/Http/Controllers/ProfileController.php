@@ -10,6 +10,7 @@ use App\Models\Member;
 use App\Models\MemberDocument;
 use App\Models\PaynamicsTransaction;
 use App\Models\MembersPairCycle;
+use App\Models\HonoraryMember;
 use App\Library\DataTables;
 use App\Library\Modules\Paynamics\CashInLibrary;
 use App\Library\Common;
@@ -375,7 +376,7 @@ class ProfileController extends Controller
         ];
         
         $filteredmodel = DB::table('paynamics_transactions as a')
-                                ->join('products as b', 'b.id', '=', 'a.product_id')
+                                ->leftjoin('products as b', 'b.id', '=', 'a.product_id')
                                 ->where('a.member_id', $id)
                                 ->select(DB::raw("a.transaction_date,  
                                                 a.transaction_no , 
@@ -383,7 +384,8 @@ class ProfileController extends Controller
                                                 a.quantity, 
                                                 a.total_amount,
                                                 a.status,
-                                                a.id")
+                                                a.id,
+                                                a.transaction_type")
                             );
 
         $modelcnt = $filteredmodel->count();
@@ -438,7 +440,17 @@ class ProfileController extends Controller
                                             $this->processActivation($trans);
                                             break;
                                         case "Credit Adj":
-                                            $this->processCreditAdj($trans);
+                                            
+                                            $credit = HonoraryMember::find($trans->honorary_member_id);
+                                            if($credit->credit_amount > $trans->total_amount) {
+                                                $totalAmount = $trans->total_amount;
+                                                $diff = $credit->credit_amount - $trans->total_amount;
+                                            } else {
+                                                $totalAmount = $credit->credit_amount;
+                                                $diff = 0;
+                                            }
+                                            
+                                            Common::processCreditAdj($trans->member, $credit, 'Credit Adj', $trans->payment_method, null, $totalAmount, $diff);
                                             break;
                                     }
                                     
