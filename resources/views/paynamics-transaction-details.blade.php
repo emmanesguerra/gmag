@@ -31,9 +31,15 @@
         <span class="col-8">{{ $data->response_id }}</span>
     </div>
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
+        @if ($data->transaction_type == 'Credit Adj')
+        <span class="col-4"><strong>Transaction</strong></span>
+        <span class="col-8">{{ $data->transaction_type }}</span>
+        @else
         <span class="col-4"><strong>Package</strong></span>
         <span class="col-8">{{ $data->product->name }}</span>
+        @endif
     </div>
+    @if ($data->transaction_type != 'Credit Adj')
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Price</strong></span>
         <span class="col-8">{{ number_format($data->product->price, 2) }}</span>
@@ -42,6 +48,7 @@
         <span class="col-4"><strong>Quantity</strong></span>
         <span class="col-8">{{ $data->quantity }}</span>
     </div>
+    @endif
     <div class="row mb-3 pb-3" style="border-bottom: 1px solid #ccc">
         <span class="col-4"><strong>Total Amount</strong></span>
         <span class="col-8">{{ number_format($data->total_amount, 2) }}</span>
