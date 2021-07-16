@@ -15,61 +15,19 @@
         Settlement Form
     </div>
     <div class='col-12 content-container' style='position: relative'>
-        <form method="POST" action="{{ route('settle.amount') }}" class='p-2' autocomplete="off" >
+        <form id="app" method="POST" action="{{ route('settle.amount') }}" class='p-2' autocomplete="off" >
             @csrf
 
             @include('common.serverresponse')
-            <input type="hidden" class="form-control form-control-sm" name="honorary_id" value='{{ $member->honorary->id }}'>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Current E-Wallet: </label>
-                <div class="col-sm-4">
-                    <span class="form-control form-control-sm border-0">PHP {{ number_format($member->total_amt, 2) }}</span>
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Credit Balance:</label>
-                <div class="col-sm-4">
-                    <span class="form-control form-control-sm border-0">PHP {{ number_format($member->honorary->credit_amount, 2) }}</span>
-                </div>
-            </div>
-            <div class="form-group row field">
-                <label  class="col-sm-3 col-form-label">Select a Payment Method:</label>
-                <div class="col-sm-4">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio1" value="ewallet" style='cursor: pointer' {{ (old('payment_method') == 'ewallet') ? 'checked': '' }}>
-                        <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio1" style='cursor: pointer'><small>Via E-Wallet</small></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="payment_method" id="inlineRadio2" value="paynamics" style='cursor: pointer' {{ (old('payment_method') == 'paynamics') ? 'checked': '' }}>
-                        <label class="form-control form-control-sm form-check-label border-0" for="inlineRadio2" style='cursor: pointer'><small>Via Paynamics</small></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row field" id="wallter-cont" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
-                <label  class="col-sm-3 col-form-label">Select a Wallet:</label>
-                <div class="col-sm-4">
-                    <select class="form-control form-control-sm "  name="source" onchange="updatesource(this)">
-                        <option {{ (old('source') == 'direct_referral') ? 'selected': '' }} value='direct_referral'>Direct Referral</option>
-                        <option {{ (old('source') == 'encoding_bonus') ? 'selected': '' }} value='encoding_bonus'>Encoding Bonus</option>
-                        <option {{ (old('source') == 'matching_pairs') ? 'selected': '' }} value='matching_pairs'>Matching Pair</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row field" id="wallter-cont2" style="{{ (old('payment_method') == 'paynamics') ? 'visibility: hidden': '' }}">
-                <label  class="col-sm-3 col-form-label">Source Amount: </label>
-                <div class="col-sm-4">
-                    <span class="form-control form-control-sm" id='source_amount_s'>{{ old('source_amount', $member->direct_referral) }}</span>
-                    <input type="hidden" class="form-control form-control-sm "  name="source_amount" id='source_amount' value='{{ old('source_amount', $member->direct_referral) }}'>
-                </div>
-            </div>
-
-            <div class="form-group row text-center">
-                <div class="col-12 p-3">
-                    <button type="submit" class="btn btn-success">
-                        {{ __('PROCEED') }}
-                    </button>
-                </div>
-            </div>
+            <settlement-form 
+                v-bind:member="memberdata"
+                v-bind:model="postdata"
+                v-bind:products="products"
+                v-bind:wallettypes="wallettypes"
+                v-bind:paymentmethods="paymentmethods"
+                v-bind:payinmethods="payinmethods"
+                >
+            </settlement-form>
 
         </form>
     </div>
@@ -78,33 +36,22 @@
 
 @section('javascripts')
     <script>
+        var postvalue = {
+            'product': {!! json_encode( old('product'), JSON_NUMERIC_CHECK ) !!},
+            'quantity': {!! json_encode( old('quantity')) !!},
+            'total_amount': {!! json_encode( old('total_amount')) !!},
+            'payment_method': {!! json_encode( old('payment_method')) !!},
+            'source': {!! json_encode( old('source')) !!},
+            'source_amount': {!! json_encode( old('source_amount')) !!},
+            'payinmethods': {!! json_encode( old('payinmethod_name')) !!}
+        };
         
-        function updatesource (el) {
-            var value = '';
-            switch($(el).val()) {
-                case "direct_referral":
-                    value = '{{ ($member->direct_referral) ? $member->direct_referral: 0 }}';
-                    break;
-                case "encoding_bonus":
-                    value = '{{ ($member->encoding_bonus) ? $member->encoding_bonus: 0 }}';
-                    break;
-                case "matching_pairs":
-                    value = '{{ ($member->matching_pairs) ? $member->matching_pairs: 0 }}';
-                    break;
-            }
-            $('#source_amount').val(value);
-            $('#source_amount_s').html(value);
-        }
-        
-        $('input[type=radio][name=payment_method]').change(function() {
-            if (this.value == 'ewallet') {
-                $('#wallter-cont').css('visibility', 'visible');
-                $('#wallter-cont2').css('visibility', 'visible');
-            }
-            else if (this.value == 'paynamics') {
-                $('#wallter-cont').css('visibility', 'hidden');
-                $('#wallter-cont2').css('visibility', 'hidden');
-            }
-        });
+        var memberData = {!! json_encode($member) !!};
+        var products = '';
+        var walletTypes = {!! json_encode($walletTypes) !!};
+        var paymentMethods = {!! json_encode($paymentMethods) !!};
+        var payinMethods = {!! json_encode($payinmethods) !!};
+        var disbursementMethods = '';
     </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 @endsection
