@@ -38,7 +38,7 @@ class CashoutLibrary {
     protected $alphaOneDGateDisbursementCancelUrl;
     
     public function __construct() {
-        if(env('PYNMCS_ENV') == 'production') {
+        if(config('paynamics.default.PYNMCS_ENV') == 'production') {
             $this->dGateDisbursementServiceUrl = "";
             $this->dGateDisbursementQueryUrl = "";
             $this->dGateDisbursementCancelUrl = "";
@@ -98,13 +98,13 @@ class CashoutLibrary {
     {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
-        $ip = $_SERVER['SERVER_ADDR'];
+        $ip = $request->server('SERVER_ADDR');
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
         $disbursementMethod = $trans->disbursement_method;
         
         $data = [
-                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchantid' => config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
                 'merchant_ip' => $ip,
                 'request_id' => $requestID,
                 'notification_url' => $notificationUrl,
@@ -271,7 +271,7 @@ class CashoutLibrary {
         $timestamp = Carbon::now()->format('Y-m-d\TH:i:s\Z');
         
         $data = [
-                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchantid' => config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
                 'org_request_id' => $trans->generated_req_id,
                 'org_response_id' => $trans->paynamicsInitialResponse->det_response_id,
                 'notification_status' => $notificationStatus,
@@ -328,7 +328,7 @@ class CashoutLibrary {
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
 
         $data = [
-                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchantid' => config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
                 'request_id' => $requestID,
                 'org_trxid' => $trans->paynamicsInitialResponse->hed_response_id,
                 'org_trxid2' => '',
@@ -386,10 +386,10 @@ class CashoutLibrary {
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);
         $responseUrl = route('paynamics.resp', ['transaction_id' => $trans->id]);
-        $ip = $_SERVER['SERVER_ADDR'];
+        $ip = $request->server('SERVER_ADDR');
         
         $data = [
-                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchantid' => config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
                 'merchant_ip' => $ip,
                 'request_id' => $requestID,
                 'notification_url' => $notificationUrl,
@@ -446,7 +446,7 @@ class CashoutLibrary {
     private static function generateXmlDataQuery($trans, $requestID)
     {        
         $data = [
-                'merchantid' => env('PYNMCS_MERCH_ID_PAYOUT'),
+                'merchantid' => config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
                 'request_id' => $requestID,
                 'org_trxid' => $trans->paynamicsInitialResponse->det_response_id,
                 'org_trxid2' => $trans->generated_req_id,

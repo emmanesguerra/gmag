@@ -25,7 +25,7 @@ class DisbursementSignature {
                      disbursement_info + disbursement_type + disbursement_date + mkey
          */
         return [
-            env('PYNMCS_MERCH_ID_PAYOUT'),
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
             $requestID,
             $ip,
             $amount,
@@ -34,7 +34,7 @@ class DisbursementSignature {
             $disbursementInfo,
             '0', // 0 => immediate, 1 => scheduled
             '', // only if type = 1
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -67,7 +67,7 @@ class DisbursementSignature {
             config('paynamics.default.fund_source'),
             'Cashout',
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -94,7 +94,7 @@ class DisbursementSignature {
             config('paynamics.default.fund_source'),
             'Cashout',
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -122,7 +122,7 @@ class DisbursementSignature {
             config('paynamics.default.fund_source'),
             'Cashout',
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -151,7 +151,7 @@ class DisbursementSignature {
             config('paynamics.default.fund_source'),
             'Cashout',
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -183,7 +183,7 @@ class DisbursementSignature {
             config('paynamics.default.fund_source'),
             'Cashout',
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -204,13 +204,13 @@ class DisbursementSignature {
          * forSign =   merchant_id + request_id + org_trxid + org_trxid2 + notification_url + response_url + mkey
          */
         return [
-            env('PYNMCS_MERCH_ID_PAYOUT'),
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
             $requestID,
             $trans->paynamicsInitialResponse->hed_response_id,
             '',
             $notificationUrl,
             $responseUrl,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -227,11 +227,11 @@ class DisbursementSignature {
          * forSign = merchantid + request_id + org_trxid + org_trxid2 + mkey
          */
         return [
-            env('PYNMCS_MERCH_ID_PAYOUT'),
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
             $requestID,
             $trans->paynamicsInitialResponse->det_response_id,
             $trans->generated_req_id,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -241,14 +241,14 @@ class DisbursementSignature {
          * forSign = merchantid + merchant_ip + request_id + notification_url + response_url + org_response_id + disbursement_info + mkey
          */
         return [
-            env('PYNMCS_MERCH_ID_PAYOUT'),
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
             $ip,
             $requestID,
             $notificationUrl,
             $responseUrl,
             $trans->paynamicsInitialResponse->det_response_id,
             $disbursementInfo,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
     
@@ -309,12 +309,12 @@ class DisbursementSignature {
          * forSign = mechantid + request_id + response_id + notification_status + timestamp + mkey
          */
         return [
-            env('PYNMCS_MERCH_ID_PAYOUT'),
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_ID_PAYOUT'),
             $trans->generated_req_id,
             $trans->paynamicsInitialResponse->det_response_id,
             $notificationStatus,
             $timestamp,
-            env('PYNMCS_MERCH_KEY_PAYOUT')
+            config('paynamics.default.PAYOUT.PYNMCS_MERCH_KEY_PAYOUT')
         ];
     }
 }
