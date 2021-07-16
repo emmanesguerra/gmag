@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Library\Common;
 use App\Models\PaynamicsTransaction;
 use App\Models\Member;
+use App\Models\HonoraryMember;
 
 class PaynamicsResponseController extends Controller
 {
@@ -39,10 +40,19 @@ class PaynamicsResponseController extends Controller
                         Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
                         break;
                     case "Activation":
-                        $this->processActivation($trans);
+                        Common::processActivation($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
                         break;
                     case "Credit Adj":
-                        $this->processCreditAdj($trans);
+                        $credit = HonoraryMember::find($trans->honorary_member_id);
+                        if($credit->credit_amount > $trans->total_amount) {
+                            $totalAmount = $trans->total_amount;
+                            $diff = $credit->credit_amount - $trans->total_amount;
+                        } else {
+                            $totalAmount = $credit->credit_amount;
+                            $diff = 0;
+                        }
+
+                        Common::processCreditAdj($trans->member, $credit, 'Credit Adj', $trans->payment_method, null, $totalAmount, $diff);
                         break;
                 }
             } else {
@@ -93,7 +103,7 @@ class PaynamicsResponseController extends Controller
                     return view('paynamics-response', ['trans' => $trans]);
                     break;
                 case "Activation":
-                    return 'emman2';
+                    return view('paynamics-response-1', ['trans' => $trans]);
                     break;
                 case "Credit Adj":
                     return view('paynamics-response-2', ['trans' => $trans]);

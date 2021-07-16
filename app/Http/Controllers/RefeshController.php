@@ -9,8 +9,8 @@ use App\Models\Member;
 use App\Models\Product;
 use App\Library\Modules\MembersLibrary;
 use App\Library\Modules\TransactionLibrary;
+use App\Library\Modules\Paynamics\CashInLibrary;
 use App\Http\Requests\ActivationRequest;
-use App\Library\Modules\PaynamicsLibrary;
 
 /**
  * @group Members/Dashboard
@@ -28,9 +28,35 @@ class RefeshController extends Controller
     public function index()
     {
         $member = Member::find(Auth::id());
+        $member->placement->product;
         $products = Product::select(['id', 'name', 'price'])->get();
+        $walletTypes = DB::table('wallet_types')
+                            ->whereNull('deleted_at')
+                            ->select('method', 'name')
+                            ->orderBy('sequence')->get();
+        $paymentMethods = DB::table('payment_methods')
+                            ->whereNull('deleted_at')
+                            ->select('method', 'name')
+                            ->orderBy('sequence')->get();
+        $payinmethodsres = DB::table('paynamics_payin_methods')
+                            ->whereNull('deleted_at')
+                            ->select('method', 'type', 'type_name', 'description')
+                            ->orderBy('type')->get();
         
-        return view('refresh-form', ['member' => $member, 'products' => $products]);
+        $payinmethods = [];
+        foreach($payinmethodsres as $values) {
+            $payinmethods[$values->type]['id'] = $values->type;
+            $payinmethods[$values->type]['label'] = $values->type_name;
+            $payinmethods[$values->type]['children'][] = [
+                                            'id' => $values->method,
+                                            'label' => $values->description
+                                        ];
+        }
+        
+        return view('refresh-form', ['member' => $member, 'products' => $products,
+            'walletTypes' => $walletTypes,
+            'paymentMethods' => $paymentMethods,
+            'payinmethods' => array_values($payinmethods)]);
     }
 
     /**
@@ -74,27 +100,22 @@ class RefeshController extends Controller
             
             DB::beginTransaction();
             
-            $paid = true;
-            if($request->payment_method == 'paynamics') {
-                $paid = PaynamicsLibrary::makeTransaction();
-            }
-            
-            if(!$paid) {
-                throw new \Exception("We recieved an error when processing your payment");
-            } 
-            
             $member = Auth::user();
-            $product = Product::find($request->product_id);
-            $trans = TransactionLibrary::saveProductPurchase($member, $product, 1, 'Activation', $request->payment_method, $request->source, $request->total_amount);
+            $product = Product::find($request->product);
+            if($request->payment_method == 'paynamics') {                
+                $trans = TransactionLibrary::savePaynamicsTransaction($member, $product, 'Activation', $request->quantity, $request->total_amount);
+                
+                $resp = CashInLibrary::processPayin($request, $trans);
+                
+                DB::commit();
+                return view('refirect-to-paynamics', ['data' => $resp]);
+                
+            } else {
+                Common::processActivation($member, $product, $request->quantity, 'Activation', $request->payment_method, $request->source, $trans->total_amount);
 
-            if($trans) {
-                MembersLibrary::updateMemberPlacementProduct($member, $product);
-
-                MembersLibrary::registerMemberPairingCycle($member);
+                DB::commit();
+                return redirect()->route('home', '#binary_status')->with('status-success', 'Your account has been activated');
             }
-            
-            DB::commit();
-            return redirect()->route('home', '#binary_status')->with('status-success', 'Your account has been activated');
             
         } catch (\Exception $ex) {
             DB::rollback();

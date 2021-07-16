@@ -437,7 +437,7 @@ class ProfileController extends Controller
                                             Common::processProductPurchase($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
                                             break;
                                         case "Activation":
-                                            $this->processActivation($trans);
+                                            Common::processActivation($trans->member, $trans->product, $trans->quantity, $trans->transaction_type, $trans->payment_method, null, $trans->total_amount, $trans->transaction_no);
                                             break;
                                         case "Credit Adj":
                                             
