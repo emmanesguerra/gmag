@@ -65,9 +65,9 @@ class CashoutLibrary {
         }
     }
     
-    public static function processCashout(MembersEncashmentRequest $trans, $trackingno, $requestID)
+    public static function processCashout(MembersEncashmentRequest $trans, $request, $trackingno, $requestID)
     {
-        $xmlData = self::generateXmlDataCashOut($trans, $trackingno, $requestID);
+        $xmlData = self::generateXmlDataCashOut($trans, $request, $trackingno, $requestID);
         Log::channel('paynamics')->info($xmlData);
         
         $pl = new CashoutLibrary;
@@ -94,7 +94,7 @@ class CashoutLibrary {
         return $result;
     }
     
-    private static function generateXmlDataCashOut($trans, $trackingno, $requestID)
+    private static function generateXmlDataCashOut($trans, $request, $trackingno, $requestID)
     {
         $expirationDate = Carbon::now()->addDays(SettingLibrary::retrieve('expiry_day'))->format('Y-m-d\TH:i');
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
@@ -352,9 +352,9 @@ class CashoutLibrary {
         return $sign;
     }
     
-    public function retryDisbursement(MembersEncashmentRequest $trans, $requestID)
+    public function retryDisbursement(MembersEncashmentRequest $trans, $request, $requestID)
     {
-        $xmlData = self::generateXmlDataRetry($trans, $requestID);
+        $xmlData = self::generateXmlDataRetry($trans, $request, $requestID);
         Log::channel('paynamicsretry')->info($xmlData);
         
         $pl = new CashoutLibrary;
@@ -381,7 +381,7 @@ class CashoutLibrary {
         return $result;
     }
     
-    private static function generateXmlDataRetry($trans, $requestID)
+    private static function generateXmlDataRetry($trans, $request, $requestID)
     {
         $disbursementInfo = 'Cashout for ' . $trans->firstname . ' ' . $trans->lastname . ' with the amount of ' . $trans->amount;
         $notificationUrl = route('paynamics.noti', ['transaction_id' => $trans->id]);

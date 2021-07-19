@@ -80,7 +80,7 @@ class EncashmentController extends Controller
             
             $this->checkWalletAmount($trans);
             
-            $result = CashoutLibrary::processCashout($trans, $request->tracking_no, $requestID);
+            $result = CashoutLibrary::processCashout($trans, $request, $request->tracking_no, $requestID);
             $data = Common::convertXmlToJson($result);
             
             if($data) {
@@ -291,14 +291,15 @@ class EncashmentController extends Controller
         }
     }
     
-    public function retry($id)
+    public function retry(Request $request)
     {
+        $id = $request->id;
         $trans = MembersEncashmentRequest::find($id);
         
         if($trans) {
             if(in_array($trans->status, ['CX'])) {
                 $requestID = date('YmdHis') . $trans->id;
-                CashoutLibrary::retryDisbursement($trans, $requestID);
+                CashoutLibrary::retryDisbursement($trans, $request, $requestID);
                 
                 $remarks = [];
                 if(!empty($trans->remarks)) {
@@ -333,6 +334,10 @@ class EncashmentController extends Controller
                 $data = Common::convertXmlToJson($result);
 
                 if($data) {
+                    if (!isset($data['queryDisbursmentDetailed_response'])) {
+                        throw new \Exception('Unable to read paynamics response. Please try again later');
+                    }
+                    
                     if(CommonPynmcs::isQuerySuccessfulResp($data)) {
                         MembersLibrary::removeStashedMemberRequestedAmount($trans);
                         $trans->status = 'CC';
