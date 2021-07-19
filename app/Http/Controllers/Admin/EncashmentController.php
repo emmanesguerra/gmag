@@ -84,21 +84,25 @@ class EncashmentController extends Controller
             $data = Common::convertXmlToJson($result);
             
             if($data) {
+                if (!isset($data['details_response'])) {
+                    throw new \Exception('Unable to read paynamics response. Please try again later');
+                }
+                
+                PaynamicsEncashmentResp::create([
+                    'encashment_id' => $trans->id, 
+                    'request_id' => $data['header_response']['request_id'], 
+                    'hed_response_id' => $data['header_response']['response_id'], 
+                    'hed_response_code' => $data['header_response']['response_code'], 
+                    'hed_response_message' => $data['header_response']['response_message'],
+                    'det_response_id' => $data['details_response']['details_response']['response_id'] , 
+                    'det_response_code' => $data['details_response']['details_response']['response_code'] , 
+                    'det_response_message' => $data['details_response']['details_response']['response_message'], 
+                    'det_processor_response_id' => implode(',' , $data['details_response']['details_response']['processor_response_id'])
+                ]);
+                    
                 if(CommonPynmcs::isSuccessfulResp($data)) {
                     // move the requested amount to X
                     MembersLibrary::stashMemberRequestedAmount($trans);
-                    
-                    PaynamicsEncashmentResp::create([
-                        'encashment_id' => $trans->id, 
-                        'request_id' => $data['header_response']['request_id'], 
-                        'hed_response_id' => $data['header_response']['response_id'], 
-                        'hed_response_code' => $data['header_response']['response_code'], 
-                        'hed_response_message' => $data['header_response']['response_message'],
-                        'det_response_id' => $data['details_response']['details_response']['response_id'] , 
-                        'det_response_code' => $data['details_response']['details_response']['response_code'] , 
-                        'det_response_message' => $data['details_response']['details_response']['response_message'], 
-                        'det_processor_response_id' => implode(',' , $data['details_response']['details_response']['processor_response_id'])
-                    ]);
                     
                     $trans->status = 'C';
                 } else if(CommonPynmcs::isRetriableResp($data)) {
@@ -205,6 +209,23 @@ class EncashmentController extends Controller
             Log::channel('paynamics_noti')->info($data);
 
             if($data) {
+                    
+                if (!isset($data['details_response'])) {
+                    throw new \Exception('Unable to read paynamics response. Please try again later');
+                }
+                
+                PaynamicsEncashmentResp::create([
+                    'encashment_id' => $trans->id, 
+                    'request_id' => $data['header_response']['request_id'], 
+                    'hed_response_id' => $data['header_response']['response_id'], 
+                    'hed_response_code' => $data['header_response']['response_code'], 
+                    'hed_response_message' => $data['header_response']['response_message'],
+                    'det_response_id' => $data['details_response']['details_response']['response_id'] , 
+                    'det_response_code' => $data['details_response']['details_response']['response_code'] , 
+                    'det_response_message' => $data['details_response']['details_response']['response_message'], 
+                    'det_processor_response_id' => implode(',' , $data['details_response']['details_response']['processor_response_id'])
+                ]);
+                
                 if(CommonPynmcs::isSuccessfulResp($data)) {
                     // move the requested amount to X
                     if($trans->has_stashed_amount) {
@@ -337,6 +358,18 @@ class EncashmentController extends Controller
                     if (!isset($data['queryDisbursmentDetailed_response'])) {
                         throw new \Exception('Unable to read paynamics response. Please try again later');
                     }
+                    
+                    PaynamicsEncashmentResp::create([
+                        'encashment_id' => $trans->id, 
+                        'request_id' => $data['queryDisbursmentHeader_response']['request_id'], 
+                        'hed_response_id' => 0, 
+                        'hed_response_code' => $data['queryDisbursmentHeader_response']['response_code'], 
+                        'hed_response_message' => $data['queryDisbursmentHeader_response']['response_message'],
+                        'det_response_id' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_id'] , 
+                        'det_response_code' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_code'] , 
+                        'det_response_message' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_message'], 
+                        'det_processor_response_id' => implode(',' , $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['processor_response_id'])
+                    ]);
                     
                     if(CommonPynmcs::isQuerySuccessfulResp($data)) {
                         MembersLibrary::removeStashedMemberRequestedAmount($trans);
