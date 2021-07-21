@@ -82,10 +82,17 @@ class EncashmentController extends Controller
             
             $result = CashoutLibrary::processCashout($trans, $request, $request->tracking_no, $requestID);
             $data = Common::convertXmlToJson($result);
+            Log::channel('paynamics')->info("Converted DATA :" . print_r($data, true));
             
             if($data) {
                 if (!isset($data['details_response'])) {
                     throw new \Exception('Unable to read paynamics response. Please try again later');
+                }
+                
+                if(is_array($data['details_response']['details_response']['processor_response_id'])) {
+                    $processor = implode(',' , $data['details_response']['details_response']['processor_response_id']);
+                } else {
+                    $processor = $data['details_response']['details_response']['processor_response_id'];
                 }
                 
                 PaynamicsEncashmentResp::create([
@@ -97,7 +104,7 @@ class EncashmentController extends Controller
                     'det_response_id' => $data['details_response']['details_response']['response_id'] , 
                     'det_response_code' => $data['details_response']['details_response']['response_code'] , 
                     'det_response_message' => $data['details_response']['details_response']['response_message'], 
-                    'det_processor_response_id' => implode(',' , $data['details_response']['details_response']['processor_response_id'])
+                    'det_processor_response_id' => $processor
                 ]);
                     
                 if(CommonPynmcs::isSuccessfulResp($data)) {
@@ -203,15 +210,19 @@ class EncashmentController extends Controller
             $trans = MembersEncashmentRequest::find($request->transaction_id);
 
             $xmlString = base64_decode($paymentResponse);
-            Log::channel('paynamics_noti')->info($xmlString);
             $data = Common::convertXmlToJson($xmlString);
-
-            Log::channel('paynamics_noti')->info($data);
+            Log::channel('paynamics_noti')->info("Converted DATA :" . print_r($data, true));
 
             if($data) {
                     
                 if (!isset($data['details_response'])) {
                     throw new \Exception('Unable to read paynamics response. Please try again later');
+                }
+                
+                if(is_array($data['details_response']['details_response']['processor_response_id'])) {
+                    $processor = implode(',' , $data['details_response']['details_response']['processor_response_id']);
+                } else {
+                    $processor = $data['details_response']['details_response']['processor_response_id'];
                 }
                 
                 PaynamicsEncashmentResp::create([
@@ -223,7 +234,7 @@ class EncashmentController extends Controller
                     'det_response_id' => $data['details_response']['details_response']['response_id'] , 
                     'det_response_code' => $data['details_response']['details_response']['response_code'] , 
                     'det_response_message' => $data['details_response']['details_response']['response_message'], 
-                    'det_processor_response_id' => implode(',' , $data['details_response']['details_response']['processor_response_id'])
+                    'det_processor_response_id' => $processor
                 ]);
                 
                 if(CommonPynmcs::isSuccessfulResp($data)) {
@@ -353,10 +364,17 @@ class EncashmentController extends Controller
                 $requestID = date('YmdHis') . $trans->id;
                 $result = CashoutLibrary::queryDisbursement($trans, $requestID);
                 $data = Common::convertXmlToJson($result);
+                Log::channel('paynamicsquery')->info("Converted DATA :" . print_r($data, true));
 
                 if($data) {
                     if (!isset($data['queryDisbursmentDetailed_response'])) {
                         throw new \Exception('Unable to read paynamics response. Please try again later');
+                    }
+                    
+                    if(is_array($data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['processor_response_id'])) {
+                        $processor = implode(',' , $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['processor_response_id']);
+                    } else {
+                        $processor = $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['processor_response_id'];
                     }
                     
                     PaynamicsEncashmentResp::create([
@@ -368,7 +386,7 @@ class EncashmentController extends Controller
                         'det_response_id' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_id'] , 
                         'det_response_code' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_code'] , 
                         'det_response_message' => $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['response_message'], 
-                        'det_processor_response_id' => implode(',' , $data['queryDisbursmentDetailed_response']['queryDisbursmentDetailed_response']['processor_response_id'])
+                        'det_processor_response_id' => $processor
                     ]);
                     
                     if(CommonPynmcs::isQuerySuccessfulResp($data)) {
@@ -393,7 +411,7 @@ class EncashmentController extends Controller
                     $trans->remarks = implode("|", $remarks);
                     $trans->save();
                 } else {
-                    Log::channel('paynamics')->error($result);
+                    Log::channel('paynamicsquery')->error($result);
                     throw new \Exception('Unable to translate paynamics response');
                 }
 

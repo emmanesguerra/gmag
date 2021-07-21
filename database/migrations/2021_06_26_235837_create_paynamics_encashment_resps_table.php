@@ -22,7 +22,7 @@ class CreatePaynamicsEncashmentRespsTable extends Migration
             $table->string('hed_response_message', 100);
             $table->string('det_response_id', 25);
             $table->string('det_response_code', 25);
-            $table->string('det_response_message', 100);
+            $table->string('det_response_message', 500);
             $table->string('det_processor_response_id', 60)->nullable();
             $table->timestamps();
             
