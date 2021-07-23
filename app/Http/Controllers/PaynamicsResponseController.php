@@ -52,9 +52,11 @@ class PaynamicsResponseController extends Controller
                             $diff = 0;
                         }
 
-                        Common::processCreditAdj($trans->member, $credit, 'Credit Adj', $trans->payment_method, null, $totalAmount, $diff);
+                        Common::processCreditAdj($trans->member, $credit, 'Credit Adj', $trans->payment_method, null, $totalAmount, $diff, $trans->transaction_no);
                         break;
                 }
+            } else if ($data && $this->transactionPending($data)) {
+                $trans->status = 'WR';
             } else {
                 $trans->status = 'F';
             }
@@ -81,6 +83,17 @@ class PaynamicsResponseController extends Controller
     {
         if(isset($data['responseStatus']) && isset($data['responseStatus']['response_code'])) {
             if(in_array($data['responseStatus']['response_code'], ['GR001', 'GR002'])) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private function transactionPending($data)
+    {
+        if(isset($data['responseStatus']) && isset($data['responseStatus']['response_code'])) {
+            if(in_array($data['responseStatus']['response_code'], ['GR033', 'GR033'])) {
                 return true;
             }
         }

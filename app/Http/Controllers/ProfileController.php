@@ -454,6 +454,8 @@ class ProfileController extends Controller
                                             break;
                                     }
                                     
+                                } else if (in_array($responseStat->response_code, ['GR033'])) {
+                                    $trans->status = 'WR';
                                 } else {
                                     $trans->status = 'F';
                                 }

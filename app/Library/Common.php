@@ -75,9 +75,9 @@ class Common {
         return;
     }
     
-    public static function processCreditAdj(Member $member, HonoraryMember $credit, $ttype, $tpaymetMethod, $tsource, $totalAmount, $diff)
+    public static function processCreditAdj(Member $member, HonoraryMember $credit, $ttype, $tpaymetMethod, $tsource, $totalAmount, $diff, $transactionno = null)
     {
-        $trans = TransactionLibrary::saveProductPurchase($member, null, 0, $ttype, $tpaymetMethod, $tsource, $totalAmount);
+        $trans = TransactionLibrary::saveProductPurchase($member, null, 0, $ttype, $tpaymetMethod, $tsource, $totalAmount, $transactionno);
 
         if($trans) {
             $credit->transaction_id = $trans->id;
