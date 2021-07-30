@@ -82,7 +82,7 @@ class EncashmentController extends Controller
             
             $result = CashoutLibrary::processCashout($trans, $request, $request->tracking_no, $requestID);
             $data = Common::convertXmlToJson($result);
-            Log::channel('paynamics')->info("Converted DATA :" . print_r($data, true));
+            Log::channel('paynamics_noti')->info("Converted DATA :" . print_r($data, true));
             
             if($data) {
                 if (!isset($data['details_response'])) {
