@@ -130,7 +130,7 @@ return [
             'description' => 'Documentation generator server.',
         ],
         [
-            'url' => 'https://markj46.sg-host.com/gmag',
+            'url' => 'http://markj49.sg-host.com//gmag',
             'description' => 'Test server.',
         ],
     ],
