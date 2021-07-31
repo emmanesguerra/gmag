@@ -258,7 +258,13 @@ return [
                 'idoc.*',
                 'switch.index',
                 'transactions.bonus',
-                'wallet.history'
+                'wallet.history',
+                'register',
+                'paynamics.noti',
+                'paynamics.resp',
+                'paynamics.member.noti',
+                'paynamics.member.resp',
+                'paynamics.member.cancel',
             ],
 
             /*
