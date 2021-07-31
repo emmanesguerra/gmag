@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Admin;
 use App\Http\Requests\ChangeAdminPasswordRequest;
 
+/**
+ * @group Admin/Admin Menu
+ *
+ */
 class ChangeAdminPassword extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a change admin's password form.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +26,7 @@ class ChangeAdminPassword extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new password for admin.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

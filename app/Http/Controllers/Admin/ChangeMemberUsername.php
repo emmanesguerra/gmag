@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ChangeMemberUsernameRequest;
 use App\Models\Member;
 
+/**
+ * @group Admin/Members Menu
+ *
+ */
 class ChangeMemberUsername extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the change member username form.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +25,7 @@ class ChangeMemberUsername extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new username for the member.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
