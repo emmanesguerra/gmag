@@ -10,14 +10,19 @@ use App\Models\MembersPairing;
 use App\Models\TransactionBonus;
 use Carbon\Carbon;
 
+/**
+ * @group Cron Job
+ *
+ */
 class ScheduleController extends Controller
 {
     const MAX_PAIR_PER_DAY = 3;
     
-    /*
-     * THIS IS TEMPORARY, THIS FUNCTION will be move on a CRONJOB
+    /**
+     * Temporary function. This checks todays pair, soon be moved to cron.
+     * 
+     * @return \Illuminate\Http\Response
      */
-    
     public function checkTodaysPairs()
     {
         $pairIds = MembersPairing::distinct()->select('member_id')

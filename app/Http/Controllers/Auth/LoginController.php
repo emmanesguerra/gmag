@@ -46,11 +46,25 @@ class LoginController extends Controller
         return 'username';
     }
     
+    /**
+     * Show the admin's application login form.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showAdminLoginForm()
     {
         return view('auth.admin.login');
     }
 
+
+    /**
+     * Handle a admin's login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function adminLogin(Request $request)
     {
         $this->validate($request, [

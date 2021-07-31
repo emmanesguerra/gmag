@@ -25,6 +25,7 @@ class WalletController extends Controller
     /**
      * Display encashment request form
      * 
+     * @return Illuminate\View\View
      */
     public function index()
     {
@@ -57,13 +58,40 @@ class WalletController extends Controller
      * Wallet source. Example:Direct Referral
      * 
      * @queryParam amount string required
-     * Requested amount. Example:1000
+     * Requested amount. Example:1000 
      * 
-     * @queryParam req_type string required
-     * Payment type. Example: Cheque
+     * @queryParam disbursement_method string required
+     * Disbursement method. Example:GCASH, CEBCP, UBP 
      * 
-     * @queryParam name string required
-     * Member's Fullname. Example Jon Snow
+     * @queryParam firstname string required
+     * Member's Firstname. Example: Jon
+     * 
+     * @queryParam middlename string optional
+     * Member's Middlename.
+     * 
+     * @queryParam lastname string required
+     * Member's Lastname. Example: Snow 
+     * 
+     * @queryParam address1 string required
+     * Member's Address1. Example: B32 L 47 North Kings Landing
+     * 
+     * @queryParam address2 string optional
+     * Member's Address2.
+     * 
+     * @queryParam city string required
+     * Member's City. Example: Makati 
+     * 
+     * @queryParam state string optional
+     * Member's State.
+     * 
+     * @queryParam country string required
+     * Member's Country. Example: PH 
+     * 
+     * @queryParam zip string optional
+     * Member's Zip. Example: 1603
+     * 
+     * @queryParam email string required
+     * Member's Email. Example: jonsnow@gmail.com
      * 
      * @queryParam mobile string required
      * Member's contact no. Example: 09091232456
@@ -316,6 +344,14 @@ class WalletController extends Controller
             'recordsFiltered' => ($hasValue)? $totalFiltered: $modelcnt], 200);
     }
     
+    /**
+     * Display transaction history details
+     * 
+     * @queryParam id integer required 
+     * The id of the logged in member. Example: 5
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function historydetails(Request $request)
     {
         if($request->has('id')) {
@@ -329,6 +365,15 @@ class WalletController extends Controller
         }
     }
     
+    /**
+     * Cancel confirmed encashments
+     * 
+     * @queryParam id integer required 
+     * Encashement transaction id. Example: 5
+     * 
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function cancel($id)
     {
         try

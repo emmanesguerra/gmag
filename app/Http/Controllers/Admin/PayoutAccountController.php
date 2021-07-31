@@ -11,10 +11,14 @@ use App\Models\GmagAccount;
 use App\Models\GmagAccountDocuments;
 use App\Http\Requests\PayoutAccountRequest;
 
+/**
+ * @group Admin/Payout Accounts
+ *
+ */
 class PayoutAccountController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of pay-out accounts.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,6 +27,11 @@ class PayoutAccountController extends Controller
         return view('admin.payouts.index');
     }
     
+    /**
+     * Return the list of recorded pay-out accounts
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function data(Request $request)
     {
         $tablecols = [
@@ -69,7 +78,7 @@ class PayoutAccountController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new pay-out accounts.
      *
      * @return \Illuminate\Http\Response
      */
@@ -84,7 +93,64 @@ class PayoutAccountController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created pay-out accounts in storage.
+     * 
+     * @queryParam firstname string required
+     * Account firstname. Example: Jon
+     * 
+     * @queryParam middlename string required
+     * Account middlename. Example: M
+     * 
+     * @queryParam lastname string required
+     * Account lastname, if this is company encoded "Doing as Business As". Example: Snow
+     * 
+     * @queryParam birthdate string required
+     * Account birth date, if this is company encoded registration date. Example: 2021-05-06
+     * 
+     * @queryParam email string required
+     * Account email. Example: jonsnow@gmail.com
+     * 
+     * @queryParam mobile string required
+     * Account mobile. Example: 09095123123
+     * 
+     * @queryParam address1 string required
+     * Account address1. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam address2 string required
+     * Account address2. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam address3 string required
+     * Account address3. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam city string required
+     * Account city. Example: Makati
+     * 
+     * @queryParam state string required
+     * Account state. Example: 
+     * 
+     * @queryParam country string required
+     * Account country. Example: PH
+     * 
+     * @queryParam zip string required
+     * Account zip. Example: 1306 
+     * 
+     * @queryParam nationality string required
+     * Account nationality. Example: Filipino  
+     * 
+     * @queryParam nature_of_work string required
+     * Account nature_of_work. Example: Developer 
+     * 
+     * @queryParam document.*.doc string optional
+     * Document proof. Example: IDP_001   
+     * 
+     * @queryParam document.*.idnum string optional
+     * Document ID Number. Example: 0014785462   
+     * 
+     * @queryParam document.*.exp string optional
+     * Document Expiry Date. Example: 2025-05-05
+     * 
+     * @queryParam document.*.doc_proof_0 string optional
+     * Document Proof, uploaded file Image or document
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -136,18 +202,10 @@ class PayoutAccountController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified pay-out accounts.
+     * 
+     * @queryParam id string required
+     * Payout account id. Example:5
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -165,7 +223,67 @@ class PayoutAccountController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified pay-out accounts in storage.
+     * 
+     * @queryParam firstname string required
+     * Account firstname. Example: Jon
+     * 
+     * @queryParam middlename string required
+     * Account middlename. Example: M
+     * 
+     * @queryParam lastname string required
+     * Account lastname, if this is company encoded "Doing as Business As". Example: Snow
+     * 
+     * @queryParam birthdate string required
+     * Account birth date, if this is company encoded registration date. Example: 2021-05-06
+     * 
+     * @queryParam email string required
+     * Account email. Example: jonsnow@gmail.com
+     * 
+     * @queryParam mobile string required
+     * Account mobile. Example: 09095123123
+     * 
+     * @queryParam address1 string required
+     * Account address1. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam address2 string required
+     * Account address2. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam address3 string required
+     * Account address3. Example: B32 L7 North Kingslanding
+     * 
+     * @queryParam city string required
+     * Account city. Example: Makati
+     * 
+     * @queryParam state string required
+     * Account state. Example: 
+     * 
+     * @queryParam country string required
+     * Account country. Example: PH
+     * 
+     * @queryParam zip string required
+     * Account zip. Example: 1306 
+     * 
+     * @queryParam nationality string required
+     * Account nationality. Example: Filipino  
+     * 
+     * @queryParam nature_of_work string required
+     * Account nature_of_work. Example: Developer 
+     * 
+     * @queryParam document.*.doc string optional
+     * Document proof. Example: IDP_001   
+     * 
+     * @queryParam document.*.idnum string optional
+     * Document ID Number. Example: 0014785462   
+     * 
+     * @queryParam document.*.exp string optional
+     * Document Expiry Date. Example: 2025-05-05
+     * 
+     * @queryParam document.*.doc_proof_0 string optional
+     * Document Proof, uploaded file Image or document
+     * 
+     * @queryParam id int required
+     * Payout account id. Example:5
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -243,18 +361,16 @@ class PayoutAccountController extends Controller
         
         return $response;
     }
-
+    
     /**
-     * Remove the specified resource from storage.
+     * Activate account to use in pay-outs
+     * 
+     * @queryParam id string required
+     * Payout account id. Example:5
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
-    
     public function activate($id)
     {
         DB::table('gmag_accounts')->where('should_use', 1)->update(['should_use' => 0]);

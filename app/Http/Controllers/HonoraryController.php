@@ -12,8 +12,17 @@ use App\Library\Modules\MembersLibrary;
 use App\Library\Modules\Paynamics\CashInLibrary;
 use App\Library\Common;
 
+/**
+ * @group Members/Settlement
+ *
+ */
 class HonoraryController extends Controller
 {
+    /**
+     * Display settlement request form
+     * 
+     * @return Illuminate\View\View
+     */
     public function settleform()
     {
         $member = Auth::user();
@@ -47,6 +56,29 @@ class HonoraryController extends Controller
             'payinmethods' => array_values($payinmethods)]);
     }
     
+    
+
+    /**
+     * Process settlement request
+     * 
+     * @queryParam payment_method string required
+     * Disbursement method. Example:paynamics or ewallet
+     * 
+     * @queryParam payinmethods array required
+     * Payin method, this field is only required when payment_method is paynamics. Example: gcash, pnbotc
+     * 
+     * @queryParam total_amount string required
+     * Total amount to pay, this field is editable when payment_method is paynamics. Example: 1000
+     * 
+     * @queryParam source string required
+     * Wallet source, this field is only required when payment_method is ewallet. Example: direct_referral 
+     * 
+     * @queryParam source_amount string required
+     * This field is auto populated. Example: 1000
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function settleamount(Request $request)
     {
         try

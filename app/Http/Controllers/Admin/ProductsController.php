@@ -10,10 +10,14 @@ use App\Library\DataTables;
 use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
+/**
+ * @group Admin/Products
+ *
+ */
 class ProductsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a list of products.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,6 +26,12 @@ class ProductsController extends Controller
         return view('admin.products.index');
     }
     
+    
+    /**
+     * Return the list of recorded products
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function data(Request $request)
     {
         $tablecols = [
@@ -63,7 +73,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating products.
      *
      * @return \Illuminate\Http\Response
      */
@@ -73,7 +83,31 @@ class ProductsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created product in storage.
+     * 
+     * @queryParam type string required
+     * Product type. Example: ACT or PROD
+     * 
+     * @queryParam code string required
+     * Product code. Example: PR001
+     * 
+     * @queryParam name string required
+     * Product name. Example: STARTER PACKAGE
+     * 
+     * @queryParam price int required
+     * Product price. Example: 1055
+     * 
+     * @queryParam product_value int required
+     * Product product_value. Example: 1055
+     * 
+     * @queryParam flush_bonus int required
+     * Product flush_bonus. Example: 25
+     * 
+     * @queryParam display_icon string required
+     * Product display_icon. Example: starter_s.png
+     * 
+     * @queryParam registration_code_prefix string required
+     * Product registration_code_prefix. Example: ST
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -120,7 +154,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing products.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -133,7 +167,34 @@ class ProductsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified product in storage.
+     * 
+     * @queryParam type string required
+     * Product type. Example: ACT or PROD
+     * 
+     * @queryParam code string required
+     * Product code. Example: PR001
+     * 
+     * @queryParam name string required
+     * Product name. Example: STARTER PACKAGE
+     * 
+     * @queryParam price int required
+     * Product price. Example: 1055
+     * 
+     * @queryParam product_value int required
+     * Product product_value. Example: 1055
+     * 
+     * @queryParam flush_bonus int required
+     * Product flush_bonus. Example: 25
+     * 
+     * @queryParam display_icon string required
+     * Product display_icon. Example: starter_s.png
+     * 
+     * @queryParam registration_code_prefix string required
+     * Product registration_code_prefix. Example: ST
+     * 
+     * @queryParam id int required
+     * Product id. Example:5
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -169,7 +230,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified product from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
